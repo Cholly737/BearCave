@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
 interface AuthOverlayProps {
@@ -7,13 +7,20 @@ interface AuthOverlayProps {
 
 const AuthOverlay: FC<AuthOverlayProps> = ({ onAuthSuccess }) => {
   const { signInWithGooglePopup, loading } = useAuth();
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const handleSignIn = async () => {
+    setAuthError(null);
     try {
-      await signInWithGooglePopup();
-      onAuthSuccess();
+      const user = await signInWithGooglePopup();
+      if (user) {
+        onAuthSuccess();
+      } else {
+        setAuthError("Failed to authenticate. Please try again.");
+      }
     } catch (error) {
       console.error("Authentication failed:", error);
+      setAuthError("An error occurred during sign in. Please try again.");
     }
   };
 
@@ -27,6 +34,12 @@ const AuthOverlay: FC<AuthOverlayProps> = ({ onAuthSuccess }) => {
           <h2 className="text-xl font-heading font-bold mt-4">Welcome to Deepdene Bears</h2>
           <p className="text-sm text-neutral-600 mt-2">Please sign in to continue</p>
         </div>
+        
+        {authError && (
+          <div className="bg-red-50 text-red-600 p-3 mb-4 rounded-md text-sm">
+            {authError}
+          </div>
+        )}
         
         <button 
           onClick={handleSignIn}

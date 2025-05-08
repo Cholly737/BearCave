@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import { 
-  getAuth, 
+  User,
+  UserCredential,
   signInWithPopup, 
   signInWithRedirect, 
   signOut as firebaseSignOut, 
   GoogleAuthProvider, 
   onAuthStateChanged, 
-  getRedirectResult 
+  getRedirectResult, 
+  AuthError
 } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, googleProvider } from '@/lib/firebase';
 
 export function useAuth() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<AuthError | null>(null);
 
   // Check if we've been redirected from Google login
   useEffect(() => {
@@ -21,13 +23,11 @@ export function useAuth() {
       try {
         const result = await getRedirectResult(auth);
         if (result) {
-          // This gives you a Google Access Token
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          // The signed-in user info
           setUser(result.user);
         }
       } catch (error) {
-        setError(error);
+        console.error("Redirect error:", error);
+        setError(error as AuthError);
       } finally {
         setLoading(false);
       }
@@ -56,39 +56,40 @@ export function useAuth() {
     setLoading(true);
     setError(null);
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      await signInWithRedirect(auth, googleProvider);
     } catch (error) {
-      setError(error);
+      console.error("Sign in redirect error:", error);
+      setError(error as AuthError);
       setLoading(false);
     }
   };
 
   // Sign in with Google (Popup) - alternative method
-  const signInWithGooglePopup = async () => {
+  const signInWithGooglePopup = async (): Promise<User | null> => {
     setLoading(true);
     setError(null);
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, googleProvider);
       setUser(result.user);
       setLoading(false);
       return result.user;
     } catch (error) {
-      setError(error);
+      console.error("Sign in popup error:", error);
+      setError(error as AuthError);
       setLoading(false);
-      throw error;
+      return null;
     }
   };
 
   // Sign out
-  const signOut = async () => {
+  const signOut = async (): Promise<void> => {
     setLoading(true);
     try {
       await firebaseSignOut(auth);
       setUser(null);
     } catch (error) {
-      setError(error);
+      console.error("Sign out error:", error);
+      setError(error as AuthError);
     } finally {
       setLoading(false);
     }
