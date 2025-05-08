@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useAuth } from "@/hooks/use-auth";
 import Layout from "@/components/Layout";
 import Home from "@/pages/Home";
 import Events from "@/pages/Events";
@@ -12,36 +12,19 @@ import Feed from "@/pages/Feed";
 import Links from "@/pages/Links";
 import NotFound from "@/pages/not-found";
 import AuthOverlay from "@/components/AuthOverlay";
-import "./lib/firebase"; // Initialize Firebase
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  // React hooks must be called in the same order on every render
   const [showAuthOverlay, setShowAuthOverlay] = useState(false);
-  const auth = getAuth();
-  const navigate = useNavigate();
+  const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
-
+  
+  // Show auth overlay if not authenticated (after loading is complete)
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-      
-      // If the user is not authenticated, show the auth overlay
-      if (!user && isAuthenticated === null) {
-        setShowAuthOverlay(true);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  // Effects for handling navigation and URL changes
-  useEffect(() => {
-    // If user navigates to specific pages that need auth and isn't authenticated,
-    // show auth overlay
-    if (isAuthenticated === false) {
+    if (!loading && isAuthenticated === false) {
       setShowAuthOverlay(true);
     }
-  }, [isAuthenticated, location.pathname]);
+  }, [isAuthenticated, loading]);
 
   const handleAuthSuccess = () => {
     setShowAuthOverlay(false);
@@ -61,7 +44,7 @@ function App() {
         </Route>
       </Routes>
       
-      {showAuthOverlay && isAuthenticated === false && (
+      {showAuthOverlay && !loading && !isAuthenticated && (
         <AuthOverlay onAuthSuccess={handleAuthSuccess} />
       )}
       

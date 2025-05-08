@@ -10,11 +10,30 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase - check if already initialized to avoid duplicate app errors
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+// Check if Firebase configuration is valid
+const isFirebaseConfigValid = 
+  firebaseConfig.apiKey && 
+  firebaseConfig.projectId && 
+  firebaseConfig.appId;
+
+// Initialize Firebase app - handle cases where configuration is missing
+let app;
+try {
+  if (isFirebaseConfigValid) {
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    console.log("Firebase initialized successfully");
+  } else {
+    console.warn("Firebase configuration is incomplete - using guest mode only");
+    // Create a mock app object if Firebase is not configured
+    app = {} as any;
+  }
+} catch (error) {
+  console.error("Error initializing Firebase:", error);
+  app = {} as any;
+}
 
 // Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app);
+export const auth = isFirebaseConfigValid ? getAuth(app) : {} as any;
 
 // Initialize Google Auth Provider
 export const googleProvider = new GoogleAuthProvider();
