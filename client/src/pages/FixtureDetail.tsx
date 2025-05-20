@@ -13,7 +13,7 @@ const FixtureDetail = () => {
   
   // Define the PlayHQ grade ID for winter team
   const WINTER_TEAM_ID = 5; // Database ID for the Deepdene Bears Winter XI
-  const PLAYHQ_GRADE_ID = "1d2dd601"; // The specific grade ID for PlayHQ integration
+  const PLAYHQ_GRADE_ID = "8f6d8877"; // The specific grade ID for PlayHQ integration
   
   // Determine which ID to use for PlayHQ API calls
   const getPlayHQGradeId = () => {
