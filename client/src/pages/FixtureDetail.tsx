@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchTeamFixtures, fetchTeamDetails } from "@/lib/api";
+import { fetchTeamFixtures, fetchTeamDetails, fetchPlayHQFixtures } from "@/lib/api";
 import { Fixture } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const FixtureDetail = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const navigate = useNavigate();
+  const [dataSource, setDataSource] = useState<'local' | 'playhq'>('local');
 
   // Fetch team details
   const { 
@@ -18,18 +21,44 @@ const FixtureDetail = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Fetch team fixtures
+  // Fetch team fixtures (local)
   const { 
-    data: fixtures,
-    isLoading: fixturesLoading,
-    error: fixturesError
+    data: localFixtures,
+    isLoading: localFixturesLoading,
+    error: localFixturesError
   } = useQuery({
     queryKey: [`/api/teams/${teamId}/fixtures`],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
+  
+  // Fetch PlayHQ fixtures using the grade ID
+  const { 
+    data: playhqFixtures,
+    isLoading: playhqFixturesLoading,
+    error: playhqFixturesError,
+    refetch: refetchPlayHQFixtures
+  } = useQuery({
+    queryKey: [`/api/playhq/fixtures/${teamId}`],
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: dataSource === 'playhq', // Only fetch when this data source is selected
+  });
+  
+  // Determine which fixtures to display based on the selected data source
+  const fixtures = dataSource === 'playhq' ? playhqFixtures : localFixtures;
+  const fixturesLoading = dataSource === 'playhq' ? playhqFixturesLoading : localFixturesLoading;
+  const fixturesError = dataSource === 'playhq' ? playhqFixturesError : localFixturesError;
 
   const isLoading = teamLoading || fixturesLoading;
   const hasError = teamError || fixturesError;
+  
+  // Toggle between data sources
+  const toggleDataSource = () => {
+    const newSource = dataSource === 'local' ? 'playhq' : 'local';
+    setDataSource(newSource);
+    if (newSource === 'playhq') {
+      refetchPlayHQFixtures();
+    }
+  };
 
   // Helper to format date
   const formatFixtureDate = (dateString: string) => {

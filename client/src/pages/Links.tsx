@@ -25,7 +25,7 @@ const Links = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <i className="ri-mail-line text-lg text-primary mr-3"></i>
-                <a href="mailto:info@deepdenebears.com.au" className="text-primary hover:underline">info@deepdenebears.com.au</a>
+                <a href="mailto:deepdenebears@gmail.com" className="text-primary hover:underline">          deepdenebears@gmail.com</a>
               </div>
               <div className="flex items-center">
                 <i className="ri-phone-line text-lg text-primary mr-3"></i>
@@ -45,7 +45,7 @@ const Links = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <i className="ri-file-pdf-line text-lg text-primary mr-3"></i>
-                <a href="#wisdene-pdf" className="text-primary hover:underline">Wisdene PDF</a>
+                <a href="https://drive.google.com/drive/home" className="text-primary hover:underline">Wisdene PDF</a>
               </div>
               <div className="flex items-center">
                 <i className="ri-file-list-3-line text-lg text-primary mr-3"></i>

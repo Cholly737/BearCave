@@ -61,7 +61,7 @@ const Home = () => {
           <p className="text-sm mt-1">Your local cricket club since 1975</p>
         </div>
       </div>
-      
+      {/* Made by Charlotte 'Cholly' Molloy */}
       {/* Latest Notification */}
       {feedLoading ? (
         <div className="bg-white p-3 mx-4 my-4 rounded-md shadow-md loading-skeleton h-24"></div>
@@ -83,7 +83,7 @@ const Home = () => {
           </div>
         </div>
       ) : null}
-      
+ 
       {/* Upcoming Events */}
       <section className="px-4 py-3">
         <div className="flex justify-between items-center mb-3">
@@ -144,45 +144,7 @@ const Home = () => {
             <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-3">
               <i className="ri-facebook-fill"></i>
             </div>
-            <div>
-              <h3 className="font-semibold text-sm">Deepdene Bears Cricket Club</h3>
-              <p className="text-xs text-neutral-500">Yesterday at 3:45 PM · Facebook</p>
-            </div>
-          </div>
-          
-          <p className="text-sm mb-3">Congratulations to our Under 15s team for their outstanding victory yesterday! Special mentions to Jake Thompson for his maiden century and Lucy Chen for her five-wicket haul! 🏏🎉</p>
-          
-          <img 
-            src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
-            alt="Cricket team celebrating" 
-            className="w-full h-48 object-cover rounded-md mb-3" 
-          />
-          
-          <div className="flex text-neutral-600 text-sm">
-            <div className="flex items-center mr-4">
-              <i className="ri-heart-line mr-1"></i>
-              <span>43</span>
-            </div>
-            <div className="flex items-center mr-4">
-              <i className="ri-chat-1-line mr-1"></i>
-              <span>12</span>
-            </div>
-            <div className="flex items-center">
-              <i className="ri-share-forward-line mr-1"></i>
-              <span>5</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white rounded-lg shadow-md overflow-hidden p-4">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 flex items-center justify-center text-white mr-3">
-              <i className="ri-instagram-line"></i>
-            </div>
-            <div>
-              <h3 className="font-semibold text-sm">@deepdenebears</h3>
-              <p className="text-xs text-neutral-500">3 days ago · Instagram</p>
-            </div>
+           
           </div>
           
           <img 
@@ -191,12 +153,10 @@ const Home = () => {
             className="w-full h-64 object-cover rounded-md mb-3" 
           />
           
-          <p className="text-sm mb-3">New training equipment has arrived! Ready for an amazing season ahead. #DeepdeneBears #CricketTraining #NewSeason</p>
-          
-          <div className="flex text-neutral-600 text-sm">
-            <div className="flex items-center mr-4">
+          <div className="flex justify-between text-sm text-neutral-600">
+            <div className="flex items-center">
               <i className="ri-heart-line mr-1"></i>
-              <span>67</span>
+              <span>23</span>
             </div>
             <div className="flex items-center">
               <i className="ri-chat-1-line mr-1"></i>
