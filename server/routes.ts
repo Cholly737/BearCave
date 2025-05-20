@@ -135,27 +135,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Determine the correct API endpoint to use
       let apiEndpoint;
       
-      // Try different API endpoints based on available credentials
+      // Try using the v2 API endpoint format 
       console.log(`Team ID: ${gradeId} | Winter team: ${isWinterTeam}`);
       
-      // Let's use a simpler approach for the PlayHQ API
-      if (orgId && seasonId) {
-        // For organization-based endpoint
-        
-        // Get all fixtures for the season instead of filtering by grade
-        apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/fixtures`;
-        console.log(`Using season fixtures endpoint: ${apiEndpoint}`);
-        
-        // Alternative approach: get fixtures for a specific competition
-        /* 
-        const competitionId = "YOUR_COMPETITION_ID"; // e.g. East Division or Mamgain Shield ID
-        apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/competitions/${competitionId}/fixtures`;
-        console.log(`Using competition fixtures endpoint: ${apiEndpoint}`);
-        */
+      // For winter team, we'll use a specific PlayHQ grade ID
+      if (isWinterTeam) {
+        // Use the v2 API endpoint format
+        const playHQGradeId = "8f6d8877"; // The specific grade ID for PlayHQ integration
+        apiEndpoint = `https://api.playhq.com/v2/grades/${playHQGradeId}/games`;
+        console.log(`Using v2 API games endpoint for winter team: ${apiEndpoint}`);
+      } else if (orgId && seasonId) {
+        // For other teams with org and season IDs
+        apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/seasons/${seasonId}/fixtures`;
+        console.log(`Using v2 organisations endpoint: ${apiEndpoint}`);
       } else {
-        // Try a more direct endpoint without requiring grade ID
-        apiEndpoint = `https://api.playhq.com/v1/fixture/organisation/${orgId}`;
-        console.log(`Using organization fixtures endpoint: ${apiEndpoint}`);
+        // Fallback to direct v2 endpoint for the provided ID
+        apiEndpoint = `https://api.playhq.com/v2/grades/${gradeId}/games`;
+        console.log(`Using v2 grades/games endpoint: ${apiEndpoint}`);
       }
       
       console.log(`Making PlayHQ API request to: ${apiEndpoint}`);
