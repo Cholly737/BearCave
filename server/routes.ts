@@ -140,19 +140,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // For winter team, try different PlayHQ API endpoints
       if (isWinterTeam) {
-        // Try a broader approach - fetch all organization's games first
-        if (orgId) {
-          // First try the organization's fixtures - this might return all fixtures
-          // from which we can filter the relevant ones
-          apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/games`;
-          console.log(`Using v2 organisation games endpoint: ${apiEndpoint}`);
-        } else if (seasonId) {
-          // Try season-based endpoint if we have a season ID
+        // Try using the season ID directly - this might be what we need
+        if (seasonId) {
+          // The seasonId itself might be the correct identifier
           apiEndpoint = `https://api.playhq.com/v2/seasons/${seasonId}/games`;
           console.log(`Using v2 season games endpoint: ${apiEndpoint}`);
+        } else if (orgId) {
+          // Try organization-level endpoint if season doesn't work
+          apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/games`;
+          console.log(`Using v2 organisation games endpoint: ${apiEndpoint}`);
         } else {
-          // Fallback to grade ID if all else fails
-          const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "22e0dc7b";
+          // Use the grade ID that looks like a valid UUID
+          const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "72b43d55-b46f-432d-ae4c-82d1871d1bcd";
           apiEndpoint = `https://api.playhq.com/v2/grades/${playHQGradeId}/games`;
           console.log(`Using v2 grade games endpoint with ID: ${playHQGradeId}`);
         }
