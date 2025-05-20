@@ -140,20 +140,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // For winter team, try different PlayHQ API endpoints
       if (isWinterTeam) {
-        // Try using the season ID directly - this might be what we need
-        if (seasonId) {
-          // The seasonId itself might be the correct identifier
-          apiEndpoint = `https://api.playhq.com/v2/seasons/${seasonId}/games`;
-          console.log(`Using v2 season games endpoint: ${apiEndpoint}`);
-        } else if (orgId) {
-          // Try organization-level endpoint if season doesn't work
-          apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/games`;
-          console.log(`Using v2 organisation games endpoint: ${apiEndpoint}`);
+        // Let's try the v1 API which might be more stable/accessible
+        if (orgId) {
+          // Try the v1 endpoint first
+          apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/fixtures`;
+          console.log(`Using v1 organisation fixtures endpoint: ${apiEndpoint}`);
+        } else if (seasonId) {
+          // Try v1 season endpoint
+          apiEndpoint = `https://api.playhq.com/v1/seasons/${seasonId}/fixtures`;
+          console.log(`Using v1 season fixtures endpoint: ${apiEndpoint}`);
         } else {
-          // Use the grade ID that looks like a valid UUID
+          // Simpler v1 endpoint with grade ID
           const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "72b43d55-b46f-432d-ae4c-82d1871d1bcd";
-          apiEndpoint = `https://api.playhq.com/v2/grades/${playHQGradeId}/games`;
-          console.log(`Using v2 grade games endpoint with ID: ${playHQGradeId}`);
+          apiEndpoint = `https://api.playhq.com/v1/fixtures/grade/${playHQGradeId}`;
+          console.log(`Using v1 fixtures grade endpoint with ID: ${playHQGradeId}`);
         }
       } else if (orgId && seasonId) {
         // For other teams with org and season IDs
@@ -166,13 +166,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       console.log(`Making PlayHQ API request to: ${apiEndpoint}`);
+      
+      // Show the headers we're using
+      console.log(`Using x-api-key: ${apiKey.substring(0, 4)}...`);
+      console.log(`Using x-phq-tenant: ${tenantId}`);
+      
+      // Add more debug information to API call
       const response = await axios.get(
         apiEndpoint,
         {
           headers: {
             "x-api-key": apiKey,
             "x-phq-tenant": tenantId,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          validateStatus: function (status) {
+            // Consider all status codes as successful to handle them manually
+            return true;
           }
         }
       );
