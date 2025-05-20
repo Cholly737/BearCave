@@ -140,21 +140,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // For winter team, try different PlayHQ API endpoints
       if (isWinterTeam) {
-        // Let's try the v1 API which might be more stable/accessible
-        if (orgId) {
-          // Try the v1 endpoint first
-          apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/fixtures`;
-          console.log(`Using v1 organisation fixtures endpoint: ${apiEndpoint}`);
-        } else if (seasonId) {
-          // Try v1 season endpoint
-          apiEndpoint = `https://api.playhq.com/v1/seasons/${seasonId}/fixtures`;
-          console.log(`Using v1 season fixtures endpoint: ${apiEndpoint}`);
-        } else {
-          // Simpler v1 endpoint with grade ID
-          const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "72b43d55-b46f-432d-ae4c-82d1871d1bcd";
-          apiEndpoint = `https://api.playhq.com/v1/fixtures/grade/${playHQGradeId}`;
-          console.log(`Using v1 fixtures grade endpoint with ID: ${playHQGradeId}`);
-        }
+        // Try different API formats that might work with this API key
+        
+        // First try a simple direct endpoint to see if the API key works at all
+        apiEndpoint = `https://api.playhq.com/v1/health`;
+        console.log(`Checking API health endpoint: ${apiEndpoint}`);
+        
+        // Alternative endpoints we could try:
+        // apiEndpoint = `https://api.playhq.com/v1/tenant/competitions`;
+        // apiEndpoint = `https://api.playhq.com/v1/competitions/grades`;
+        // apiEndpoint = `https://api.playhq.com/v1/tenants/ca/competitions`;
+        
+        // If we need to use grade ID later:
+        // const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "72b43d55-b46f-432d-ae4c-82d1871d1bcd";
       } else if (orgId && seasonId) {
         // For other teams with org and season IDs
         apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/seasons/${seasonId}/fixtures`;
