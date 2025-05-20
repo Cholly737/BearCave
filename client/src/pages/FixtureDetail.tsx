@@ -129,14 +129,10 @@ const FixtureDetail = () => {
           )}
         </div>
         <div className="ml-auto">
-          <Button 
-            size="sm"
-            variant={dataSource === 'playhq' ? 'default' : 'outline'}
-            onClick={toggleDataSource}
-            className="text-xs"
-          >
-            {dataSource === 'playhq' ? 'Using PlayHQ' : 'Using Local Data'}
-          </Button>
+          <DataSourceToggle 
+            dataSource={dataSource} 
+            onChange={toggleDataSource} 
+          />
         </div>
       </div>
       
