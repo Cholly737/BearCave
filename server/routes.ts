@@ -102,23 +102,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // PlayHQ API integration
+  // PlayHQ API integration with credential management
   app.get("/api/playhq/fixtures/:gradeId", async (req, res) => {
     const gradeId = req.params.gradeId;
-    const apiKey = "ab089110-cbe7-49b4-a03d-cb4ff829d19b"; // PlayHQ API key provided
-    const tenantId = "ca"; // PlayHQ tenant ID provided
     
-    // Check for winter team IDs
-    const isWinterGradeId = gradeId === "8f6d8877" || gradeId === "1d2dd601";
+    // Use environment variables for API credentials
+    const apiKey = process.env.PLAYHQ_API_KEY;
+    const tenantId = process.env.PLAYHQ_TENANT_ID;
+    const orgId = process.env.PLAYHQ_ORG_ID;
+    const seasonId = process.env.PLAYHQ_SEASON_ID;
+    
+    // Validate that we have all required credentials
+    if (!apiKey || !tenantId) {
+      console.log("Missing required PlayHQ API credentials");
+      return res.status(500).json({ 
+        message: "Missing PlayHQ API credentials",
+        missingCredentials: {
+          apiKey: !apiKey,
+          tenantId: !tenantId
+        }
+      });
+    }
+    
+    // Winter team mapping - this is the ID for Deepdene Bears Winter XI
+    const WINTER_TEAM_ID = "5";
+    const isWinterTeam = gradeId === WINTER_TEAM_ID;
     
     try {
-      console.log(`Fetching PlayHQ fixtures for grade ID: ${gradeId}`);
+      console.log(`Fetching PlayHQ fixtures with API key: ${apiKey.substring(0, 4)}...`);
+      console.log(`Using tenant ID: ${tenantId}`);
       
-      // Call the PlayHQ 'fixture for grade V2' API
-      // Making sure we're using the correct endpoint for the API
-      const apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${gradeId}`;
-      console.log(`Calling PlayHQ API at: ${apiEndpoint}`);
+      // Determine the correct API endpoint to use
+      let apiEndpoint;
       
+      // If we have orgId and seasonId, use the preferred endpoint format
+      if (orgId && seasonId) {
+        apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/grades/${gradeId}/fixtures`;
+        console.log(`Using organisation endpoint: ${apiEndpoint}`);
+      } else {
+        // Fallback to direct grade endpoint
+        apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${gradeId}`;
+        console.log(`Using direct grade endpoint: ${apiEndpoint}`);
+      }
+      
+      console.log(`Making PlayHQ API request to: ${apiEndpoint}`);
       const response = await axios.get(
         apiEndpoint,
         {
