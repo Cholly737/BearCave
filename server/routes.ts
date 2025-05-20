@@ -135,14 +135,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Determine the correct API endpoint to use
       let apiEndpoint;
       
-      // If we have orgId and seasonId, use the preferred endpoint format
-      if (orgId && seasonId) {
-        apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/grades/${gradeId}/fixtures`;
-        console.log(`Using organisation endpoint: ${apiEndpoint}`);
+      // For winter team specifically, we need to use the PlayHQ grade ID, not our database ID
+      if (isWinterTeam) {
+        console.log(`Using PlayHQ grade ID for winter team instead of database ID ${gradeId}`);
+        // Use the hardcoded grade ID for the winter team
+        const winterPlayHQGradeId = "8f6d8877"; // The specific PlayHQ grade ID for winter team
+        
+        // If we have org and season IDs, use the organization-based endpoint
+        if (orgId && seasonId) {
+          apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/grades/${winterPlayHQGradeId}/fixtures`;
+          console.log(`Using PlayHQ organisation endpoint for winter team: ${apiEndpoint}`);
+        } else {
+          // Fallback to direct grade endpoint
+          apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${winterPlayHQGradeId}`;
+          console.log(`Using PlayHQ direct grade endpoint for winter team: ${apiEndpoint}`);
+        }
       } else {
-        // Fallback to direct grade endpoint
-        apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${gradeId}`;
-        console.log(`Using direct grade endpoint: ${apiEndpoint}`);
+        // For other teams, use the provided grade ID directly
+        if (orgId && seasonId) {
+          apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/grades/${gradeId}/fixtures`;
+          console.log(`Using organisation endpoint: ${apiEndpoint}`);
+        } else {
+          apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${gradeId}`;
+          console.log(`Using direct grade endpoint: ${apiEndpoint}`);
+        }
       }
       
       console.log(`Making PlayHQ API request to: ${apiEndpoint}`);
@@ -188,7 +204,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             let opposingTeam = "TBD";
             let opposingTeamAbbreviation = undefined;
             
-            if (isWinterGradeId) {
+            if (isWinterTeam) {
               // Look for Deepdene Bears in both teams
               const deepdeneTeam = [item.team1, item.team2].find(team => 
                 team && (team.name?.includes("Deepdene") || team.name?.includes("Bears"))
@@ -272,7 +288,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fallback to stored fixtures or generate sample fixtures
       try {
         // For Deepdene Bears Winter XI team
-        const teamId = isWinterGradeId ? 5 : (isNaN(parseInt(gradeId)) ? 5 : parseInt(gradeId));
+        const teamId = isWinterTeam ? 5 : (isNaN(parseInt(gradeId)) ? 5 : parseInt(gradeId));
         
         console.log(`Falling back to stored fixtures for team ID: ${teamId}`);
         const fixtures = await storage.getFixturesByTeamId(teamId.toString());
@@ -282,7 +298,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           res.json(fixtures);
         } else {
           // If no fixtures found in database, create sample fixtures for winter team
-          if (isWinterGradeId) {
+          if (isWinterTeam) {
             console.log("Creating sample winter fixtures as fallback");
             
             // Define sample winter fixtures
