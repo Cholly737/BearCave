@@ -140,17 +140,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // For winter team, try different PlayHQ API endpoints
       if (isWinterTeam) {
-        // The public PlayHQ API might not support direct access; let's try the web API structure
-        // that the PlayHQ website itself uses
+        // Try a completely different approach based on PlayHQ's mobile app API structure
+        // Which typically provides more access than the public web API
         
-        // Try the competitions API endpoint which is likely used by the website
-        apiEndpoint = `https://api.playhq.com/v2/fixtures`;
-        console.log(`Trying v2 fixtures endpoint: ${apiEndpoint}`);
+        // First, try the tenants/{tenantId}/competitions endpoint
+        apiEndpoint = `https://api.playhq.com/v1/tenants/${tenantId}/competitions`;
+        console.log(`Trying v1 tenants/competitions endpoint: ${apiEndpoint}`);
         
-        // Add query parameters to filter for our specific needs
+        try {
+          // Make a preliminary request to get competition information
+          const prelimResponse = await axios.get(apiEndpoint, {
+            headers: {
+              "x-api-key": apiKey,
+              "Accept": "application/json"
+            },
+            validateStatus: function(status) {
+              return true; // Accept all status codes to handle manually
+            }
+          });
+          
+          console.log(`Preliminary API call returned status: ${prelimResponse.status}`);
+          
+          // If successful, try a more specific endpoint
+          if (prelimResponse.status === 200) {
+            // Try different path structure based on response
+            const competitions = prelimResponse.data?.competitions || [];
+            if (competitions.length > 0) {
+              console.log(`Found ${competitions.length} competitions, using first one`);
+              const competitionId = competitions[0].id;
+              
+              // Now try to get teams in this competition
+              apiEndpoint = `https://api.playhq.com/v1/tenants/${tenantId}/competitions/${competitionId}/teams`;
+              console.log(`Getting teams from: ${apiEndpoint}`);
+            }
+          }
+        } catch (error) {
+          // Type-safe error handling
+          if (error instanceof Error) {
+            console.log(`Preliminary API call failed: ${error.message}`);
+          } else {
+            console.log('Preliminary API call failed with unknown error');
+          }
+          // Continue with default endpoint if preliminary call fails
+        }
+        
+        // If preliminary call didn't succeed, fall back to direct fixtures endpoint
+        apiEndpoint = `https://api.playhq.com/v1/tenants/${tenantId}/fixtures`;
+        console.log(`Falling back to v1 fixtures endpoint: ${apiEndpoint}`);
+        
+        // Add query parameters for filtering
         const params = new URLSearchParams();
         if (orgId) {
-          params.append('orgId', orgId);
+          params.append('organisationId', orgId);
         }
         if (seasonId) {
           params.append('seasonId', seasonId);
