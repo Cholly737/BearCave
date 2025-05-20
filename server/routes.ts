@@ -111,9 +111,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`Fetching PlayHQ fixtures for grade ID: ${gradeId}`);
       
+      // Special handling for the Mamgain Shield team with ID "1d2dd601"
+      const isWinterTeam = gradeId === "1d2dd601";
+      
       // Call the PlayHQ 'fixture for grade V2' API
+      // Making sure we're using the correct endpoint for the API
+      const apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${gradeId}`;
+      console.log(`Calling PlayHQ API at: ${apiEndpoint}`);
+      
       const response = await axios.get(
-        `https://api.playhq.com/v1/fixture/grade/${gradeId}`,
+        apiEndpoint,
         {
           headers: {
             "x-api-key": apiKey,
@@ -126,12 +133,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`PlayHQ API response received with status: ${response.status}`);
       
       // Transform the response to match our Fixture type
-      // The mapping will be adjusted based on the actual API response structure
       const fixtures = Array.isArray(response.data.data) 
         ? response.data.data.map((item: any) => {
             // Extract date and time from PlayHQ timestamp format
             const fixtureDate = new Date(item.dateTime || Date.now());
             const dateStr = fixtureDate.toISOString().split('T')[0];
+            
+            // Format time for display
+            const timeStr = fixtureDate.toLocaleTimeString('en-US', { 
+              hour: 'numeric', 
+              minute: '2-digit', 
+              hour12: true 
+            });
             
             // Extract venue information
             const location = item.venue ? 
@@ -142,6 +155,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const isTeam1Home = item.team1 && item.team1.homeTeam;
             const homeTeam = isTeam1Home ? item.team1 : item.team2;
             const awayTeam = isTeam1Home ? item.team2 : item.team1;
+            
+            // For the winter team specifically, find Deepdene Bears team
+            let isHome = false;
+            let opposingTeam = "TBD";
+            let opposingTeamAbbreviation = undefined;
+            
+            if (isWinterTeam) {
+              // Look for Deepdene Bears in both teams
+              const deepdeneTeam = [item.team1, item.team2].find(team => 
+                team && (team.name?.includes("Deepdene") || team.name?.includes("Bears"))
+              );
+              
+              const otherTeam = deepdeneTeam === item.team1 ? item.team2 : item.team1;
+              
+              if (deepdeneTeam) {
+                isHome = deepdeneTeam.homeTeam === true;
+                opposingTeam = otherTeam?.name || "TBD";
+                opposingTeamAbbreviation = otherTeam?.abbreviation;
+              } else {
+                // If can't find Deepdene, fall back to regular logic
+                isHome = !!(homeTeam && homeTeam.id === gradeId);
+                opposingTeam = awayTeam?.name || "TBD";
+                opposingTeamAbbreviation = awayTeam?.abbreviation;
+              }
+            } else {
+              // For other teams, use standard logic
+              isHome = !!(homeTeam && homeTeam.id === gradeId);
+              opposingTeam = isHome ? (awayTeam?.name || "TBD") : (homeTeam?.name || "TBD");
+              opposingTeamAbbreviation = isHome ? awayTeam?.abbreviation : homeTeam?.abbreviation;
+            }
             
             // Extract scores if available
             const homeScore = item.scores && homeTeam ? item.scores[homeTeam.id] : undefined;
@@ -161,14 +204,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             return {
               id: item.id || String(Math.random()),
-              teamId: gradeId, // Using the grade ID as team ID for now
+              teamId: parseInt(gradeId) || 0, // Convert to number for our DB schema
               date: dateStr,
+              time: timeStr, // Add time for better display
               location: location,
-              isHome: !!(homeTeam && homeTeam.id === gradeId), // Assume this team is the one requested
-              opposingTeam: awayTeam ? awayTeam.name : "TBD",
-              opposingTeamAbbreviation: awayTeam ? awayTeam.abbreviation : undefined,
-              opposingTeamColor: awayTeam && awayTeam.colors && awayTeam.colors.length > 0 ? 
-                awayTeam.colors[0] : undefined,
+              isHome: isHome,
+              opposingTeam: opposingTeam,
+              opposingTeamAbbreviation: opposingTeamAbbreviation,
+              opposingTeamColor: "#4682B4", // Default blue for Mid Year Cricket Association
               result: {
                 homeScore,
                 awayScore,
@@ -178,7 +221,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           })
         : [];
         
-      console.log(`Processed ${fixtures.length} fixtures from PlayHQ`);
+      console.log(`Processed ${fixtures.length} fixtures from PlayHQ for grade ${gradeId}`);
       res.json(fixtures);
     } catch (error) {
       console.error("Error fetching PlayHQ fixtures:", error);
@@ -195,7 +238,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fallback to stored fixtures if PlayHQ API fails
       try {
         console.log("Falling back to stored fixtures");
-        const fixtures = await storage.getFixturesByTeamId(req.params.gradeId);
+        const teamId = isNaN(parseInt(req.params.gradeId)) ? 5 : parseInt(req.params.gradeId);
+        const fixtures = await storage.getFixturesByTeamId(teamId.toString());
         res.json(fixtures);
       } catch (fallbackError) {
         console.error("Error fetching fallback fixtures:", fallbackError);

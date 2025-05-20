@@ -3,13 +3,29 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchTeamFixtures, fetchTeamDetails, fetchPlayHQFixtures } from "@/lib/api";
 import { Fixture } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 const FixtureDetail = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const navigate = useNavigate();
   const [dataSource, setDataSource] = useState<'local' | 'playhq'>('local');
+  
+  // Define the PlayHQ grade ID for winter team
+  const WINTER_TEAM_ID = 5; // Database ID for the Deepdene Bears Winter XI
+  const PLAYHQ_GRADE_ID = "1d2dd601"; // The specific grade ID for PlayHQ integration
+  
+  // Determine which ID to use for PlayHQ API calls
+  const getPlayHQGradeId = () => {
+    // Use the specific grade ID for the winter team
+    if (teamId === WINTER_TEAM_ID.toString()) {
+      return PLAYHQ_GRADE_ID;
+    }
+    // For other teams, use their ID as is
+    return teamId;
+  };
+  
+  const playHQGradeId = getPlayHQGradeId();
 
   // Fetch team details
   const { 
@@ -38,10 +54,17 @@ const FixtureDetail = () => {
     error: playhqFixturesError,
     refetch: refetchPlayHQFixtures
   } = useQuery({
-    queryKey: [`/api/playhq/fixtures/${teamId}`],
+    queryKey: [`/api/playhq/fixtures/${playHQGradeId}`],
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: dataSource === 'playhq', // Only fetch when this data source is selected
   });
+  
+  // Auto-switch to PlayHQ data for winter team
+  useEffect(() => {
+    if (teamId === WINTER_TEAM_ID.toString() && dataSource === 'local') {
+      setDataSource('playhq');
+    }
+  }, [teamId]);
   
   // Determine which fixtures to display based on the selected data source
   const fixtures = dataSource === 'playhq' ? playhqFixtures : localFixtures;
