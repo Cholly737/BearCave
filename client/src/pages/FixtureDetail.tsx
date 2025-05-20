@@ -12,8 +12,11 @@ const FixtureDetail = () => {
   const [dataSource, setDataSource] = useState<'local' | 'playhq'>('local');
   
   // Define the PlayHQ grade ID for winter team
-  const WINTER_TEAM_ID = 5; // Database ID for the Deepdene Bears Winter XI
+  const WINTER_TEAM_ID = "5"; // Database ID for the Deepdene Bears Winter XI
   const PLAYHQ_GRADE_ID = "8f6d8877"; // The specific grade ID for PlayHQ integration
+  
+  // Enhance display for winter team
+  const isWinterTeam = teamId === WINTER_TEAM_ID;
   
   // Determine which ID to use for PlayHQ API calls
   const getPlayHQGradeId = () => {
@@ -111,9 +114,16 @@ const FixtureDetail = () => {
         <button className="text-lg mr-2" onClick={handleGoBack}>
           <i className="ri-arrow-left-line"></i>
         </button>
-        <h2 className="text-xl font-heading font-bold">
-          {teamLoading ? 'Loading...' : team ? `${team.name} Fixtures` : 'Team Fixtures'}
-        </h2>
+        <div>
+          <h2 className="text-xl font-heading font-bold">
+            {teamLoading ? 'Loading...' : team ? `${team.name} Fixtures` : 'Team Fixtures'}
+          </h2>
+          {isWinterTeam && (
+            <p className="text-xs text-neutral-600">
+              East Division - Mamgain Shield, Mid Year Cricket Association
+            </p>
+          )}
+        </div>
         <div className="ml-auto">
           <Button 
             size="sm"
