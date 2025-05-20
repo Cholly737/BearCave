@@ -138,12 +138,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Try using the v2 API endpoint format 
       console.log(`Team ID: ${gradeId} | Winter team: ${isWinterTeam}`);
       
-      // For winter team, we'll use a specific PlayHQ grade ID
+      // For winter team, use a configurable PlayHQ grade ID 
       if (isWinterTeam) {
-        // Use the v2 API endpoint format
-        const playHQGradeId = "8f6d8877"; // The specific grade ID for PlayHQ integration
+        // Get the grade ID from environment variable if available, otherwise use default
+        // This makes it easy to update the ID without changing code
+        const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "8f6d8877";
+        
+        // Use the v2 API endpoint format with explicit path parameters as you suggested
         apiEndpoint = `https://api.playhq.com/v2/grades/${playHQGradeId}/games`;
-        console.log(`Using v2 API games endpoint for winter team: ${apiEndpoint}`);
+        console.log(`Using v2 API games endpoint for winter team with grade ID: ${playHQGradeId}`);
       } else if (orgId && seasonId) {
         // For other teams with org and season IDs
         apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/seasons/${seasonId}/fixtures`;
