@@ -135,30 +135,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Determine the correct API endpoint to use
       let apiEndpoint;
       
-      // For winter team specifically, we need to use the PlayHQ grade ID, not our database ID
-      if (isWinterTeam) {
-        console.log(`Using PlayHQ grade ID for winter team instead of database ID ${gradeId}`);
-        // Use the hardcoded grade ID for the winter team
-        const winterPlayHQGradeId = "8f6d8877"; // The specific PlayHQ grade ID for winter team
+      // Try different API endpoints based on available credentials
+      console.log(`Team ID: ${gradeId} | Winter team: ${isWinterTeam}`);
+      
+      // Let's use a simpler approach for the PlayHQ API
+      if (orgId && seasonId) {
+        // For organization-based endpoint
         
-        // If we have org and season IDs, use the organization-based endpoint
-        if (orgId && seasonId) {
-          apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/grades/${winterPlayHQGradeId}/fixtures`;
-          console.log(`Using PlayHQ organisation endpoint for winter team: ${apiEndpoint}`);
-        } else {
-          // Fallback to direct grade endpoint
-          apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${winterPlayHQGradeId}`;
-          console.log(`Using PlayHQ direct grade endpoint for winter team: ${apiEndpoint}`);
-        }
+        // Get all fixtures for the season instead of filtering by grade
+        apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/fixtures`;
+        console.log(`Using season fixtures endpoint: ${apiEndpoint}`);
+        
+        // Alternative approach: get fixtures for a specific competition
+        /* 
+        const competitionId = "YOUR_COMPETITION_ID"; // e.g. East Division or Mamgain Shield ID
+        apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/competitions/${competitionId}/fixtures`;
+        console.log(`Using competition fixtures endpoint: ${apiEndpoint}`);
+        */
       } else {
-        // For other teams, use the provided grade ID directly
-        if (orgId && seasonId) {
-          apiEndpoint = `https://api.playhq.com/v1/organisations/${orgId}/seasons/${seasonId}/grades/${gradeId}/fixtures`;
-          console.log(`Using organisation endpoint: ${apiEndpoint}`);
-        } else {
-          apiEndpoint = `https://api.playhq.com/v1/fixture/grade/${gradeId}`;
-          console.log(`Using direct grade endpoint: ${apiEndpoint}`);
-        }
+        // Try a more direct endpoint without requiring grade ID
+        apiEndpoint = `https://api.playhq.com/v1/fixture/organisation/${orgId}`;
+        console.log(`Using organization fixtures endpoint: ${apiEndpoint}`);
       }
       
       console.log(`Making PlayHQ API request to: ${apiEndpoint}`);

@@ -13,22 +13,13 @@ const FixtureDetail = () => {
   
   // Define the PlayHQ grade ID for winter team
   const WINTER_TEAM_ID = "5"; // Database ID for the Deepdene Bears Winter XI
-  const PLAYHQ_GRADE_ID = "8f6d8877"; // The specific grade ID for PlayHQ integration
   
   // Enhance display for winter team
   const isWinterTeam = teamId === WINTER_TEAM_ID;
   
-  // Determine which ID to use for PlayHQ API calls
-  const getPlayHQGradeId = () => {
-    // Use the specific grade ID for the winter team
-    if (teamId === WINTER_TEAM_ID.toString()) {
-      return PLAYHQ_GRADE_ID;
-    }
-    // For other teams, use their ID as is
-    return teamId;
-  };
-  
-  const playHQGradeId = getPlayHQGradeId();
+  // For PlayHQ API calls, simply use the team ID
+  // The server will determine the correct PlayHQ grade ID based on credentials
+  const playHQGradeId = teamId;
 
   // Fetch team details
   const { 
@@ -50,14 +41,14 @@ const FixtureDetail = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
   
-  // Fetch PlayHQ fixtures using the grade ID
+  // Fetch PlayHQ fixtures for this team
   const { 
     data: playhqFixtures,
     isLoading: playhqFixturesLoading,
     error: playhqFixturesError,
     refetch: refetchPlayHQFixtures
   } = useQuery({
-    queryKey: [`/api/playhq/fixtures/${playHQGradeId}`],
+    queryKey: [`/api/playhq/fixtures/${teamId}`],
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: dataSource === 'playhq', // Only fetch when this data source is selected
   });
