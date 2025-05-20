@@ -21,9 +21,9 @@ export function DataSourceToggle({ dataSource, onChange }: DataSourceToggleProps
             size="sm"
             variant={dataSource === 'playhq' ? 'default' : 'outline'}
             onClick={() => onChange(dataSource === 'playhq' ? 'local' : 'playhq')}
-            className="text-xs"
+            className={`text-xs ${dataSource === 'playhq' ? 'bg-green-600 hover:bg-green-700' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'}`}
           >
-            {dataSource === 'playhq' ? 'Using PlayHQ' : 'Using Local Data'}
+            {dataSource === 'playhq' ? '📊 PlayHQ Data' : '💾 Local Data'}
           </Button>
         </TooltipTrigger>
         <TooltipContent className="max-w-xs">

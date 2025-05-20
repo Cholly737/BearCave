@@ -27,7 +27,7 @@ const FixtureDetail = () => {
     data: team,
     isLoading: teamLoading,
     error: teamError
-  } = useQuery({
+  } = useQuery<any>({
     queryKey: [`/api/teams/${teamId}`],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -37,7 +37,7 @@ const FixtureDetail = () => {
     data: localFixtures,
     isLoading: localFixturesLoading,
     error: localFixturesError
-  } = useQuery({
+  } = useQuery<any[]>({
     queryKey: [`/api/teams/${teamId}/fixtures`],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -48,7 +48,7 @@ const FixtureDetail = () => {
     isLoading: playhqFixturesLoading,
     error: playhqFixturesError,
     refetch: refetchPlayHQFixtures
-  } = useQuery({
+  } = useQuery<any[]>({
     queryKey: [`/api/playhq/fixtures/${teamId}`],
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: dataSource === 'playhq', // Only fetch when this data source is selected
@@ -74,7 +74,7 @@ const FixtureDetail = () => {
   }, [teamId, refetchPlayHQFixtures]);
   
   // Determine which fixtures to display based on the selected data source
-  const fixtures = dataSource === 'playhq' ? playhqFixtures : localFixtures;
+  const fixtures = dataSource === 'playhq' ? (playhqFixtures || []) : (localFixtures || []);
   const fixturesLoading = dataSource === 'playhq' ? playhqFixturesLoading : localFixturesLoading;
   const fixturesError = dataSource === 'playhq' ? playhqFixturesError : localFixturesError;
 
@@ -82,8 +82,8 @@ const FixtureDetail = () => {
   const hasError = teamError || fixturesError;
   
   // Toggle between data sources
-  const toggleDataSource = () => {
-    const newSource = dataSource === 'local' ? 'playhq' : 'local';
+  const toggleDataSource = (newSource: 'local' | 'playhq') => {
+    console.log(`Switching data source from ${dataSource} to ${newSource}`);
     setDataSource(newSource);
     if (newSource === 'playhq') {
       refetchPlayHQFixtures();
@@ -168,9 +168,9 @@ const FixtureDetail = () => {
               </div>
             </CardContent>
           </Card>
-        ) : fixtures && fixtures.length > 0 ? (
+        ) : Array.isArray(fixtures) && fixtures.length > 0 ? (
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            {fixtures.map((fixture: Fixture) => (
+            {fixtures.map((fixture: any) => (
               <div key={fixture.id} className="p-4 border-b border-neutral-200 last:border-b-0">
                 <div className="flex items-center justify-between mb-3">
                   <div className="bg-primary text-white text-center rounded p-2 w-16">
