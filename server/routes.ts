@@ -140,19 +140,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // For winter team, try different PlayHQ API endpoints
       if (isWinterTeam) {
-        // Try different API formats that might work with this API key
+        // The public PlayHQ API might not support direct access; let's try the web API structure
+        // that the PlayHQ website itself uses
         
-        // First try a simple direct endpoint to see if the API key works at all
-        apiEndpoint = `https://api.playhq.com/v1/health`;
-        console.log(`Checking API health endpoint: ${apiEndpoint}`);
+        // Try the competitions API endpoint which is likely used by the website
+        apiEndpoint = `https://api.playhq.com/v2/fixtures`;
+        console.log(`Trying v2 fixtures endpoint: ${apiEndpoint}`);
         
-        // Alternative endpoints we could try:
-        // apiEndpoint = `https://api.playhq.com/v1/tenant/competitions`;
-        // apiEndpoint = `https://api.playhq.com/v1/competitions/grades`;
-        // apiEndpoint = `https://api.playhq.com/v1/tenants/ca/competitions`;
+        // Add query parameters to filter for our specific needs
+        const params = new URLSearchParams();
+        if (orgId) {
+          params.append('orgId', orgId);
+        }
+        if (seasonId) {
+          params.append('seasonId', seasonId);
+        }
         
-        // If we need to use grade ID later:
-        // const playHQGradeId = process.env.PLAYHQ_GRADE_ID || "72b43d55-b46f-432d-ae4c-82d1871d1bcd";
+        // The grade ID from environment variable
+        const playHQGradeId = process.env.PLAYHQ_GRADE_ID;
+        if (playHQGradeId) {
+          params.append('gradeId', playHQGradeId);
+        }
+        
+        // Add query parameters if we have any
+        if (params.toString()) {
+          apiEndpoint += `?${params.toString()}`;
+        }
       } else if (orgId && seasonId) {
         // For other teams with org and season IDs
         apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/seasons/${seasonId}/fixtures`;
