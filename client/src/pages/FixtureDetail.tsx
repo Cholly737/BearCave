@@ -5,6 +5,7 @@ import { Fixture } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { DataSourceToggle } from "@/components/ui/data-source-toggle";
 
 const FixtureDetail = () => {
   const { teamId } = useParams<{ teamId: string }>();
@@ -53,12 +54,24 @@ const FixtureDetail = () => {
     enabled: dataSource === 'playhq', // Only fetch when this data source is selected
   });
   
-  // Auto-switch to PlayHQ data for winter team
+  // Auto-switch to PlayHQ data for winter team, but only when credentials are available
   useEffect(() => {
-    if (teamId === WINTER_TEAM_ID.toString() && dataSource === 'local') {
-      setDataSource('playhq');
-    }
-  }, [teamId]);
+    const tryPlayHQData = async () => {
+      if (teamId === WINTER_TEAM_ID.toString() && dataSource === 'local') {
+        try {
+          // Attempt to get fixture data from PlayHQ
+          await refetchPlayHQFixtures();
+          // If we get here, it was successful
+          setDataSource('playhq');
+        } catch (error) {
+          console.log('PlayHQ data not available, staying with local data');
+          // Stay with local data if PlayHQ fails
+        }
+      }
+    };
+    
+    tryPlayHQData();
+  }, [teamId, refetchPlayHQFixtures]);
   
   // Determine which fixtures to display based on the selected data source
   const fixtures = dataSource === 'playhq' ? playhqFixtures : localFixtures;
