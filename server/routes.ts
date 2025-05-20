@@ -143,9 +143,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Try a completely different approach based on PlayHQ's mobile app API structure
         // Which typically provides more access than the public web API
         
-        // First, try the tenants/{tenantId}/competitions endpoint
-        apiEndpoint = `https://api.playhq.com/v1/tenants/${tenantId}/competitions`;
-        console.log(`Trying v1 tenants/competitions endpoint: ${apiEndpoint}`);
+        // First, try the v2 API competitions endpoint
+        apiEndpoint = `https://api.playhq.com/v2/competitions`;
+        console.log(`Trying v2 competitions endpoint: ${apiEndpoint}`);
         
         try {
           // Make a preliminary request to get competition information
@@ -169,8 +169,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               console.log(`Found ${competitions.length} competitions, using first one`);
               const competitionId = competitions[0].id;
               
-              // Now try to get teams in this competition
-              apiEndpoint = `https://api.playhq.com/v1/tenants/${tenantId}/competitions/${competitionId}/teams`;
+              // Now try to get teams in this competition using v2 API
+              apiEndpoint = `https://api.playhq.com/v2/competitions/${competitionId}/teams`;
               console.log(`Getting teams from: ${apiEndpoint}`);
             }
           }
@@ -184,9 +184,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Continue with default endpoint if preliminary call fails
         }
         
-        // If preliminary call didn't succeed, fall back to direct fixtures endpoint
-        apiEndpoint = `https://api.playhq.com/v1/tenants/${tenantId}/fixtures`;
-        console.log(`Falling back to v1 fixtures endpoint: ${apiEndpoint}`);
+        // If preliminary call didn't succeed, fall back to direct v2 fixtures endpoint
+        apiEndpoint = `https://api.playhq.com/v2/fixtures`;
+        console.log(`Falling back to v2 fixtures endpoint: ${apiEndpoint}`);
         
         // Add query parameters for filtering
         const params = new URLSearchParams();
