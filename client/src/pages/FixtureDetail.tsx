@@ -91,6 +91,16 @@ const FixtureDetail = () => {
         <h2 className="text-xl font-heading font-bold">
           {teamLoading ? 'Loading...' : team ? `${team.name} Fixtures` : 'Team Fixtures'}
         </h2>
+        <div className="ml-auto">
+          <Button 
+            size="sm"
+            variant={dataSource === 'playhq' ? 'default' : 'outline'}
+            onClick={toggleDataSource}
+            className="text-xs"
+          >
+            {dataSource === 'playhq' ? 'Using PlayHQ' : 'Using Local Data'}
+          </Button>
+        </div>
       </div>
       
       <div className="px-4 pb-4">
