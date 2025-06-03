@@ -132,16 +132,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let apiEndpoint = `https://api.playhq.com/v2/grades/${gradeIdForAPI}/games`;
       console.log(`Trying v2 grades/games endpoint: ${apiEndpoint}`);
       
-      // Make the API call with comprehensive headers
+      // Make the API call with required headers from PlayHQ documentation
+      const tenantId = process.env.PLAYHQ_TENANT_ID || 'ca';
       const response = await axios.get(
         apiEndpoint,
         {
           headers: {
             "x-api-key": apiKey,
-            "Authorization": `Bearer ${apiKey}`,
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "User-Agent": "PlayHQ-Client/1.0"
+            "x-phq-tenant": tenantId,
+            "Accept": "application/json"
           },
           validateStatus: function (status) {
             // Consider all status codes as successful to handle them manually
