@@ -127,9 +127,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Try a simple, direct approach to the PlayHQ API
       console.log(`Team ID: ${gradeId} | Winter team: ${isWinterTeam}`);
       
-      // Use the simplest possible endpoint structure
-      let apiEndpoint = `https://api.playhq.com/v2/fixtures`;
-      console.log(`Trying simplified v2 fixtures endpoint: ${apiEndpoint}`);
+      // Use the grades/:id/games endpoint structure
+      const gradeIdForAPI = process.env.PLAYHQ_GRADE_ID || gradeId;
+      let apiEndpoint = `https://api.playhq.com/v2/grades/${gradeIdForAPI}/games`;
+      console.log(`Trying v2 grades/games endpoint: ${apiEndpoint}`);
       
       // Make the API call with minimal headers
       const response = await axios.get(
