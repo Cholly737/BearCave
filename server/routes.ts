@@ -108,19 +108,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     // Use environment variables for API credentials
     const apiKey = process.env.PLAYHQ_API_KEY;
-    const tenantId = process.env.PLAYHQ_TENANT_ID;
-    const orgId = process.env.PLAYHQ_ORG_ID;
-    const seasonId = process.env.PLAYHQ_SEASON_ID;
     
-    // Validate that we have all required credentials
-    if (!apiKey || !tenantId) {
-      console.log("Missing required PlayHQ API credentials");
+    // Validate that we have required credentials
+    if (!apiKey) {
+      console.log("Missing required PlayHQ API key");
       return res.status(500).json({ 
-        message: "Missing PlayHQ API credentials",
-        missingCredentials: {
-          apiKey: !apiKey,
-          tenantId: !tenantId
-        }
+        message: "Missing PlayHQ API key"
       });
     }
     
@@ -130,107 +123,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     try {
       console.log(`Fetching PlayHQ fixtures with API key: ${apiKey.substring(0, 4)}...`);
-      console.log(`Using tenant ID: ${tenantId}`);
       
-      // Determine the correct API endpoint to use
-      let apiEndpoint;
-      
-      // Try using the v2 API endpoint format 
+      // Try a simple, direct approach to the PlayHQ API
       console.log(`Team ID: ${gradeId} | Winter team: ${isWinterTeam}`);
       
-      // For winter team, try different PlayHQ API endpoints
-      if (isWinterTeam) {
-        // Try a completely different approach based on PlayHQ's mobile app API structure
-        // Which typically provides more access than the public web API
-        
-        // First, try the v2 API competitions endpoint
-        apiEndpoint = `https://api.playhq.com/v2/competitions`;
-        console.log(`Trying v2 competitions endpoint: ${apiEndpoint}`);
-        
-        try {
-          // Make a preliminary request to get competition information
-          const prelimResponse = await axios.get(apiEndpoint, {
-            headers: {
-              "x-api-key": apiKey,
-              "Accept": "application/json"
-            },
-            validateStatus: function(status) {
-              return true; // Accept all status codes to handle manually
-            }
-          });
-          
-          console.log(`Preliminary API call returned status: ${prelimResponse.status}`);
-          
-          // If successful, try a more specific endpoint
-          if (prelimResponse.status === 200) {
-            // Try different path structure based on response
-            const competitions = prelimResponse.data?.competitions || [];
-            if (competitions.length > 0) {
-              console.log(`Found ${competitions.length} competitions, using first one`);
-              const competitionId = competitions[0].id;
-              
-              // Now try to get teams in this competition using v2 API
-              apiEndpoint = `https://api.playhq.com/v2/competitions/${competitionId}/teams`;
-              console.log(`Getting teams from: ${apiEndpoint}`);
-            }
-          }
-        } catch (error) {
-          // Type-safe error handling
-          if (error instanceof Error) {
-            console.log(`Preliminary API call failed: ${error.message}`);
-          } else {
-            console.log('Preliminary API call failed with unknown error');
-          }
-          // Continue with default endpoint if preliminary call fails
-        }
-        
-        // If preliminary call didn't succeed, fall back to direct v2 fixtures endpoint
-        apiEndpoint = `https://api.playhq.com/v2/fixtures`;
-        console.log(`Falling back to v2 fixtures endpoint: ${apiEndpoint}`);
-        
-        // Add query parameters for filtering
-        const params = new URLSearchParams();
-        if (orgId) {
-          params.append('organisationId', orgId);
-        }
-        if (seasonId) {
-          params.append('seasonId', seasonId);
-        }
-        
-        // The grade ID from environment variable
-        const playHQGradeId = process.env.PLAYHQ_GRADE_ID;
-        if (playHQGradeId) {
-          params.append('gradeId', playHQGradeId);
-        }
-        
-        // Add query parameters if we have any
-        if (params.toString()) {
-          apiEndpoint += `?${params.toString()}`;
-        }
-      } else if (orgId && seasonId) {
-        // For other teams with org and season IDs
-        apiEndpoint = `https://api.playhq.com/v2/organisations/${orgId}/seasons/${seasonId}/fixtures`;
-        console.log(`Using v2 organisations seasons endpoint: ${apiEndpoint}`);
-      } else {
-        // Fallback to direct v2 endpoint for the provided ID
-        apiEndpoint = `https://api.playhq.com/v2/grades/${gradeId}/games`;
-        console.log(`Using v2 grades/games endpoint: ${apiEndpoint}`);
-      }
+      // Use the simplest possible endpoint structure
+      let apiEndpoint = `https://api.playhq.com/v2/fixtures`;
+      console.log(`Trying simplified v2 fixtures endpoint: ${apiEndpoint}`);
       
-      console.log(`Making PlayHQ API request to: ${apiEndpoint}`);
-      
-      // Show the headers we're using
-      console.log(`Using x-api-key: ${apiKey.substring(0, 4)}...`);
-      console.log(`Using x-phq-tenant: ${tenantId}`);
-      
-      // Add more debug information to API call
+      // Make the API call with minimal headers
       const response = await axios.get(
         apiEndpoint,
         {
           headers: {
             "x-api-key": apiKey,
-            "x-phq-tenant": tenantId,
-            "Content-Type": "application/json",
             "Accept": "application/json"
           },
           validateStatus: function (status) {
@@ -242,104 +148,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`PlayHQ API response received with status: ${response.status}`);
       
-      // Transform the response to match our Fixture type
-      const fixtures = Array.isArray(response.data.data) 
-        ? response.data.data.map((item: any) => {
-            // Extract date and time from PlayHQ timestamp format
-            const fixtureDate = new Date(item.dateTime || Date.now());
-            const dateStr = fixtureDate.toISOString().split('T')[0];
-            
-            // Format time for display
-            const timeStr = fixtureDate.toLocaleTimeString('en-US', { 
-              hour: 'numeric', 
-              minute: '2-digit', 
-              hour12: true 
-            });
-            
-            // Extract venue information
-            const location = item.venue ? 
-              `${item.venue.name}${item.venue.address ? ', ' + item.venue.address : ''}` :
-              'TBD';
-              
-            // Determine home and away teams
-            const isTeam1Home = item.team1 && item.team1.homeTeam;
-            const homeTeam = isTeam1Home ? item.team1 : item.team2;
-            const awayTeam = isTeam1Home ? item.team2 : item.team1;
-            
-            // For the winter team specifically, find Deepdene Bears team
-            let isHome = false;
-            let opposingTeam = "TBD";
-            let opposingTeamAbbreviation = undefined;
-            
-            if (isWinterTeam) {
-              // Look for Deepdene Bears in both teams
-              const deepdeneTeam = [item.team1, item.team2].find(team => 
-                team && (team.name?.includes("Deepdene") || team.name?.includes("Bears"))
-              );
-              
-              const otherTeam = deepdeneTeam === item.team1 ? item.team2 : item.team1;
-              
-              if (deepdeneTeam) {
-                isHome = deepdeneTeam.homeTeam === true;
-                opposingTeam = otherTeam?.name || "TBD";
-                opposingTeamAbbreviation = otherTeam?.abbreviation;
-              } else {
-                // If can't find Deepdene, fall back to regular logic
-                isHome = !!(homeTeam && homeTeam.id === gradeId);
-                opposingTeam = awayTeam?.name || "TBD";
-                opposingTeamAbbreviation = awayTeam?.abbreviation;
-              }
-            } else {
-              // For other teams, use standard logic
-              isHome = !!(homeTeam && homeTeam.id === gradeId);
-              opposingTeam = isHome ? (awayTeam?.name || "TBD") : (homeTeam?.name || "TBD");
-              opposingTeamAbbreviation = isHome ? awayTeam?.abbreviation : homeTeam?.abbreviation;
-            }
-            
-            // Extract scores if available
-            const homeScore = item.scores && homeTeam ? item.scores[homeTeam.id] : undefined;
-            const awayScore = item.scores && awayTeam ? item.scores[awayTeam.id] : undefined;
-            
-            // Determine status based on available data
-            let status: "scheduled" | "in-progress" | "completed" | "postponed" | "cancelled" = "scheduled";
-            if (item.status === "COMPLETE") {
-              status = "completed";
-            } else if (item.status === "IN_PROGRESS") {
-              status = "in-progress";
-            } else if (item.status === "POSTPONED") {
-              status = "postponed";
-            } else if (item.status === "CANCELLED") {
-              status = "cancelled";
-            }
-            
-            return {
-              id: item.id || String(Math.random()),
-              teamId: parseInt(gradeId) || 0, // Convert to number for our DB schema
-              date: dateStr,
-              time: timeStr, // Add time for better display
-              location: location,
-              isHome: isHome,
-              opposingTeam: opposingTeam,
-              opposingTeamAbbreviation: opposingTeamAbbreviation,
-              opposingTeamColor: "#4682B4", // Default blue for Mid Year Cricket Association
-              result: {
-                homeScore,
-                awayScore,
-                status
-              }
-            };
-          })
-        : [];
+      // Check if we got a successful response
+      if (response.status === 200 && response.data) {
+        console.log("Successfully connected to PlayHQ API");
         
-      console.log(`Processed ${fixtures.length} fixtures from PlayHQ for grade ${gradeId}`);
-      
-      // Check if we received fixtures from the API
-      if (fixtures.length > 0) {
-        res.json(fixtures);
-      } else {
-        // If no fixtures received from API, use fallback fixtures
-        throw new Error("No fixtures returned from PlayHQ API");
+        // Transform the response to match our Fixture type
+        const fixtures = Array.isArray(response.data) 
+          ? response.data.map((item: any) => ({
+              id: item.id || String(Math.random()),
+              teamId: parseInt(gradeId) || 0,
+              date: item.date || new Date().toISOString().split('T')[0],
+              location: item.venue?.name || "TBD",
+              isHome: item.isHome || false,
+              opposingTeam: item.opposingTeam || "TBD",
+              opposingTeamAbbreviation: item.opposingTeamAbbreviation,
+              opposingTeamColor: "#4682B4",
+              result: {
+                status: "scheduled"
+              }
+            }))
+          : [];
+          
+        console.log(`Processed ${fixtures.length} fixtures from PlayHQ for grade ${gradeId}`);
+        
+        if (fixtures.length > 0) {
+          res.json(fixtures);
+          return;
+        }
       }
+      
+      // If no fixtures received from API, use fallback fixtures
+      throw new Error("No fixtures returned from PlayHQ API");
     } catch (error) {
       console.error("Error fetching PlayHQ fixtures:", error);
       
