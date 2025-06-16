@@ -105,29 +105,6 @@ const Links = () => {
           </Card>
         )}
       </div>
-      
-      {/* Social Media Links */}
-      <div className="px-4 pb-20">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="p-4">
-            <h3 className="font-semibold mb-3">Follow Us</h3>
-            <div className="flex justify-around">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-blue-600">
-                <i className="ri-facebook-circle-fill"></i>
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-pink-600">
-                <i className="ri-instagram-fill"></i>
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-blue-400">
-                <i className="ri-twitter-fill"></i>
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-red-600">
-                <i className="ri-youtube-fill"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

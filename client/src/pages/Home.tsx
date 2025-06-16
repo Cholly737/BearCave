@@ -58,7 +58,7 @@ const Home = () => {
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
           <h2 className="text-2xl font-heading font-bold">Welcome to Deepdene Bears</h2>
-          <p className="text-sm mt-1">Your local cricket club since 1975</p>
+   
         </div>
       </div>
       {/* Made by Charlotte 'Cholly' Molloy */}
@@ -135,9 +135,32 @@ const Home = () => {
         )}
       </section>
       
+      {/* Social Media Links */}
+      <section className="px-4 py-3">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
+          <div className="p-4">
+            <h3 className="font-semibold mb-3">Follow Us</h3>
+            <div className="flex justify-around">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-blue-600">
+                <i className="ri-facebook-circle-fill"></i>
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-pink-600">
+                <i className="ri-instagram-fill"></i>
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-blue-400">
+                <i className="ri-twitter-fill"></i>
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-3xl text-red-600">
+                <i className="ri-youtube-fill"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Social Media Feed */}
       <section className="px-4 py-3">
-        <h2 className="text-lg font-heading font-semibold mb-3">Social Media</h2>
+        <h2 className="text-lg font-heading font-semibold mb-3">Recent in Feed</h2>
         
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4 p-4">
           <div className="flex items-center mb-4">
