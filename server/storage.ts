@@ -236,23 +236,45 @@ export class DatabaseStorage implements IStorage {
       const sampleSponsors: InsertSponsor[] = [
         {
           name: "Community Bank",
-          logoUrl: "https://via.placeholder.com/300x200?text=Community+Bank",
-          website: "https://example.com/communitybank"
+          logoUrl: "https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://example.com/communitybank",
+          description: "Supporting local cricket since 1985. Community Bank provides financial services and community support.",
+          sponsorshipLevel: "Gold"
         },
         {
-          name: "Local Sports Shop",
-          logoUrl: "https://via.placeholder.com/300x200?text=Sports+Shop",
-          website: "https://example.com/sportsshop"
+          name: "Ace Sports Equipment",
+          logoUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://example.com/sportsshop",
+          description: "Premium cricket equipment and gear. Special discounts for club members on all purchases.",
+          sponsorshipLevel: "Silver"
         },
         {
           name: "City Dental Clinic",
-          logoUrl: "https://via.placeholder.com/300x200?text=Dental+Clinic",
-          website: "https://example.com/dentalclinic"
+          logoUrl: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://example.com/dentalclinic",
+          description: "Comprehensive dental care for the whole family. Team health partner providing dental checkups.",
+          sponsorshipLevel: "Bronze"
         },
         {
-          name: "Max's Restaurant",
-          logoUrl: "https://via.placeholder.com/300x200?text=Max+Restaurant",
-          website: "https://example.com/maxrestaurant"
+          name: "Max's Family Restaurant",
+          logoUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://example.com/maxrestaurant",
+          description: "Family dining and event catering. Official caterer for club events and celebrations.",
+          sponsorshipLevel: "Silver"
+        },
+        {
+          name: "TechFlow Solutions",
+          logoUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://example.com/techflow",
+          description: "Digital solutions and IT support. Proud supporter of local sports and community initiatives.",
+          sponsorshipLevel: "Bronze"
+        },
+        {
+          name: "Elite Fitness Gym",
+          logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://example.com/elitefitness",
+          description: "Professional fitness training and sports conditioning. Exclusive gym access for club players.",
+          sponsorshipLevel: "Gold"
         }
       ];
       

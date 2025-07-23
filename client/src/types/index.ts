@@ -52,6 +52,8 @@ export interface Sponsor {
   name: string;
   logoUrl: string;
   website: string;
+  description?: string;
+  sponsorshipLevel?: string;
 }
 
 // User type definition

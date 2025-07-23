@@ -10,6 +10,10 @@ import Fixtures from "@/pages/Fixtures";
 import FixtureDetail from "@/pages/FixtureDetail";
 import Feed from "@/pages/Feed";
 import Links from "@/pages/Links";
+import ClubPolicy from "@/pages/ClubPolicy";
+import Registrations from "@/pages/Registrations";
+import Shop from "@/pages/Shop";
+import Sponsors from "@/pages/Sponsors";
 import NotFound from "@/pages/not-found";
 import AuthOverlay from "@/components/AuthOverlay";
 
@@ -40,6 +44,10 @@ function App() {
           <Route path="fixtures/:teamId" element={<FixtureDetail />} />
           <Route path="feed" element={<Feed />} />
           <Route path="links" element={<Links />} />
+          <Route path="club-policy" element={<ClubPolicy />} />
+          <Route path="registrations" element={<Registrations />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="sponsors" element={<Sponsors />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

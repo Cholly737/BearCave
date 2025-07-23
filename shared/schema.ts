@@ -61,6 +61,8 @@ export const sponsors = pgTable("sponsors", {
   name: text("name").notNull(),
   logoUrl: text("logo_url").notNull(),
   website: text("website").notNull(),
+  description: text("description"),
+  sponsorshipLevel: text("sponsorship_level"),
 });
 
 // Insert schemas using drizzle-zod
