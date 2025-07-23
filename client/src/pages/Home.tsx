@@ -73,7 +73,7 @@ const Home = () => {
         <div className="bear-card">
           <h3 className="font-semibold mb-3">Socials</h3>
           <div className="flex justify-around">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <a href="https://www.instagram.com/deepdenebearscc/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
               <i className="ri-instagram-fill text-white text-xl"></i>
             </a>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
