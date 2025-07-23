@@ -76,13 +76,13 @@ const Home = () => {
             <a href="https://www.instagram.com/deepdenebearscc/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
               <i className="ri-instagram-fill text-white text-xl"></i>
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+            <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
               <i className="ri-facebook-fill text-white text-xl"></i>
             </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+            <a href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
               <i className="ri-youtube-fill text-white text-xl"></i>
             </a>
-            <a href="#" className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+            <a href="https://www.deepdenebears.com.au/" className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">DB</span>
             </a>
           </div>
