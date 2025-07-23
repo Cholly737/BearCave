@@ -10,12 +10,12 @@
   --background: 0 0% 100%;
   --foreground: 220 14.3% 95.9%;
   
-  /* Deepdene Bears colors */
-  --primary: 210 100% 20%; /* #003366 */
+  /* BearCave colors */
+  --primary: 220 100% 15%; /* Dark navy from design */
   --primary-foreground: 0 0% 100%;
-  --secondary: 51 100% 50%; /* #FFD700 */
-  --secondary-foreground: 210 100% 20%;
-  --accent: 354 100% 71%; /* #FF6B6B */
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --accent: 120 70% 32%; /* Green accent from design */
   --accent-foreground: 0 0% 100%;
   
   /* Neutral colors */
@@ -94,7 +94,7 @@
   }
   
   body {
-    @apply bg-neutral-100 font-body text-neutral-800;
+    @apply bg-gray-50 font-body text-neutral-800;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
@@ -105,6 +105,23 @@
   .main-content {
     @apply flex-1 pb-16; /* Space for bottom navigation */
   }
+}
+
+/* BearCave Design System */
+.bear-header {
+  @apply bg-primary text-white py-4 px-4 font-semibold text-lg;
+}
+
+.bear-card {
+  @apply bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm;
+}
+
+.bear-button {
+  @apply bg-accent text-white px-4 py-2 rounded-md font-medium hover:bg-accent/90 transition-colors;
+}
+
+.bear-nav-bottom {
+  @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2;
 }
 
 /* Loading skeleton animation */

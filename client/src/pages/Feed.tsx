@@ -61,8 +61,10 @@ const Feed = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-heading font-bold px-4 py-3">Club Updates</h2>
+    <div className="pb-20">
+      <div className="bear-header">
+        Feed
+      </div>
       
       <div className="px-4 pb-4">
         {isLoading ? (
@@ -99,45 +101,40 @@ const Feed = () => {
           </Card>
         ) : feedItems && feedItems.length > 0 ? (
           feedItems.map((item: FeedItem) => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-              <div className="p-4">
-                <div className="flex items-start mb-3">
-                  <div className={`rounded-full ${getBgColorForFeedType(item.type)} text-white w-10 h-10 flex items-center justify-center flex-shrink-0 mr-3`}>
-                    {getIconForFeedType(item.type)}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-xs text-neutral-500 mt-1">Posted {getTimeAgo(item.date)}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-neutral-700">{item.content}</p>
-                
-                {item.imageUrl && (
-                  <img 
-                    src={item.imageUrl} 
-                    alt={item.title} 
-                    className="w-full h-48 object-cover rounded-md mt-3 mb-3" 
-                  />
-                )}
-                
-                {item.tags && item.tags.length > 0 && (
-                  <div className="mt-3 flex flex-wrap">
-                    {item.tags.map((tag, index) => (
-                      <span key={index} className="bg-neutral-200 text-neutral-700 rounded-full px-3 py-1 mr-2 mb-2 text-xs">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+            <div key={item.id} className="bear-card">
+              <h3 className="font-medium text-primary mb-1">{item.title}</h3>
+              <p className="text-sm text-gray-600 mb-2">{item.content}</p>
+              <p className="text-xs text-gray-500">{getTimeAgo(item.date)}</p>
             </div>
           ))
         ) : (
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-neutral-600">No updates available at this time.</p>
-            </CardContent>
-          </Card>
+          <>
+            <div className="bear-card">
+              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
+              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
+              <p className="text-xs text-gray-500">2 hours ago</p>
+            </div>
+            <div className="bear-card">
+              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
+              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
+              <p className="text-xs text-gray-500">2 hours ago</p>
+            </div>
+            <div className="bear-card">
+              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
+              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
+              <p className="text-xs text-gray-500">2 hours ago</p>
+            </div>
+            <div className="bear-card">
+              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
+              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
+              <p className="text-xs text-gray-500">2 hours ago</p>
+            </div>
+            <div className="bear-card">
+              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
+              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
+              <p className="text-xs text-gray-500">2 hours ago</p>
+            </div>
+          </>
         )}
       </div>
     </div>

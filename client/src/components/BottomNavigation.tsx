@@ -13,27 +13,22 @@ const BottomNavigation: FC = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-200 z-40">
+    <nav className="bear-nav-bottom">
       <div className="flex justify-around">
-        <Link to="/" className={`flex flex-col items-center py-2 px-3 ${isActive("/") ? "text-primary" : "text-neutral-600"}`}>
-          <i className="ri-home-5-line text-xl"></i>
-          <span className="text-xs mt-1">Home</span>
+        <Link to="/" className={`flex flex-col items-center py-2 px-3 ${isActive("/") ? "text-accent" : "text-gray-600"}`}>
+          <i className="ri-home-5-fill text-2xl"></i>
         </Link>
-        <Link to="/fixtures" className={`flex flex-col items-center py-2 px-3 ${isActive("/fixtures") ? "text-primary" : "text-neutral-600"}`}>
-          <i className="ri-calendar-line text-xl"></i>
-          <span className="text-xs mt-1">Fixtures</span>
+        <Link to="/fixtures" className={`flex flex-col items-center py-2 px-3 ${isActive("/fixtures") ? "text-accent" : "text-gray-600"}`}>
+          <i className="ri-calendar-line text-2xl"></i>
         </Link>
-        <Link to="/feed" className={`flex flex-col items-center py-2 px-3 ${isActive("/feed") ? "text-primary" : "text-neutral-600"}`}>
-          <i className="ri-notification-3-line text-xl"></i>
-          <span className="text-xs mt-1">Feed</span>
+        <Link to="/feed" className={`flex flex-col items-center py-2 px-3 ${isActive("/feed") ? "text-accent" : "text-gray-600"}`}>
+          <i className="ri-baseball-line text-2xl"></i>
         </Link>
-        <Link to="/events" className={`flex flex-col items-center py-2 px-3 ${isActive("/events") ? "text-primary" : "text-neutral-600"}`}>
-          <i className="ri-calendar-event-line text-xl"></i>
-          <span className="text-xs mt-1">Events</span>
+        <Link to="/events" className={`flex flex-col items-center py-2 px-3 ${isActive("/events") ? "text-accent" : "text-gray-600"}`}>
+          <i className="ri-notification-3-line text-2xl"></i>
         </Link>
-        <Link to="/links" className={`flex flex-col items-center py-2 px-3 ${isActive("/links") ? "text-primary" : "text-neutral-600"}`}>
-          <i className="ri-links-line text-xl"></i>
-          <span className="text-xs mt-1">Links</span>
+        <Link to="/links" className={`flex flex-col items-center py-2 px-3 ${isActive("/links") ? "text-accent" : "text-gray-600"}`}>
+          <i className="ri-user-line text-2xl"></i>
         </Link>
       </div>
     </nav>

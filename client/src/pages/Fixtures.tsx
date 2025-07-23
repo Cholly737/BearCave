@@ -24,46 +24,13 @@ const Fixtures = () => {
     return words.map(word => word[0]).join('').toUpperCase();
   };
   
-  // Find the winter season team specifically
-  const getWinterTeam = (teams: Team[] | undefined) => {
-    if (!teams) return null;
-    return teams.find(team => 
-      team.division?.includes("East Division - Mamgain Shield") ||
-      team.name?.includes("Winter")
-    );
-  };
-  
-  // Get all other teams
-  const getOtherTeams = (teams: Team[] | undefined, winterTeamId: number | undefined) => {
-    if (!teams) return [];
-    return teams.filter(team => team.id !== winterTeamId);
-  };
-  
-  const winterTeam = getWinterTeam(teams as Team[]);
-  const otherTeams = getOtherTeams(teams as Team[], winterTeam?.id);
-  
-  // Group other teams by division
-  const getTeamsByDivision = (teams: Team[] | undefined) => {
-    if (!teams) return {};
-    
-    return teams.reduce((grouped: Record<string, Team[]>, team) => {
-      const division = team.division || 'Other';
-      if (!grouped[division]) {
-        grouped[division] = [];
-      }
-      grouped[division].push(team);
-      return grouped;
-    }, {});
-  };
-  
-  const teamsByDivision = getTeamsByDivision(otherTeams);
-  const divisions = otherTeams ? Object.keys(teamsByDivision) : [];
+  // Type guard to ensure teams is an array
+  const teamsArray = Array.isArray(teams) ? teams : [];
 
   return (
-    <div>
-      <div className="px-4 py-3 bg-primary text-white">
-        <h2 className="text-xl font-heading font-bold">Deepdene Bears Teams</h2>
-        <p className="text-sm opacity-90 mt-1">Winter Season 2025</p>
+    <div className="pb-20">
+      <div className="bear-header">
+        Fixtures
       </div>
       
       <div className="px-4 py-4">
@@ -99,82 +66,28 @@ const Fixtures = () => {
               </div>
             </CardContent>
           </Card>
-        ) : teams && teams.length > 0 ? (
-          <div className="space-y-6">
-            {/* Featured Winter Season Team */}
-            {winterTeam && (
-              <div className="featured-team mb-8">
-                <h3 className="text-xl font-heading font-bold mb-3 text-center">
-                  Mid Year Cricket Association
-                </h3>
-                
-                <div className="bg-gradient-to-r from-primary/20 to-primary/5 rounded-lg p-5 shadow-lg border border-primary/20">
-                  <div className="flex flex-col items-center mb-4">
-                    <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white font-bold text-3xl mb-3">
-                      {winterTeam.abbreviation || getTeamInitials(winterTeam.name)}
-                    </div>
-                    <h2 className="font-bold text-xl text-center">{winterTeam.name}</h2>
-                    <p className="text-sm text-center font-medium mt-1 text-primary">
-                      {winterTeam.division}
-                    </p>
-                    
-                    <div className="mt-4 w-full">
-                      <Link to={`/fixtures/${winterTeam.id}`} className="block">
-                        <button className="w-full bg-primary text-white rounded-md py-3 font-semibold hover:bg-primary/90 transition">
-                          View Winter Season Fixtures
-                        </button>
-                      </Link>
-                    </div>
+        ) : teamsArray.length > 0 ? (
+          <div className="space-y-4">
+            {/* Team Cards */}
+            {teamsArray.map((team: Team) => (
+              <Link key={team.id} to={`/fixtures/${team.id}`}>
+                <div className="bear-card">
+                  <div className="text-center">
+                    <h3 className="font-medium text-lg mb-1">{team.name}</h3>
+                    <p className="text-sm text-gray-600 mb-3">{team.division}</p>
+                    <button className="bear-button text-sm">
+                      See Fixtures
+                    </button>
                   </div>
                 </div>
-              </div>
-            )}
-            
-            {/* Section divider */}
-            <div className="flex items-center my-8">
-              <div className="flex-grow h-px bg-neutral-200"></div>
-              <span className="mx-4 text-neutral-500 font-medium">Other Teams</span>
-              <div className="flex-grow h-px bg-neutral-200"></div>
-            </div>
-            
-            {/* Other teams grouped by division */}
-            {divisions.map((division) => (
-              <div key={division} className="team-division">
-                <h3 className="text-lg font-heading font-semibold mb-3 border-b pb-1">{division}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {teamsByDivision[division].map((team: Team) => (
-                    <Link key={team.id} to={`/fixtures/${team.id}`}>
-                      <Card className="hover:shadow-lg transition duration-200 h-full">
-                        <CardContent className="pt-6">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white font-bold mr-4 text-xl">
-                              {team.abbreviation || getTeamInitials(team.name)}
-                            </div>
-                            <div>
-                              <h3 className="font-bold text-lg">{team.name}</h3>
-                              <p className="text-sm text-neutral-600 mt-1">{team.division}</p>
-                              <div className="mt-3">
-                                <Badge variant="outline" className="bg-primary/10">
-                                  View Fixtures
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
           // Empty state
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-neutral-600">No teams found. Check back soon for updates.</p>
-            </CardContent>
-          </Card>
+          <div className="bear-card text-center">
+            <p className="text-gray-600">No teams found. Check back soon for updates.</p>
+          </div>
         )}
       </div>
     </div>

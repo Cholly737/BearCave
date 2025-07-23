@@ -28,8 +28,10 @@ const Events = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-heading font-bold px-4 py-3">Upcoming Events</h2>
+    <div className="pb-20">
+      <div className="bear-header">
+        Events
+      </div>
       
       <div className="px-4 pb-4">
         {isLoading ? (
@@ -61,49 +63,27 @@ const Events = () => {
           </Card>
         ) : events && events.length > 0 ? (
           events.map((event: Event) => (
-            <div key={event.id} className="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-              <div className="p-4">
-                <div className="flex items-start">
-                  <div className="bg-primary text-white text-center rounded p-2 mr-3 w-12 flex-shrink-0">
-                    <div className="text-xs">{formatEventDate(event.date).month}</div>
-                    <div className="text-xl font-bold">{formatEventDate(event.date).day}</div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{event.name}</h3>
-                    <p className="text-sm text-neutral-700 mt-2">{event.description}</p>
-                    <div className="mt-3 space-y-2">
-                      <div className="flex items-center text-sm text-neutral-600">
-                        <i className="ri-time-line mr-2"></i>
-                        <span>{event.time}</span>
-                      </div>
-                      <div className="flex items-center text-sm text-neutral-600">
-                        <i className="ri-map-pin-line mr-2"></i>
-                        <span>{event.location}</span>
-                      </div>
-                      {event.audience && (
-                        <div className="flex items-center text-sm text-neutral-600">
-                          <i className="ri-user-line mr-2"></i>
-                          <span>{event.audience}</span>
-                        </div>
-                      )}
-                    </div>
-                    <Button 
-                      onClick={() => addToCalendar(event)} 
-                      className="mt-4 bg-primary text-white"
-                    >
-                      Add to Calendar
-                    </Button>
-                  </div>
+            <div key={event.id} className="bear-card">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-primary mb-1">{event.name}</h3>
+                  <p className="text-xs text-gray-600">
+                    Location
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Date, Time
+                  </p>
                 </div>
+                <i className="ri-arrow-right-line text-gray-400"></i>
               </div>
             </div>
           ))
         ) : (
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-neutral-600">No upcoming events scheduled at this time. Check back soon!</p>
-            </CardContent>
-          </Card>
+          <div className="bear-card text-center">
+            <h3 className="font-medium text-primary mb-1">Event 1</h3>
+            <p className="text-xs text-gray-600">Location</p>
+            <p className="text-xs text-gray-600">Date, Time</p>
+          </div>
         )}
       </div>
     </div>

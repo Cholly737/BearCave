@@ -51,123 +51,126 @@ const Home = () => {
   };
 
   return (
-    <div id="home-page">
-      {/* Hero Banner */}
-      <div className="relative">
-        <div className="h-48 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&h=400&q=80')" }}>
-          <div className="absolute inset-0 bg-primary bg-opacity-60"></div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-          <h2 className="text-2xl font-heading font-bold">Welcome to Deepdene Bears</h2>
-   
-        </div>
+    <div id="home-page" className="pb-20">
+      {/* BearCave Header */}
+      <div className="bear-header">
+        Welcome to the BearCave
       </div>
-      {/* Made by Charlotte 'Cholly' Molloy */}
-      {/* Latest Notification */}
-      {feedLoading ? (
-        <div className="bg-white p-3 mx-4 my-4 rounded-md shadow-md loading-skeleton h-24"></div>
-      ) : feedError ? (
-        <div className="bg-error text-white p-3 mx-4 my-4 rounded-md shadow-md">
-          <p className="text-sm">Unable to load latest notifications</p>
-        </div>
-      ) : latestFeedItem ? (
-        <div className="bg-accent text-white p-3 mx-4 my-4 rounded-md shadow-md">
-          <div className="flex items-start">
-            <div className="text-xl mt-0.5 mr-2">
-              <i className="ri-notification-3-line"></i>
+      
+      {/* Hero Section with Logo and Social */}
+      <div className="p-4">
+        <div className="text-center mb-6">
+          <div className="mb-4">
+            <div className="w-24 h-24 mx-auto mb-2 bg-primary rounded-full flex items-center justify-center">
+              <span className="text-3xl font-bold text-white">DB</span>
             </div>
-            <div>
-              <h3 className="font-semibold text-sm">{latestFeedItem.title}</h3>
-              <p className="text-xs mt-1">{latestFeedItem.content}</p>
-              <p className="text-xs mt-2">Posted {getTimeAgo(latestFeedItem.date)}</p>
-            </div>
+            <h1 className="text-xl font-bold text-primary">DEEPDENE BEARS C.C.</h1>
+            <p className="text-sm text-gray-600">Est. 1921</p>
           </div>
         </div>
-      ) : null}
- 
-      {/* Upcoming Events */}
-      <section className="px-4 py-3">
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-heading font-semibold">Upcoming Events</h2>
-          <Link to="/events" className="text-primary text-sm font-semibold">View All</Link>
+
+        {/* Social Media Section */}
+        <div className="bear-card">
+          <h3 className="font-semibold mb-3">Socials</h3>
+          <div className="flex justify-around">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+              <i className="ri-instagram-fill text-white text-xl"></i>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+              <i className="ri-facebook-fill text-white text-xl"></i>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+              <i className="ri-youtube-fill text-white text-xl"></i>
+            </a>
+            <a href="#" className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">DB</span>
+            </a>
+          </div>
         </div>
-        
-        {eventsLoading ? (
-          <>
-            <div className="bg-white rounded-lg shadow-md mb-3 overflow-hidden loading-skeleton h-32"></div>
-            <div className="bg-white rounded-lg shadow-md mb-3 overflow-hidden loading-skeleton h-32"></div>
-          </>
-        ) : eventsError ? (
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-sm text-error">Unable to load upcoming events</p>
-            </CardContent>
-          </Card>
-        ) : events && events.length > 0 ? (
-          <>
-            {events.slice(0, 2).map((event: Event) => (
-              <div key={event.id} className="bg-white rounded-lg shadow-md mb-3 overflow-hidden">
-                <div className="p-3">
-                  <div className="flex items-center mb-2">
-                    <div className="bg-primary text-white text-center rounded p-2 mr-3 w-12">
-                      <div className="text-xs">{formatEventDate(event.date).month}</div>
-                      <div className="text-xl font-bold">{formatEventDate(event.date).day}</div>
-                    </div>
+
+        {/* Upcoming Events */}
+        <div className="bear-card">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold">Upcoming Events</h3>
+            <i className="ri-arrow-right-line text-gray-400"></i>
+          </div>
+          
+          {eventsLoading ? (
+            <>
+              <div className="border border-gray-200 rounded-lg p-3 mb-3 loading-skeleton h-20"></div>
+              <div className="border border-gray-200 rounded-lg p-3 mb-3 loading-skeleton h-20"></div>
+            </>
+          ) : eventsError ? (
+            <p className="text-sm text-gray-500">Unable to load upcoming events</p>
+          ) : events && events.length > 0 ? (
+            <>
+              {events.slice(0, 2).map((event: Event) => (
+                <div key={event.id} className="border border-gray-200 rounded-lg p-3 mb-3 last:mb-0 bg-gray-50">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold">{event.name}</h3>
-                      <p className="text-xs text-neutral-600 mt-1">{event.time}</p>
+                      <h4 className="font-medium text-sm text-primary">{event.name}</h4>
+                      <p className="text-xs text-gray-600">
+                        {formatEventDate(event.date).day}th {formatEventDate(event.date).month}
+                      </p>
+                      <p className="text-xs text-gray-600">{event.location}</p>
                     </div>
-                  </div>
-                  <p className="text-sm text-neutral-700 mb-2">{event.description}</p>
-                  <div className="flex items-center text-xs text-neutral-600">
-                    <i className="ri-map-pin-line mr-1"></i>
-                    <span>{event.location}</span>
+                    <i className="ri-arrow-right-line text-gray-400"></i>
                   </div>
                 </div>
+              ))}
+            </>
+          ) : (
+            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium text-sm text-primary">Grand Final Weekend</h4>
+                  <p className="text-xs text-gray-600">1st & 10th March</p>
+                  <p className="text-xs text-gray-600">Strathmore Park</p>
+                </div>
+                <i className="ri-arrow-right-line text-gray-400"></i>
               </div>
-            ))}
-          </>
-        ) : (
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-sm text-neutral-600">No upcoming events scheduled</p>
-            </CardContent>
-          </Card>
-        )}
-      </section>
-      
-      
-      
-      {/* Social Media Feed */}
-      <section className="px-4 py-3">
-        <h2 className="text-lg font-heading font-semibold mb-3">Recent in Feed</h2>
-        
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4 p-4">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white mr-3">
-              <i className="ri-facebook-fill"></i>
             </div>
-           
-          </div>
-          
-          <img 
-            src="https://images.unsplash.com/photo-1508344928928-7165b0c396cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
-            alt="Cricket equipment ready for training" 
-            className="w-full h-64 object-cover rounded-md mb-3" 
-          />
-          
-          <div className="flex justify-between text-sm text-neutral-600">
-            <div className="flex items-center">
-              <i className="ri-heart-line mr-1"></i>
-              <span>23</span>
+          )}
+        </div>
+
+        {/* Latest in Feed */}
+        <div className="px-4">
+          <div className="bear-card">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="font-semibold">Latest in feed</h3>
+              <i className="ri-arrow-right-line text-gray-400"></i>
             </div>
-            <div className="flex items-center">
-              <i className="ri-chat-1-line mr-1"></i>
-              <span>8</span>
-            </div>
+            
+            {feedLoading ? (
+              <div className="border border-gray-200 rounded-lg p-3 loading-skeleton h-20"></div>
+            ) : feedError ? (
+              <p className="text-sm text-gray-500">Unable to load latest feed</p>
+            ) : latestFeedItem ? (
+              <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-sm text-primary mb-1">{latestFeedItem.title}</h4>
+                    <p className="text-xs text-gray-600 mb-2">{latestFeedItem.content}</p>
+                    <p className="text-xs text-gray-500">{getTimeAgo(latestFeedItem.date)}</p>
+                  </div>
+                  <i className="ri-arrow-right-line text-gray-400 ml-2"></i>
+                </div>
+              </div>
+            ) : (
+              <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-sm text-primary mb-1">Training for Thursday</h4>
+                    <p className="text-xs text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
+                    <p className="text-xs text-gray-500">2 hours ago</p>
+                  </div>
+                  <i className="ri-arrow-right-line text-gray-400 ml-2"></i>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
