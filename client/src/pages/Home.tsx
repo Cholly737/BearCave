@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
+import logoImg from "@assets/logo_1753257070954.jpg";
 
 
 const Home = () => {
@@ -61,11 +62,10 @@ const Home = () => {
       <div className="p-4">
         <div className="text-center mb-6">
           <div className="mb-4">
-            <div className="w-24 h-24 mx-auto mb-2 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-3xl font-bold text-white">DB</span>
+            <div className="w-24 h-24 mx-auto mb-2 bg-white rounded-full flex items-center justify-center border-2 border-primary overflow-hidden">
+              <img src={logoImg} alt="Deepdene Bears Cricket Club" className="w-20 h-20 object-contain" />
             </div>
-            <h1 className="text-xl font-bold text-primary">DEEPDENE BEARS C.C.</h1>
-            <p className="text-sm text-gray-600">Est. 1921</p>
+         
           </div>
         </div>
 
