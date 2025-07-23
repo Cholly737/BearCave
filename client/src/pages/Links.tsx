@@ -2,8 +2,8 @@ const Links = () => {
 
   return (
     <div className="pb-20">
-      <div className="bear-header">
-        Links
+      <div className="p-4">
+        <h1 className="text-2xl font-bold text-primary mb-4">Links</h1>
       </div>
       
       <div className="px-4">

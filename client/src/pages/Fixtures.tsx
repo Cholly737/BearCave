@@ -29,8 +29,8 @@ const Fixtures = () => {
 
   return (
     <div className="pb-20">
-      <div className="bear-header">
-        Fixtures
+      <div className="p-4">
+        <h1 className="text-2xl font-bold text-primary mb-4">Fixtures</h1>
       </div>
       
       <div className="px-4 py-4">

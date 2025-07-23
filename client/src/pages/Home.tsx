@@ -53,10 +53,7 @@ const Home = () => {
 
   return (
     <div id="home-page" className="pb-20">
-      {/* BearCave Header */}
-      <div className="bear-header">
-        Welcome to the BearCave
-      </div>
+      {/* Page Content */}
       
       {/* Hero Section with Logo and Social */}
       <div className="p-4">

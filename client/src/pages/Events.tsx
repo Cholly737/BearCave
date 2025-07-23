@@ -29,8 +29,8 @@ const Events = () => {
 
   return (
     <div className="pb-20">
-      <div className="bear-header">
-        Events
+      <div className="p-4">
+        <h1 className="text-2xl font-bold text-primary mb-4">Events</h1>
       </div>
       
       <div className="px-4 pb-4">

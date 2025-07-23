@@ -103,7 +103,7 @@
   }
 
   .main-content {
-    @apply flex-1 pb-16; /* Space for bottom navigation */
+    @apply flex-1 pb-16 pt-0; /* Space for bottom navigation */
   }
 }
 
@@ -118,6 +118,10 @@
 
 .bear-button {
   @apply bg-accent text-white px-4 py-2 rounded-md font-medium hover:bg-accent/90 transition-colors;
+}
+
+.bear-header-nav {
+  @apply bg-primary shadow-sm;
 }
 
 .bear-nav-bottom {
