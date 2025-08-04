@@ -116,20 +116,20 @@ const Sponsors = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-neutral-50 rounded-lg">
                   <i className="ri-trophy-line text-2xl text-primary mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1">Gold Partnership</h4>
-                  <p className="text-xs text-neutral-600">Major branding, naming rights, premium placement</p>
+                  <h4 className="font-semibold text-sm mb-1">Sponsorship 1</h4>
+                  <p className="text-xs text-neutral-600">Benefits</p>
                 </div>
                 
                 <div className="text-center p-4 bg-neutral-50 rounded-lg">
                   <i className="ri-medal-line text-2xl text-primary mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1">Silver Partnership</h4>
-                  <p className="text-xs text-neutral-600">Logo placement, event sponsorship opportunities</p>
+                  <h4 className="font-semibold text-sm mb-1">Sponsorship 2</h4>
+                  <p className="text-xs text-neutral-600">Benefits</p>
                 </div>
                 
                 <div className="text-center p-4 bg-neutral-50 rounded-lg">
                   <i className="ri-award-line text-2xl text-primary mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1">Bronze Partnership</h4>
-                  <p className="text-xs text-neutral-600">Website listing, social media mentions</p>
+                  <h4 className="font-semibold text-sm mb-1">Sponsorship 3</h4>
+                  <p className="text-xs text-neutral-600">Benefits</p>
                 </div>
               </div>
               
