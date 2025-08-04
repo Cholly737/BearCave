@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchSponsors } from "@/lib/api";
-import { Sponsor } from "@/types";
+import { type Sponsor } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Sponsors = () => {
@@ -14,10 +14,12 @@ const Sponsors = () => {
   });
 
   return (
-    <div>
-      <h2 className="text-xl font-heading font-bold px-4 py-3">Our Sponsors</h2>
+    <div className="pb-20">
+      <div className="p-4">
+        <h1 className="text-2xl font-bold text-primary mb-4">Our Sponsors</h1>
+      </div>
       
-      <div className="px-4 pb-20">
+      <div className="px-4">
         <Card className="mb-4">
           <CardContent className="pt-6">
             <div className="text-center">
@@ -53,7 +55,7 @@ const Sponsors = () => {
               </div>
             </CardContent>
           </Card>
-        ) : sponsors && Array.isArray(sponsors) && sponsors.length > 0 ? (
+        ) : sponsors && sponsors.length > 0 ? (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {sponsors.map((sponsor: Sponsor) => (
@@ -116,7 +118,7 @@ const Sponsors = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-neutral-50 rounded-lg">
                   <i className="ri-trophy-line text-2xl text-primary mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1">Sponsorship 1</h4>
+                  <h4 className="font-semibold text-sm mb-1">Gold Sponsors</h4>
                   <p className="text-xs text-neutral-600">Benefits</p>
                 </div>
                 

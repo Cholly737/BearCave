@@ -235,14 +235,13 @@ export class DatabaseStorage implements IStorage {
       // Add sample sponsors
       const sampleSponsors: InsertSponsor[] = [
         {
-          name: "Community Bank",
-          logoUrl: "https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "https://example.com/communitybank",
-          description: "Supporting local cricket since 1985. Community Bank provides financial services and community support.",
+          name: "Knight FM",   logoUrl:"https://static.wixstatic.com/media/e2347b_54c03d6ae81145f6b90425ede0e446e9~mv2.jpg/v1/fill/w_442,h_412,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/KFM-Logo.jpg",
+website: "https://knightfm.com.au/",
+description: "Knight FM provide integrated facilities management to organisations across Australia and New Zealand.",
           sponsorshipLevel: "Gold"
         },
         {
-          name: "Ace Sports Equipment",
+          name: " Sports Equipment",
           logoUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
           website: "https://example.com/sportsshop",
           description: "Premium cricket equipment and gear. Special discounts for club members on all purchases.",

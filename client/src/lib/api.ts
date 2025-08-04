@@ -1,5 +1,6 @@
 import { apiRequest } from "./queryClient";
-import { Event, Team, Fixture, FeedItem, Sponsor } from "@/types";
+import { Event, Team, Fixture, FeedItem } from "@/types";
+import { type Sponsor } from "@shared/schema";
 
 // Events API
 export const fetchUpcomingEvents = async (): Promise<Event[]> => {
