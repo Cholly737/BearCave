@@ -139,15 +139,34 @@ const FixtureDetail = () => {
             />
             {usingFallbackData && (
               <div className="text-amber-600 text-xs mt-1 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                Using local fallback data
+                <i className="ri-error-warning-line mr-1"></i>
+                PlayHQ API unavailable - using local data
               </div>
             )}
           </div>
         </div>
       </div>
+      
+      {/* API Status Banner */}
+      {dataSource === 'playhq' && playhqFixturesError && (
+        <div className="mx-4 mb-4 bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="flex items-center">
+            <i className="ri-error-warning-line text-red-600 mr-2"></i>
+            <div className="flex-1">
+              <p className="text-red-800 font-medium text-sm">PlayHQ API Error</p>
+              <p className="text-red-700 text-xs">Showing fallback data instead</p>
+            </div>
+            <Button 
+              onClick={() => refetchPlayHQFixtures()} 
+              variant="outline" 
+              size="sm"
+              className="text-red-600 border-red-300 hover:bg-red-100"
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      )}
       
       <div className="px-4 pb-4">
         {isLoading ? (
@@ -175,9 +194,45 @@ const FixtureDetail = () => {
         ) : hasError ? (
           <Card>
             <CardContent className="pt-6">
-              <div className="flex mb-4 gap-2">
-                <i className="ri-error-warning-line text-error text-xl"></i>
-                <p className="text-error">Failed to load fixtures. Please try again later.</p>
+              <div className="text-center">
+                <i className="ri-error-warning-line text-error text-4xl mb-3"></i>
+                {dataSource === 'playhq' ? (
+                  <div>
+                    <p className="text-error font-semibold mb-2">PlayHQ API Connection Failed</p>
+                    <p className="text-sm text-neutral-600 mb-4">
+                      {playhqFixturesError?.message || "Unable to connect to PlayHQ servers."}
+                    </p>
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+                      <p className="text-sm text-amber-800 font-medium mb-2">Common causes:</p>
+                      <ul className="text-sm text-amber-700 space-y-1">
+                        <li>• API credentials expired or invalid</li>
+                        <li>• PlayHQ server maintenance</li>
+                        <li>• Network connectivity issues</li>
+                        <li>• API rate limits exceeded</li>
+                      </ul>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <Button 
+                        onClick={() => toggleDataSource('local')} 
+                        variant="outline"
+                        size="sm"
+                      >
+                        Switch to Local Data
+                      </Button>
+                      <Button 
+                        onClick={() => refetchPlayHQFixtures()} 
+                        size="sm"
+                      >
+                        Retry PlayHQ Connection
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-error font-semibold">Failed to load fixtures</p>
+                    <p className="text-sm text-neutral-600 mt-1">Please try again later or contact support.</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

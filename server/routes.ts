@@ -185,13 +185,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching PlayHQ fixtures:", error);
       
-      // Log more details about the error
+      let errorDetails = "Unknown error occurred";
       if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const statusText = error.response?.statusText;
+        
         console.error("Axios error details:", {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
+          status,
+          statusText,
           data: error.response?.data
         });
+        
+        // Provide specific error messages based on HTTP status
+        switch (status) {
+          case 401:
+            errorDetails = "Invalid API credentials";
+            break;
+          case 403:
+            errorDetails = "Access denied - API permissions insufficient";
+            break;
+          case 404:
+            errorDetails = "PlayHQ endpoint not found";
+            break;
+          case 429:
+            errorDetails = "Rate limit exceeded - too many requests";
+            break;
+          case 500:
+            errorDetails = "PlayHQ server error";
+            break;
+          case 503:
+            errorDetails = "PlayHQ service temporarily unavailable";
+            break;
+          default:
+            errorDetails = `PlayHQ API error: ${status} ${statusText}`;
+        }
       }
       
       // Fallback to stored fixtures or generate sample fixtures

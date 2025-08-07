@@ -244,38 +244,51 @@ export class DatabaseStorage implements IStorage {
         {
           name: "Winequip",
           logoUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "calendar.google.com/calendar/u/0/r",
+          website: "https://winequip.com.au/",
           description: "Winequip is your key wine and beverage industry supplier in Australia and New Zealand, representing the world’s leading brands in beverage equipment and consumables.",
           sponsorshipLevel: "Gold"
         },
         {
-          name: "City Dental Clinic",
+          name: "GA Fire",
           logoUrl: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "https://example.com/dentalclinic",
-          description: "Comprehensive dental care for the whole family. Team health partner providing dental checkups.",
-          sponsorshipLevel: "Bronze"
-        },
-        {
-          name: "Max's Family Restaurant",
-          logoUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "https://example.com/maxrestaurant",
-          description: "Family dining and event catering. Official caterer for club events and celebrations.",
+          website: "https://gafire.com.au/",
+          description: "GA Fire is a Melbourne based fire protection company with over 100 years combined experience in design, installation and service maintenance of all types of fire protection systems",
           sponsorshipLevel: "Silver"
         },
         {
-          name: "TechFlow Solutions",
+          name: "Bendigo Bank",
+          logoUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://www.bendigobank.com.au/",
+          description: "Bendigo Bank is trusted by millions of Australians with their banking needs every day.",
+          sponsorshipLevel: "Silver"
+        },
+        {
+          name: "Sustainable Tree Managment",
           logoUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "https://example.com/techflow",
-          description: "Digital solutions and IT support. Proud supporter of local sports and community initiatives.",
+          website: "http://sustainabletm.com.au/",          description: "Providing professional and high quality arboricultural, ecological and other environmental consulting services.",
+          sponsorshipLevel: "Silver"
+        },
+        {
+          name: "Bindara Group",
+          logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://au.linkedin.com/company/bindaragroup",
+          description: "Bindara Group is a trade services company specializing in plumbing, electrical, carpentry, handyman services, painting, and minor capital works",
+          sponsorshipLevel: "Silver"
+        },
+        {
+          name: "Ramsay Surgical Centre Glenferrie",
+          logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          website: "https://www.ramsaysurgicalcentreglenferrie.com.au/",
+          description: "Ramsay Surgical Centre is a modern, short-stay surgical facility located in the leafy heart of Hawthorn.",
           sponsorshipLevel: "Bronze"
         },
         {
-          name: "Elite Fitness Gym",
+          name: "XMG Media",
           logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "https://example.com/elitefitness",
-          description: "Professional fitness training and sports conditioning. Exclusive gym access for club players.",
-          sponsorshipLevel: "Gold"
-        }
+          website: "https://xmgmediaww.com.au/",
+          description: "Ramsay Surgical Centre is a modern, short-stay surgical facility located in the leafy heart of Hawthorn.",
+          sponsorshipLevel: "Bronze"
+        },
       ];
       
       await db.insert(sponsors).values(sampleSponsors);
