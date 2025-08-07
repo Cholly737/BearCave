@@ -141,6 +141,12 @@ export class DatabaseStorage implements IStorage {
           logoUrl: "https://via.placeholder.com/150"
         },
         {
+          name: "Deepdene Bears Winter XI",
+          abbreviation: "DBWX",
+          division: "Mamgain Shield - East Division",
+          logoUrl: "https://via.placeholder.com/150"
+        },
+        {
           name: "Deepdene Bears Second XI",
           abbreviation: "DB2",
           division: "Division 1",
@@ -164,6 +170,7 @@ export class DatabaseStorage implements IStorage {
       
       // Add sample fixtures
       const sampleFixtures: InsertFixture[] = [
+        // First XI fixtures
         {
           teamId: insertedTeams[0].id,
           date: new Date("2025-06-01T14:00:00"),
@@ -182,8 +189,46 @@ export class DatabaseStorage implements IStorage {
           opposingTeamAbbreviation: "BT",
           opposingTeamColor: "#F59E0B"
         },
+        // Winter XI fixtures (Mamgain Shield)
         {
           teamId: insertedTeams[1].id,
+          date: new Date("2025-06-07T14:00:00"),
+          location: "Deepdene Cricket Ground",
+          isHome: true,
+          opposingTeam: "North Balwyn Knights",
+          opposingTeamAbbreviation: "NBK",
+          opposingTeamColor: "#2E8B57"
+        },
+        {
+          teamId: insertedTeams[1].id,
+          date: new Date("2025-06-14T13:30:00"),
+          location: "Camberwell Sports Ground",
+          isHome: false,
+          opposingTeam: "Camberwell Cobras",
+          opposingTeamAbbreviation: "CC",
+          opposingTeamColor: "#8B0000"
+        },
+        {
+          teamId: insertedTeams[1].id,
+          date: new Date("2025-06-21T14:00:00"),
+          location: "Deepdene Cricket Ground",
+          isHome: true,
+          opposingTeam: "Kew Raptors",
+          opposingTeamAbbreviation: "KR",
+          opposingTeamColor: "#6D28D9"
+        },
+        {
+          teamId: insertedTeams[1].id,
+          date: new Date("2025-06-28T13:00:00"),
+          location: "Hawthorn Cricket Club",
+          isHome: false,
+          opposingTeam: "Hawthorn Hawks",
+          opposingTeamAbbreviation: "HH",
+          opposingTeamColor: "#FFD700"
+        },
+        // Second XI fixtures
+        {
+          teamId: insertedTeams[2].id,
           date: new Date("2025-06-01T10:00:00"),
           location: "Balwyn Sports Complex",
           isHome: false,
@@ -191,13 +236,14 @@ export class DatabaseStorage implements IStorage {
           opposingTeamAbbreviation: "BT",
           opposingTeamColor: "#F59E0B"
         },
+        // Women's team fixtures
         {
-          teamId: insertedTeams[2].id,
+          teamId: insertedTeams[3].id,
           date: new Date("2025-06-02T15:00:00"),
           location: "Deepdene Cricket Ground",
           isHome: true,
-          opposingTeam: "Kew Raptors",
-          opposingTeamAbbreviation: "KR",
+          opposingTeam: "Kew Raptors Women",
+          opposingTeamAbbreviation: "KRW",
           opposingTeamColor: "#6D28D9"
         }
       ];
