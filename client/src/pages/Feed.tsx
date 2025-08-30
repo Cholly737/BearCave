@@ -108,33 +108,27 @@ const Feed = () => {
             </div>
           ))
         ) : (
-          <>
-            <div className="bear-card">
-              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
-              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
-              <p className="text-xs text-gray-500">2 hours ago</p>
+          <div className="text-center py-12">
+            <div className="mb-6">
+              <i className="ri-file-list-3-line text-4xl text-gray-400 mb-4 block"></i>
+              <h3 className="text-lg font-medium text-gray-700 mb-2">No feed updates yet</h3>
+              <p className="text-gray-500 text-sm">Check back later for club news and announcements</p>
             </div>
-            <div className="bear-card">
-              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
-              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
-              <p className="text-xs text-gray-500">2 hours ago</p>
+            
+            {/* Hidden example feed item - remove the 'hidden' class to show */}
+            <div className="hidden bear-card max-w-md mx-auto">
+              <div className="flex items-start mb-3">
+                <div className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 flex-shrink-0">
+                  <i className="ri-notification-3-line text-sm"></i>
+                </div>
+                <div className="text-left flex-1">
+                  <h3 className="font-medium text-primary mb-1">Training Update</h3>
+                  <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions. New location is the indoor nets at Canterbury Sports Complex.</p>
+                  <p className="text-xs text-gray-500">2 hours ago</p>
+                </div>
+              </div>
             </div>
-            <div className="bear-card">
-              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
-              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
-              <p className="text-xs text-gray-500">2 hours ago</p>
-            </div>
-            <div className="bear-card">
-              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
-              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
-              <p className="text-xs text-gray-500">2 hours ago</p>
-            </div>
-            <div className="bear-card">
-              <h3 className="font-medium text-primary mb-1">Training for Thursday</h3>
-              <p className="text-sm text-gray-600 mb-2">Training has been moved from Stradbroke Park South Oval due to weather conditions</p>
-              <p className="text-xs text-gray-500">2 hours ago</p>
-            </div>
-          </>
+          </div>
         )}
       </div>
     </div>
