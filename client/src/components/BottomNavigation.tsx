@@ -24,7 +24,7 @@ const BottomNavigation: FC = () => {
           <span className="text-xs mt-1">Fixtures</span>
         </Link>
         <Link to="/feed" className={`flex flex-col items-center py-3 px-3 ${isActive("/feed") ? "text-accent" : "text-gray-600"}`}>
-          <i className="ri-baseball-line text-xl"></i>
+          <i className="ri-file-text-line text-xl"></i>
           <span className="text-xs mt-1">Feed</span>
         </Link>
         <Link to="/events" className={`flex flex-col items-center py-3 px-3 ${isActive("/events") ? "text-accent" : "text-gray-600"}`}>
