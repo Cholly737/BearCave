@@ -61,7 +61,7 @@ const Events = () => {
               </div>
             </CardContent>
           </Card>
-        ) : events && events.length > 0 ? (
+        ) : events && Array.isArray(events) && events.length > 0 ? (
           events.map((event: Event) => (
             <div key={event.id} className="bear-card">
               <div className="flex items-center justify-between">
@@ -79,10 +79,36 @@ const Events = () => {
             </div>
           ))
         ) : (
-          <div className="bear-card text-center">
-            <h3 className="font-medium text-primary mb-1">Event 1</h3>
-            <p className="text-xs text-gray-600">Location</p>
-            <p className="text-xs text-gray-600">Date, Time</p>
+          <div className="text-center py-12">
+            <div className="mb-6">
+              <i className="ri-calendar-event-line text-4xl text-gray-400 mb-4 block"></i>
+              <h3 className="text-lg font-medium text-gray-700 mb-2">No events yet</h3>
+              <p className="text-gray-500 text-sm">Check back later for upcoming club events</p>
+            </div>
+            
+            {/* Hidden example event item - remove the 'hidden' class to show */}
+            <div className="hidden bear-card max-w-md mx-auto">
+              <div className="flex items-start">
+                <div className="bg-blue-500 text-white rounded-lg w-12 h-16 flex flex-col items-center justify-center mr-3 flex-shrink-0">
+                  <span className="text-xs font-medium">MAR</span>
+                  <span className="text-lg font-bold">15</span>
+                </div>
+                <div className="text-left flex-1">
+                  <h3 className="font-medium text-primary mb-1">Annual Club BBQ</h3>
+                  <p className="text-sm text-gray-600 mb-1">
+                    <i className="ri-map-pin-line mr-1"></i>
+                    Deepdene Cricket Ground
+                  </p>
+                  <p className="text-sm text-gray-600 mb-2">
+                    <i className="ri-time-line mr-1"></i>
+                    6:00 PM - 9:00 PM
+                  </p>
+                  <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                    Add to Calendar
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

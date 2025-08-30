@@ -99,7 +99,7 @@ const Feed = () => {
               </div>
             </CardContent>
           </Card>
-        ) : feedItems && feedItems.length > 0 ? (
+        ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 ? (
           feedItems.map((item: FeedItem) => (
             <div key={item.id} className="bear-card">
               <h3 className="font-medium text-primary mb-1">{item.title}</h3>
