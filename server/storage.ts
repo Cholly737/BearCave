@@ -253,26 +253,25 @@ export class DatabaseStorage implements IStorage {
       // Add sample feed items
       const sampleFeedItems: InsertFeedItem[] = [
         {
-          title: "Training Cancelled Tonight",
-          content: "Due to severe weather conditions, all training sessions for today have been cancelled. Stay safe everyone!",
-          date: new Date("2025-05-12T09:00:00"),
-          type: "notification",
-          tags: ["training", "weather"]
-        },
-        {
-          title: "First XI Victory",
-          content: "Congratulations to our First XI team for their outstanding victory against Canterbury yesterday! Star performances from John Smith (century) and Mary Jones (5 wickets).",
-          date: new Date("2025-05-10T18:30:00"),
-          type: "achievement",
-          imageUrl: "https://via.placeholder.com/800x400",
-          tags: ["match", "victory", "First XI"]
+          title: "Season Kick-Off This Weekend",
+          content: "Get ready for an exciting new season! Our first matches start this Saturday. All teams have been training hard and are ready to show what they can do. Good luck to all our players!",
+          date: new Date("2025-05-15T08:00:00"),
+          type: "announcement",
+          tags: ["season", "matches"]
         },
         {
           title: "New Club Merchandise Available",
-          content: "The new club merchandise has arrived! Visit our shop to purchase your Deepdene Bears shirts, caps, and training gear.",
-          date: new Date("2025-05-05T12:00:00"),
-          type: "merchandise",
-          tags: ["shop", "merchandise"]
+          content: "Visit our club shop to check out the latest Bears merchandise! New training gear, caps, and supporter items now in stock.",
+          date: new Date("2025-05-14T10:00:00"),
+          type: "news",
+          tags: ["merchandise", "shop"]
+        },
+        {
+          title: "Winter Training Schedule",
+          content: "Winter training sessions will continue every Tuesday and Thursday at 6:30 PM. All players welcome to join and stay match-fit during the off-season.",
+          date: new Date("2025-05-13T15:00:00"),
+          type: "training",
+          tags: ["training", "winter"]
         }
       ];
       
