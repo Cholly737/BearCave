@@ -102,35 +102,35 @@ export class DatabaseStorage implements IStorage {
 
       console.log("Initializing database with sample data...");
       
-      // Add sample events
-      const sampleEvents: InsertEvent[] = [
-        {
-          name: "Annual Club Dinner",
-          description: "Join us for our annual club dinner and awards night. All players and family members welcome!",
-          date: new Date("2025-06-15T18:30:00"),
-          time: "6:30 PM",
-          location: "Deepdene Community Hall",
-          audience: "All club members and families"
-        },
-        {
-          name: "Junior Registration Day",
-          description: "Registration day for all junior teams U10-U16. Please bring ID and registration forms.",
-          date: new Date("2025-05-20T10:00:00"),
-          time: "10:00 AM - 2:00 PM",
-          location: "Deepdene Cricket Ground",
-          audience: "Junior players and parents"
-        },
-        {
-          name: "Cricket Clinic",
-          description: "Professional coaching clinic for all club members. Improve your batting, bowling and fielding skills.",
-          date: new Date("2025-05-25T09:00:00"),
-          time: "9:00 AM - 12:00 PM",
-          location: "Deepdene Cricket Nets",
-          audience: "All players"
-        }
-      ];
+      // Add sample events - commented out to show empty state
+      // const sampleEvents: InsertEvent[] = [
+      //   {
+      //     name: "Annual Club Dinner",
+      //     description: "Join us for our annual club dinner and awards night. All players and family members welcome!",
+      //     date: new Date("2025-06-15T18:30:00"),
+      //     time: "6:30 PM",
+      //     location: "Deepdene Community Hall",
+      //     audience: "All club members and families"
+      //   },
+      //   {
+      //     name: "Junior Registration Day",
+      //     description: "Registration day for all junior teams U10-U16. Please bring ID and registration forms.",
+      //     date: new Date("2025-05-20T10:00:00"),
+      //     time: "10:00 AM - 2:00 PM",
+      //     location: "Deepdene Cricket Ground",
+      //     audience: "Junior players and parents"
+      //   },
+      //   {
+      //     name: "Cricket Clinic",
+      //     description: "Professional coaching clinic for all club members. Improve your batting, bowling and fielding skills.",
+      //     date: new Date("2025-05-25T09:00:00"),
+      //     time: "9:00 AM - 12:00 PM",
+      //     location: "Deepdene Cricket Nets",
+      //     audience: "All players"
+      //   }
+      // ];
 
-      await db.insert(events).values(sampleEvents);
+      // await db.insert(events).values(sampleEvents);
       
       // Add sample teams
       const sampleTeams: InsertTeam[] = [
