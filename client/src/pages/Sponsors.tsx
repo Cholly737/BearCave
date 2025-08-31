@@ -8,7 +8,7 @@ const Sponsors = () => {
     data: sponsors,
     isLoading,
     error
-  } = useQuery({
+  } = useQuery<Sponsor[]>({
     queryKey: ["/api/sponsors"],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -64,7 +64,12 @@ const Sponsors = () => {
                     <img 
                       src={sponsor.logoUrl} 
                       alt={`${sponsor.name} logo`} 
-                      className="max-w-full max-h-full object-contain" 
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80`;
+                      }}
+                      loading="lazy"
                     />
                   </div>
                   <CardContent className="pt-4">
