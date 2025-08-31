@@ -253,11 +253,11 @@ export class DatabaseStorage implements IStorage {
       // Add sample feed items - commented out to show empty state
       // const sampleFeedItems: InsertFeedItem[] = [
       //   {
-      //     title: "Season Kick-Off This Weekend",
-      //     content: "Get ready for an exciting new season! Our first matches start this Saturday.",
-      //     date: new Date("2025-05-15T08:00:00"),
-      //     type: "announcement",
-      //     tags: ["season", "matches"]
+      //     title: "Training Cancelled Tonight",
+      //     content: "Due to severe weather conditions, all training sessions for today have been cancelled. Stay safe everyone!",
+      //     date: new Date("2025-05-12T09:00:00"),
+      //     type: "notification",
+      //     tags: ["training", "weather"]
       //   }
       // ];
       
