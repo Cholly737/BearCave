@@ -53,7 +53,13 @@ const Home = () => {
 
   return (
     <div id="home-page" className="pb-20">
-      {/* Page Content */}
+      {/* Hero Header Section */}
+      <div className="bg-gradient-to-r from-primary to-primary-dark text-white py-8 px-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-2">Welcome to BearCave</h1>
+          <p className="text-white/90 text-sm">Your home for all things Deepdene Bears Cricket Club</p>
+        </div>
+      </div>
       
       <div className="p-4">
         <div className="bear-card">
