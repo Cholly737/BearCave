@@ -1,7 +1,43 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import WebView from "@/components/WebView";
 
 const Shop = () => {
+  const [showWebView, setShowWebView] = useState(false);
+
+  const handleOpenShop = () => {
+    setShowWebView(true);
+  };
+
+  if (showWebView) {
+    return (
+      <div className="pb-20">
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowWebView(false)}
+            >
+              <i className="ri-arrow-left-line mr-1"></i>
+              Back to Shop
+            </Button>
+            <h1 className="text-xl font-bold text-primary">Club Shop</h1>
+          </div>
+        </div>
+        
+        <div className="px-4">
+          <WebView
+            url="https://deepdenebearscc.square.site/s/shop"
+            title="Deepdene Bears Club Shop"
+            onClose={() => setShowWebView(false)}
+          />
+        </div>
+      </div>
+    );
+  }
+
   const shopItems = [
     {
       id: 1,
@@ -62,10 +98,17 @@ const Shop = () => {
           <CardContent className="pt-6">
             <div className="text-center">
               <h3 className="font-semibold mb-2 text-primary">Official Club Merchandise</h3>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 mb-4">
                 Show your Bears pride with our range of official club merchandise. 
                 All proceeds support our junior development programs.
               </p>
+              <Button 
+                onClick={handleOpenShop}
+                className="w-full max-w-sm mx-auto"
+              >
+                <i className="ri-shopping-bag-line mr-2"></i>
+                Shop Online Now
+              </Button>
             </div>
           </CardContent>
         </Card>
