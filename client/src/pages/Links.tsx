@@ -14,33 +14,6 @@ const Links = () => {
     setShowWebView(true);
   };
 
-  const externalLinks = [
-    {
-      title: "Cricket Australia",
-      url: "https://www.cricket.com.au",
-      description: "Official Cricket Australia website",
-      icon: "ri-trophy-line"
-    },
-    {
-      title: "PlayHQ",
-      url: "https://playhq.com",
-      description: "Fixture and competition management",
-      icon: "ri-calendar-line"
-    },
-    {
-      title: "ESPN Cricinfo",
-      url: "https://www.espncricinfo.com",
-      description: "Latest cricket news and scores",
-      icon: "ri-newspaper-line"
-    },
-    {
-      title: "Weather",
-      url: "https://www.bom.gov.au",
-      description: "Bureau of Meteorology weather forecasts",
-      icon: "ri-cloud-line"
-    }
-  ];
-
   if (showWebView) {
     return (
       <div className="pb-20">
