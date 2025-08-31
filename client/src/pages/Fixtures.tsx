@@ -85,9 +85,20 @@ const Fixtures = () => {
           </div>
         ) : (
           // Empty state
-          <div className="bear-card text-center">
-            <p className="text-gray-600">No teams found. Check back soon for updates.</p>
-          </div>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-center py-8">
+                <i className="ri-calendar-line text-4xl text-neutral-400 mb-4"></i>
+                <h3 className="font-semibold text-lg mb-2">No fixtures available</h3>
+                <p className="text-neutral-600 text-sm mb-4">
+                  There are currently no teams or fixtures scheduled. Check back soon for updates!
+                </p>
+                <div className="text-xs text-neutral-500">
+                  Fixtures will appear here once teams are added to the system
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

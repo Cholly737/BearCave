@@ -278,7 +278,32 @@ const FixtureDetail = () => {
         ) : (
           <Card>
             <CardContent className="pt-6">
-              <p className="text-neutral-600">No fixtures scheduled for this team.</p>
+              <div className="text-center py-8">
+                <i className="ri-calendar-2-line text-4xl text-neutral-400 mb-4"></i>
+                <h3 className="font-semibold text-lg mb-2">No fixtures available</h3>
+                <p className="text-neutral-600 text-sm mb-4">
+                  There are currently no fixtures scheduled for this team.
+                </p>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="text-xs text-neutral-500 text-center">
+                    {dataSource === 'playhq' ? (
+                      <>Check PlayHQ or switch to local data for updates</>
+                    ) : (
+                      <>New fixtures will appear here when they're added</>
+                    )}
+                  </div>
+                  {dataSource === 'local' && (
+                    <Button 
+                      onClick={() => toggleDataSource('playhq')} 
+                      variant="outline"
+                      size="sm"
+                      className="mt-2"
+                    >
+                      Try PlayHQ Data
+                    </Button>
+                  )}
+                </div>
+              </div>
             </CardContent>
           </Card>
         )}
