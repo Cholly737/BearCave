@@ -1,43 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import WebView from "@/components/WebView";
 
 const Shop = () => {
-  const [showWebView, setShowWebView] = useState(false);
-
-  const handleOpenShop = () => {
-    setShowWebView(true);
-  };
-
-  if (showWebView) {
-    return (
-      <div className="pb-20">
-        <div className="p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowWebView(false)}
-            >
-              <i className="ri-arrow-left-line mr-1"></i>
-              Back to Shop
-            </Button>
-            <h1 className="text-xl font-bold text-primary">Club Shop</h1>
-          </div>
-        </div>
-        
-        <div className="px-4">
-          <WebView
-            url="https://deepdenebearscc.square.site/s/shop"
-            title="Deepdene Bears Club Shop"
-            onClose={() => setShowWebView(false)}
-          />
-        </div>
-      </div>
-    );
-  }
-
   const shopItems = [
     {
       id: 1,
@@ -102,13 +66,16 @@ const Shop = () => {
                 Show your Bears pride with our range of official club merchandise. 
                 All proceeds support our junior development programs.
               </p>
-              <Button 
-                onClick={handleOpenShop}
-                className="w-full max-w-sm mx-auto"
+              <a 
+                href="https://deepdenebearscc.square.site/s/shop"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark font-medium transition-colors"
               >
-                <i className="ri-shopping-bag-line mr-2"></i>
+                <i className="ri-shopping-bag-line"></i>
                 Shop Online Now
-              </Button>
+                <i className="ri-external-link-line text-sm"></i>
+              </a>
             </div>
           </CardContent>
         </Card>
