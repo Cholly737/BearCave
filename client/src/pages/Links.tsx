@@ -144,33 +144,7 @@ const Links = () => {
           </CardContent>
         </Card>
 
-        {/* Web Browser Info */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <i className="ri-window-line text-3xl text-primary mb-3"></i>
-              <h3 className="font-semibold mb-2">View Documents in App</h3>
-              <p className="text-sm text-neutral-600 mb-4">
-                Click the Wisdene document above to view it directly in the app without leaving. 
-                Perfect for reading club documents while staying in the Bears app!
-              </p>
-              <div className="flex items-center justify-center gap-4 text-xs text-neutral-500">
-                <div className="flex items-center">
-                  <i className="ri-shield-check-line mr-1"></i>
-                  Secure viewing
-                </div>
-                <div className="flex items-center">
-                  <i className="ri-file-text-line mr-1"></i>
-                  Document reader
-                </div>
-                <div className="flex items-center">
-                  <i className="ri-arrow-left-right-line mr-1"></i>
-                  Easy navigation
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+
       </div>
     </div>
   );
