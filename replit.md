@@ -166,3 +166,10 @@ Preferred communication style: Simple, everyday language.
 - ✅ Hidden example items showing proper content formatting
 - ✅ Clean, centered layouts with appropriate icons (document, calendar)
 - ✅ Disabled sample event creation in database initialization
+
+### Knight FM Logo Integration (August 2025)
+- ✅ Successfully integrated authentic Knight FM logo from user-provided AVIF file
+- ✅ Converted AVIF format to PNG using ImageMagick for web compatibility
+- ✅ Applied official "kfm" branding with blue typography and blue-green circular design
+- ✅ Implemented cache-busting mechanism for immediate logo display updates
+- ✅ Enhanced sponsor image error handling with fallback support
