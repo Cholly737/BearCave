@@ -102,35 +102,35 @@ export class DatabaseStorage implements IStorage {
 
       console.log("Initializing database with sample data...");
       
-      // Add sample events - commented out to show empty state
-      // const sampleEvents: InsertEvent[] = [
-      //   {
-      //     name: "Annual Club Dinner",
-      //     description: "Join us for our annual club dinner and awards night. All players and family members welcome!",
-      //     date: new Date("2025-06-15T18:30:00"),
-      //     time: "6:30 PM",
-      //     location: "Deepdene Community Hall",
-      //     audience: "All club members and families"
-      //   },
-      //   {
-      //     name: "Junior Registration Day",
-      //     description: "Registration day for all junior teams U10-U16. Please bring ID and registration forms.",
-      //     date: new Date("2025-05-20T10:00:00"),
-      //     time: "10:00 AM - 2:00 PM",
-      //     location: "Deepdene Cricket Ground",
-      //     audience: "Junior players and parents"
-      //   },
-      //   {
-      //     name: "Cricket Clinic",
-      //     description: "Professional coaching clinic for all club members. Improve your batting, bowling and fielding skills.",
-      //     date: new Date("2025-05-25T09:00:00"),
-      //     time: "9:00 AM - 12:00 PM",
-      //     location: "Deepdene Cricket Nets",
-      //     audience: "All players"
-      //   }
-      // ];
+      // Add sample events
+      const sampleEvents: InsertEvent[] = [
+        {
+          name: "Annual Club Dinner",
+          description: "Join us for our annual club dinner and awards night. All players and family members welcome!",
+          date: new Date("2025-06-15T18:30:00"),
+          time: "6:30 PM",
+          location: "Deepdene Community Hall",
+          audience: "All club members and families"
+        },
+        {
+          name: "Junior Registration Day",
+          description: "Registration day for all junior teams U10-U16. Please bring ID and registration forms.",
+          date: new Date("2025-05-20T10:00:00"),
+          time: "10:00 AM - 2:00 PM",
+          location: "Deepdene Cricket Ground",
+          audience: "Junior players and parents"
+        },
+        {
+          name: "Cricket Clinic",
+          description: "Professional coaching clinic for all club members. Improve your batting, bowling and fielding skills.",
+          date: new Date("2025-05-25T09:00:00"),
+          time: "9:00 AM - 12:00 PM",
+          location: "Deepdene Cricket Nets",
+          audience: "All players"
+        }
+      ];
 
-      // await db.insert(events).values(sampleEvents);
+      await db.insert(events).values(sampleEvents);
       
       // Add sample teams
       const sampleTeams: InsertTeam[] = [
@@ -250,32 +250,18 @@ export class DatabaseStorage implements IStorage {
       
       await db.insert(fixtures).values(sampleFixtures);
       
-      // Add sample feed items
-      const sampleFeedItems: InsertFeedItem[] = [
-        {
-          title: "Season Kick-Off This Weekend",
-          content: "Get ready for an exciting new season! Our first matches start this Saturday. All teams have been training hard and are ready to show what they can do. Good luck to all our players!",
-          date: new Date("2025-05-15T08:00:00"),
-          type: "announcement",
-          tags: ["season", "matches"]
-        },
-        {
-          title: "New Club Merchandise Available",
-          content: "Visit our club shop to check out the latest Bears merchandise! New training gear, caps, and supporter items now in stock.",
-          date: new Date("2025-05-14T10:00:00"),
-          type: "news",
-          tags: ["merchandise", "shop"]
-        },
-        {
-          title: "Winter Training Schedule",
-          content: "Winter training sessions will continue every Tuesday and Thursday at 6:30 PM. All players welcome to join and stay match-fit during the off-season.",
-          date: new Date("2025-05-13T15:00:00"),
-          type: "training",
-          tags: ["training", "winter"]
-        }
-      ];
+      // Add sample feed items - commented out to show empty state
+      // const sampleFeedItems: InsertFeedItem[] = [
+      //   {
+      //     title: "Season Kick-Off This Weekend",
+      //     content: "Get ready for an exciting new season! Our first matches start this Saturday.",
+      //     date: new Date("2025-05-15T08:00:00"),
+      //     type: "announcement",
+      //     tags: ["season", "matches"]
+      //   }
+      // ];
       
-      await db.insert(feedItems).values(sampleFeedItems);
+      // await db.insert(feedItems).values(sampleFeedItems);
       
       // Add sample sponsors
       const sampleSponsors: InsertSponsor[] = [
