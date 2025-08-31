@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
-import logoImg from "@assets/logo_1753257070954.jpg";
+
 
 
 const Home = () => {
@@ -55,18 +55,7 @@ const Home = () => {
     <div id="home-page" className="pb-20">
       {/* Page Content */}
       
-      {/* Hero Section with Logo and Social */}
       <div className="p-4">
-        <div className="text-center mb-6">
-          <div className="mb-4">
-            <div className="w-24 h-24 mx-auto mb-2 bg-white rounded-full flex items-center justify-center border-2 border-primary overflow-hidden">
-              <img src={logoImg} alt="Deepdene Bears Cricket Club" className="w-20 h-20 object-contain" />
-            </div>
-         
-          </div>
-        </div>
-
-        {/* Social Media Section */}
         <div className="bear-card">
           <h3 className="font-semibold mb-3">Socials</h3>
           <div className="flex justify-around">
@@ -99,7 +88,7 @@ const Home = () => {
             </>
           ) : eventsError ? (
             <p className="text-sm text-gray-500">Unable to load upcoming events</p>
-          ) : events && events.length > 0 ? (
+          ) : events && Array.isArray(events) && events.length > 0 ? (
             <>
               {events.slice(0, 2).map((event: Event) => (
                 <div key={event.id} className="border border-gray-200 rounded-lg p-3 mb-3 last:mb-0 bg-gray-50">
@@ -142,13 +131,13 @@ const Home = () => {
               <div className="border border-gray-200 rounded-lg p-3 loading-skeleton h-20"></div>
             ) : feedError ? (
               <p className="text-sm text-gray-500">Unable to load latest feed</p>
-            ) : latestFeedItem ? (
+            ) : latestFeedItem && typeof latestFeedItem === 'object' && 'title' in latestFeedItem ? (
               <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h4 className="font-medium text-sm text-primary mb-1">{latestFeedItem.title}</h4>
-                    <p className="text-xs text-gray-600 mb-2">{latestFeedItem.content}</p>
-                    <p className="text-xs text-gray-500">{getTimeAgo(latestFeedItem.date)}</p>
+                    <h4 className="font-medium text-sm text-primary mb-1">{(latestFeedItem as FeedItem).title}</h4>
+                    <p className="text-xs text-gray-600 mb-2">{(latestFeedItem as FeedItem).content}</p>
+                    <p className="text-xs text-gray-500">{getTimeAgo((latestFeedItem as FeedItem).date)}</p>
                   </div>
                   <i className="ri-arrow-right-line text-gray-400 ml-2"></i>
                 </div>
