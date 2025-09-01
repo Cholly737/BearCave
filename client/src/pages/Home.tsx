@@ -1,8 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchLatestFeedItem } from "@/lib/api";
-import { FeedItem } from "@/types";
+import { Link } from "react-router-dom";
+import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
+import { Event, FeedItem } from "@/types";
 
 const Home = () => {
+  // Fetch upcoming events
+  const { 
+    data: events,
+    isLoading: eventsLoading,
+    error: eventsError 
+  } = useQuery({
+    queryKey: ["/api/events"],
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
   // Fetch latest feed item
   const { 
     data: latestFeedItem,
@@ -34,7 +45,6 @@ const Home = () => {
       <div className="bg-gradient-to-r from-primary to-primary-dark text-white py-8 px-4">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">Welcome to BearCave</h1>
-          <p className="text-white/90 text-sm">Your home for all things Deepdene Bears Cricket Club</p>
         </div>
       </div>
       
@@ -55,6 +65,27 @@ const Home = () => {
               <span className="text-white font-bold text-sm">DB</span>
             </a>
           </div>
+        </div>
+
+        {/* Upcoming Events */}
+        <div className="bear-card">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold">Upcoming Events</h3>
+            <Link to="/events" className="text-primary text-sm hover:underline">View All</Link>
+          </div>
+          
+          {eventsLoading ? (
+            <div className="space-y-2">
+              <div className="h-12 bg-neutral-100 rounded animate-pulse"></div>
+              <div className="h-12 bg-neutral-100 rounded animate-pulse"></div>
+            </div>
+          ) : (
+            <div className="text-center py-6">
+              <i className="ri-calendar-line text-4xl text-neutral-300 mb-3"></i>
+              <p className="text-neutral-500 font-medium">No events yet</p>
+              <p className="text-neutral-400 text-sm">Check back later for upcoming club events</p>
+            </div>
+          )}
         </div>
 
         {/* Latest in Feed */}
