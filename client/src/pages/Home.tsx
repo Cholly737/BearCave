@@ -1,22 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
-import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
-import { Event, FeedItem } from "@/types";
-import { Card, CardContent } from "@/components/ui/card";
-
-
+import { fetchLatestFeedItem } from "@/lib/api";
+import { FeedItem } from "@/types";
 
 const Home = () => {
-  // Fetch upcoming events
-  const { 
-    data: events,
-    isLoading: eventsLoading,
-    error: eventsError 
-  } = useQuery({
-    queryKey: ["/api/events"],
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-
   // Fetch latest feed item
   const { 
     data: latestFeedItem,
@@ -26,15 +12,6 @@ const Home = () => {
     queryKey: ["/api/feed/latest"],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-
-  // Helper to format date
-  const formatEventDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return {
-      month: date.toLocaleString('default', { month: 'short' }).toUpperCase(),
-      day: date.getDate()
-    };
-  };
 
   // Helper to calculate time ago
   const getTimeAgo = (dateString: string) => {
@@ -78,51 +55,6 @@ const Home = () => {
               <span className="text-white font-bold text-sm">DB</span>
             </a>
           </div>
-        </div>
-
-        {/* Upcoming Events */}
-        <div className="bear-card">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-semibold">Upcoming Events</h3>
-            <i className="ri-arrow-right-line text-gray-400"></i>
-          </div>
-          
-          {eventsLoading ? (
-            <>
-              <div className="border border-gray-200 rounded-lg p-3 mb-3 loading-skeleton h-20"></div>
-              <div className="border border-gray-200 rounded-lg p-3 mb-3 loading-skeleton h-20"></div>
-            </>
-          ) : eventsError ? (
-            <p className="text-sm text-gray-500">Unable to load upcoming events</p>
-          ) : events && Array.isArray(events) && events.length > 0 ? (
-            <>
-              {events.slice(0, 2).map((event: Event) => (
-                <div key={event.id} className="border border-gray-200 rounded-lg p-3 mb-3 last:mb-0 bg-gray-50">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium text-sm text-primary">{event.name}</h4>
-                      <p className="text-xs text-gray-600">
-                        {formatEventDate(event.date).day}th {formatEventDate(event.date).month}
-                      </p>
-                      <p className="text-xs text-gray-600">{event.location}</p>
-                    </div>
-                    <i className="ri-arrow-right-line text-gray-400"></i>
-                  </div>
-                </div>
-              ))}
-            </>
-          ) : (
-            <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium text-sm text-primary">Grand Final Weekend</h4>
-                  <p className="text-xs text-gray-600">1st & 10th March</p>
-                  <p className="text-xs text-gray-600">Strathmore Park</p>
-                </div>
-                <i className="ri-arrow-right-line text-gray-400"></i>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Latest in Feed */}
