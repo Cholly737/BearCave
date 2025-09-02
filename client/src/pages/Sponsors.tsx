@@ -226,49 +226,43 @@ const Sponsors = () => {
             <h3 className="font-semibold mb-3 text-primary">Become a Sponsor</h3>
             <div className="space-y-4">
               <p className="text-sm text-neutral-600">
-                Join our family of supporters and help us continue to provide quality cricket experiences 
-                for players of all ages in our community.
+                Sponsoring a cricket club is a great way to promote your business and show your commitment to the community. By becoming a sponsor, you will gain exposure to our growing network of cricket clubs and leagues and have the opportunity to reach a wide audience of cricket fans. Your sponsorship will help support our club and contribute to the development of the game.
               </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <i className="ri-trophy-line text-2xl text-yellow-500 mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1 text-yellow-700">Gold Sponsors</h4>
-                  <p className="text-xs text-neutral-600">Premium partnership with maximum visibility and benefits</p>
-                </div>
-                
-                <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                  <i className="ri-medal-line text-2xl text-gray-400 mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1 text-gray-600">Silver Sponsors</h4>
-                  <p className="text-xs text-neutral-600">Strong community partnership with excellent visibility</p>
-                </div>
-                
-                <div className="text-center p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                  <i className="ri-award-line text-2xl text-amber-600 mb-2"></i>
-                  <h4 className="font-semibold text-sm mb-1 text-amber-700">Bronze Sponsors</h4>
-                  <p className="text-xs text-neutral-600">Community support with brand recognition benefits</p>
-                </div>
-              </div>
-              
               <div className="text-center pt-4">
                 <div className="space-y-2">
                   <p className="text-sm font-medium">Ready to partner with us?</p>
                   <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
                     <div className="flex items-center">
                       <i className="ri-mail-line text-lg text-primary mr-2"></i>
-                      <a href="mailto:sponsorship@deepdenebears.com" className="text-primary hover:underline text-sm">
-                        sponsorship@deepdenebears.com
-                      </a>
-                    </div>
-                    <div className="flex items-center">
-                      <i className="ri-phone-line text-lg text-primary mr-2"></i>
-                      <a href="tel:+61398765432" className="text-primary hover:underline text-sm">
-                        +61 3 9876 5432
+                      <a href="mailto:deepdenebears@gmail.com" className="text-primary hover:underline text-sm">
+                        deepdenebears@gmail.com
                       </a>
                     </div>
                   </div>
                 </div>
               </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <i className="ri-trophy-line text-2xl text-yellow-500 mb-2"></i>
+                  <h4 className="font-semibold text-sm mb-1 text-yellow-700">Gold Sponsors</h4>
+                  <p className="text-xs text-neutral-600">Add Gold benefits here</p>
+                </div>
+                
+                <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                  <i className="ri-medal-line text-2xl text-gray-400 mb-2"></i>
+                  <h4 className="font-semibold text-sm mb-1 text-gray-600">Silver Sponsors</h4>
+                  <p className="text-xs text-neutral-600">Add Silver benefits here</p>
+                </div>
+                
+                <div className="text-center p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                  <i className="ri-award-line text-2xl text-amber-600 mb-2"></i>
+                  <h4 className="font-semibold text-sm mb-1 text-amber-700">Bronze Sponsors</h4>
+                  <p className="text-xs text-neutral-600">Add Bronze benefits here</p>
+                </div>
+              </div>
+              
+             
             </div>
           </CardContent>
         </Card>

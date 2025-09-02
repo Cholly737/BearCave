@@ -135,33 +135,63 @@ export class DatabaseStorage implements IStorage {
       // Add sample teams
       const sampleTeams: InsertTeam[] = [
         {
-          name: "Deepdene Bears First XI",
-          abbreviation: "DB1",
-          division: "Premier Division",
+          name: "Men's 1st XI",
+          abbreviation: "M1XI",
+          division: "Wright Shield",
           logoUrl: "https://via.placeholder.com/150"
         },
         {
-          name: "Deepdene Bears Winter XI",
-          abbreviation: "DBWX",
-          division: "Mamgain Shield - East Division",
+          name: "Women's 1st XI",
+          abbreviation: "W1XI",
+          division: "EGWC Senior Women B Grade",
           logoUrl: "https://via.placeholder.com/150"
         },
         {
-          name: "Deepdene Bears Second XI",
-          abbreviation: "DB2",
-          division: "Division 1",
+          name: "Men's 2nd XI - A Turf",
+          abbreviation: "M2XI",
+          division: "Sturgess Shield",
           logoUrl: "https://via.placeholder.com/150"
         },
         {
-          name: "Deepdene Bears Women",
-          abbreviation: "DBW",
-          division: "Women's Premier",
+          name: "Women's Social",
+          abbreviation: "WSoc",
+          division: "EGWC Senior Women Social A",
           logoUrl: "https://via.placeholder.com/150"
         },
         {
-          name: "Deepdene Under 16",
-          abbreviation: "DBU16",
-          division: "Junior Division",
+          name: "Men's 3rd XI - E Turf",
+          abbreviation: "M3XI",
+          division: "Charles Cohen Shield",
+          logoUrl: "https://via.placeholder.com/150"
+        },
+        {
+          name: "Under 12s",
+          abbreviation: "U12",
+          division: "U12 B Grade G Smith",
+          logoUrl: "https://via.placeholder.com/150"
+        },
+        {
+          name: "Men's 4th XI - F Turf",
+          abbreviation: "M4XI",
+          division: "Rodney Patterson Shield",
+          logoUrl: "https://via.placeholder.com/150"
+        },
+        {
+          name: "Men's T20",
+          abbreviation: "MT20",
+          division: "Kookaburra Senior Mixed T20",
+          logoUrl: "https://via.placeholder.com/150"
+        },
+        {
+          name: "Men's Sunday",
+          abbreviation: "MSun",
+          division: "C South",
+          logoUrl: "https://via.placeholder.com/150"
+        },
+        {
+          name: "Under 13s",
+          abbreviation: "U13",
+          division: "Under 13 - Wilson Shield",
           logoUrl: "https://via.placeholder.com/150"
         }
       ];
