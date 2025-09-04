@@ -246,19 +246,19 @@ const Sponsors = () => {
                 <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <i className="ri-trophy-line text-2xl text-yellow-500 mb-2"></i>
                   <h4 className="font-semibold text-sm mb-1 text-yellow-700">Gold Sponsors</h4>
-                  <p className="text-xs text-neutral-600">Add Gold benefits here</p>
+                
                 </div>
                 
                 <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
                   <i className="ri-medal-line text-2xl text-gray-400 mb-2"></i>
                   <h4 className="font-semibold text-sm mb-1 text-gray-600">Silver Sponsors</h4>
-                  <p className="text-xs text-neutral-600">Add Silver benefits here</p>
+
                 </div>
                 
                 <div className="text-center p-4 bg-amber-50 border border-amber-200 rounded-lg">
                   <i className="ri-award-line text-2xl text-amber-600 mb-2"></i>
                   <h4 className="font-semibold text-sm mb-1 text-amber-700">Bronze Sponsors</h4>
-                  <p className="text-xs text-neutral-600">Add Bronze benefits here</p>
+     
                 </div>
               </div>
               
