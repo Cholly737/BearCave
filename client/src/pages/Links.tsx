@@ -74,20 +74,19 @@ const Links = () => {
               <i className="ri-file-text-line text-primary"></i>
               Club Documents
             </h3>
-            <Button
-              variant="outline"
-              className="w-full justify-start p-4 h-auto"
-              onClick={() => handleOpenWebsite("https://drive.google.com/drive/search?q=wisdene", "Wisdene 2020-2021")}
+            <a 
+              href="https://drive.google.com/drive/search?q=wisdene" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-start gap-3 p-4 rounded-lg border hover:bg-neutral-50 transition-colors text-left w-full"
             >
-              <div className="flex items-start gap-3 text-left w-full">
-                <i className="ri-file-pdf-line text-lg text-primary flex-shrink-0 mt-0.5"></i>
-                <div className="flex-1">
-                  <div className="font-medium">Wisdene 2020-2021</div>
-                  <div className="text-xs text-neutral-600">Club documentation - View in app</div>
-                </div>
-                <i className="ri-eye-line text-neutral-400"></i>
+              <i className="ri-file-pdf-line text-lg text-primary flex-shrink-0 mt-0.5"></i>
+              <div className="flex-1">
+                <div className="font-medium">Wisdene 2020-2021</div>
+                <div className="text-xs text-neutral-600">Club documentation - Opens in new tab</div>
               </div>
-            </Button>
+              <i className="ri-external-link-line text-neutral-400"></i>
+            </a>
           </CardContent>
         </Card>
 
