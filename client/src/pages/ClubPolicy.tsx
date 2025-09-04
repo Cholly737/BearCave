@@ -23,9 +23,9 @@ const ClubPolicy = () => {
             <h3 className="font-semibold mb-3 text-primary">Child Safe & Member Protection</h3>
             <div className="space-y-3 text-sm">
                <p>Deepdene Bears Endorse Cricket Victoria's Child Safe & Member Protection Policy.</p>
-              <div className="flex items-center mt-3">
-                <i className="ri-external-link-line text-lg text-primary mr-3"></i>
-                <a href="https://www.cricketvictoria.com.au/child-safe-member-protection/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              <div className="mt-3">
+                <a href="https://www.cricketvictoria.com.au/child-safe-member-protection/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors">
+                  <i className="ri-external-link-line text-lg mr-2"></i>
                   Cricket Victoria Child Safe & Member Protection Policy
                 </a>
               </div>
