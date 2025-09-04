@@ -8,15 +8,11 @@ const ClubPolicy = () => {
       <div className="px-4 pb-20">
         <Card className="mb-4">
           <CardContent className="pt-6">
-            <h3 className="font-semibold mb-3 text-primary">Code of Conduct</h3>
+            <h3 className="font-semibold mb-3 text-primary">Legislation</h3>
             <div className="space-y-3 text-sm">
-              <p>All members of the Deepdene Bears Cricket Club are expected to maintain the highest standards of behavior both on and off the field.</p>
+              <p>The Deepdene Bears Cricket Club are proud to adhere to Cricket Victoria, Cricket Australia and Victorian Government legislation.</p>
               <ul className="list-disc list-inside space-y-2 text-neutral-700">
-                <li>Respect all players, officials, and spectators</li>
-                <li>Play within the spirit of the game</li>
-                <li>Accept decisions of umpires without dissent</li>
-                <li>Support teammates and encourage fair play</li>
-                <li>Maintain club facilities and equipment</li>
+               
               </ul>
             </div>
           </CardContent>
@@ -24,7 +20,7 @@ const ClubPolicy = () => {
 
         <Card className="mb-4">
           <CardContent className="pt-6">
-            <h3 className="font-semibold mb-3 text-primary">Player Responsibilities</h3>
+            <h3 className="font-semibold mb-3 text-primary">Child Safe & Member Protection</h3>
             <div className="space-y-3 text-sm">
               <ul className="list-disc list-inside space-y-2 text-neutral-700">
                 <li>Arrive on time for training and matches</li>
