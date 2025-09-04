@@ -77,7 +77,7 @@ const Links = () => {
             <Button
               variant="outline"
               className="w-full justify-start p-4 h-auto"
-              onClick={() => handleOpenWebsite("https://docs.google.com/document/d/1example-wisdene-doc/preview", "Wisdene 2020-2021")}
+              onClick={() => handleOpenWebsite("https://drive.google.com/drive/search?q=wisdene", "Wisdene 2020-2021")}
             >
               <div className="flex items-start gap-3 text-left w-full">
                 <i className="ri-file-pdf-line text-lg text-primary flex-shrink-0 mt-0.5"></i>
