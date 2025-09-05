@@ -113,7 +113,7 @@
 }
 
 .bear-card {
-  @apply bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm;
+  @apply bg-gray-100 rounded-lg border border-gray-200 p-4 mb-3 shadow-sm;
 }
 
 .bear-button {
