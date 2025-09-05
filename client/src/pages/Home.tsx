@@ -52,16 +52,16 @@ const Home = () => {
         <div className="bear-card">
           <h3 className="font-semibold mb-3">Socials</h3>
           <div className="flex justify-around">
-            <a href="https://www.instagram.com/deepdenebearscc/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <i className="ri-instagram-fill text-white text-xl"></i>
+            <a href="https://www.instagram.com/deepdenebearscc/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border-2 border-purple-500">
+              <i className="ri-instagram-fill text-purple-500 text-xl"></i>
             </a>
-            <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-              <i className="ri-facebook-fill text-white text-xl"></i>
+            <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border-2 border-blue-600">
+              <i className="ri-facebook-fill text-blue-600 text-xl"></i>
             </a>
-            <a href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
-              <i className="ri-youtube-fill text-white text-xl"></i>
+            <a href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border-2 border-red-600">
+              <i className="ri-youtube-fill text-red-600 text-xl"></i>
             </a>
-            <a href="https://www.deepdenebears.com.au/" className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-gray-200">
+            <a href="https://www.deepdenebears.com.au/" className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border-2 border-primary">
               <img 
                 src="/attached_assets/logo_1753257070954.jpg" 
                 alt="Deepdene Bears Logo" 
