@@ -50,8 +50,14 @@ app.use((req, res, next) => {
   
   const server = await registerRoutes(app);
 
-  // Serve static files from attached_assets directory
-  app.use('/attached_assets', express.static('attached_assets'));
+  // Serve static files from attached_assets directory with proper headers for PDFs
+  app.use('/attached_assets', (req, res, next) => {
+    if (req.path.endsWith('.pdf')) {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    }
+    next();
+  }, express.static('attached_assets'));
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

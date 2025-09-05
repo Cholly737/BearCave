@@ -80,7 +80,6 @@ const WebView = ({ url, title, onClose }: WebViewProps) => {
               className="w-full h-full border-0 rounded-b-lg"
               onLoad={handleLoad}
               onError={handleError}
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
               title={title}
             />
           )}
