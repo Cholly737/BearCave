@@ -61,8 +61,12 @@ const Home = () => {
             <a href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
               <i className="ri-youtube-fill text-white text-xl"></i>
             </a>
-            <a href="https://www.deepdenebears.com.au/" className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">DB</span>
+            <a href="https://www.deepdenebears.com.au/" className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border border-gray-200">
+              <img 
+                src="/attached_assets/logo_1753257070954.jpg" 
+                alt="Deepdene Bears Logo" 
+                className="w-10 h-10 object-contain rounded"
+              />
             </a>
           </div>
         </div>
