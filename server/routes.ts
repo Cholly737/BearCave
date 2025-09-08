@@ -3,8 +3,38 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import axios from "axios";
 import { sendTestNotification } from "./firebase-admin";
+import fs from "fs";
+import path from "path";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Serve dynamically configured service worker
+  app.get("/sw.js", (req, res) => {
+    try {
+      const swPath = path.join(import.meta.dirname, "..", "client", "public", "sw.js");
+      let swContent = fs.readFileSync(swPath, "utf-8");
+      
+      // Replace Firebase config placeholders with actual environment variables
+      const firebaseConfig = {
+        apiKey: process.env.VITE_FIREBASE_API_KEY || "",
+        authDomain: `${process.env.VITE_FIREBASE_PROJECT_ID || ""}.firebaseapp.com`,
+        projectId: process.env.VITE_FIREBASE_PROJECT_ID || "",
+        storageBucket: `${process.env.VITE_FIREBASE_PROJECT_ID || ""}.appspot.com`,
+        appId: process.env.VITE_FIREBASE_APP_ID || ""
+      };
+      
+      // Replace the hardcoded config in service worker
+      const configPattern = /const firebaseConfig = \{[\s\S]*?\};/;
+      const newConfig = `const firebaseConfig = ${JSON.stringify(firebaseConfig, null, 2)};`;
+      swContent = swContent.replace(configPattern, newConfig);
+      
+      res.setHeader("Content-Type", "application/javascript");
+      res.setHeader("Service-Worker-Allowed", "/");
+      res.send(swContent);
+    } catch (error) {
+      console.error("Error serving service worker:", error);
+      res.status(500).send("// Service worker error");
+    }
+  });
   // API routes for events
   app.get("/api/events", async (req, res) => {
     try {
