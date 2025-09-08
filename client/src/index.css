@@ -107,7 +107,7 @@
   }
 }
 
-/* BearCave Design System */
+/* Enhanced BearCave Design System */
 .bear-header {
   @apply bg-primary text-white py-4 px-4 font-semibold text-lg;
 }
@@ -116,12 +116,52 @@
   @apply bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm;
 }
 
+.bear-card-enhanced {
+  @apply bg-white rounded-xl border border-gray-200 p-6 mb-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1;
+}
+
 .bear-button {
   @apply bg-accent text-white px-4 py-2 rounded-md font-medium hover:bg-accent/90 transition-colors;
 }
 
 .bear-header-nav {
   @apply bg-primary shadow-sm;
+}
+
+/* Social Media Links */
+.social-link {
+  @apply flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg;
+  min-height: 100px;
+}
+
+/* Loading Animations */
+.loading-skeleton {
+  @apply bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse;
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced Card Hover Effects */
+.hover-card {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer;
+}
+
+/* Button Enhancements */
+.btn-primary {
+  @apply bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-white border-2 border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-white transition-all duration-300;
 }
 
 .bear-nav-bottom {
