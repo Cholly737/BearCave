@@ -96,7 +96,6 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
                     checked={permission === 'granted' && !!token}
                     onCheckedChange={handleNotificationToggle}
                     disabled={isLoading || permission === 'denied'}
-                    size="sm"
                   />
                 </div>
               </div>
