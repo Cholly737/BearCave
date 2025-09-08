@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import axios from "axios";
+import { sendTestNotification } from "./firebase-admin";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes for events
@@ -153,6 +154,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
       res.status(500).json({ message: "Failed to fetch subscriptions" });
+    }
+  });
+
+  // Test endpoint to send notification to all subscribers
+  app.post("/api/notifications/test", async (req, res) => {
+    try {
+      // Get all active subscriptions
+      const subscriptions = await storage.getAllActiveSubscriptions();
+      
+      if (subscriptions.length === 0) {
+        return res.json({ 
+          message: "No active subscriptions found. Enable notifications in your browser first!",
+          success: false 
+        });
+      }
+
+      const tokens = subscriptions.map(sub => sub.fcmToken);
+      
+      // Send test notification
+      const result = await sendTestNotification(
+        tokens,
+        "🎉 Deepdene Bears Test",
+        "Push notifications are working! You'll receive club updates here."
+      );
+
+      res.json({
+        message: "Test notification sent successfully!",
+        success: true,
+        subscriberCount: subscriptions.length,
+        successCount: result.successCount,
+        failureCount: result.failureCount
+      });
+    } catch (error) {
+      console.error("Error sending test notification:", error);
+      res.status(500).json({ 
+        message: "Failed to send test notification",
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 
