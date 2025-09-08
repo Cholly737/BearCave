@@ -78,32 +78,26 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
           </nav>
           
           {/* Notification Settings */}
-          {isSupported && (
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <div className="px-3 py-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    {permission === 'granted' && token ? (
-                      <Bell size={20} className="mr-3 text-primary" />
-                    ) : (
-                      <BellOff size={20} className="mr-3 text-gray-400" />
-                    )}
-                    <div>
-                      <span className="font-medium text-gray-700 text-sm">Notifications</span>
-                      {permission === 'denied' && (
-                        <p className="text-xs text-gray-500">Blocked in browser</p>
-                      )}
-                    </div>
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="px-3 py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Bell size={20} className="mr-3 text-primary" />
+                  <div>
+                    <span className="font-medium text-gray-700 text-sm">Notifications</span>
+                    <p className="text-xs text-gray-500">
+                      {isSupported ? `Status: ${permission}` : 'Not supported'}
+                    </p>
                   </div>
-                  <Switch
-                    checked={permission === 'granted' && !!token}
-                    onCheckedChange={handleNotificationToggle}
-                    disabled={isLoading || permission === 'denied'}
-                  />
                 </div>
+                <Switch
+                  checked={permission === 'granted' && !!token}
+                  onCheckedChange={handleNotificationToggle}
+                  disabled={isLoading || permission === 'denied'}
+                />
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
