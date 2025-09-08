@@ -49,6 +49,32 @@ const Home = () => {
       </div>
       
       <div className="p-4">
+        {/* Notification Test Button */}
+        <div className="bear-card mb-4">
+          <h3 className="font-semibold mb-3">🔔 Push Notifications</h3>
+          <p className="text-sm text-gray-600 mb-3">
+            Click below to enable notifications for club updates!
+          </p>
+          <button
+            onClick={() => {
+              if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                  if (permission === 'granted') {
+                    alert('✅ Notifications enabled! You\'ll receive club updates.');
+                  } else {
+                    alert('❌ Notifications blocked. Please enable in browser settings.');
+                  }
+                });
+              } else {
+                alert('Notifications not supported on this device.');
+              }
+            }}
+            className="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-center font-medium"
+          >
+            🔔 Enable Push Notifications
+          </button>
+        </div>
+
         <div className="bear-card">
           <h3 className="font-semibold mb-3">Socials</h3>
           <div className="flex justify-around">
