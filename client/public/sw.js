@@ -1,4 +1,4 @@
-const CACHE_NAME = 'deepdene-bears-v1';
+const CACHE_NAME = 'deepdene-bears-v2-dev';
 const urlsToCache = [
   '/',
   '/home',
@@ -85,26 +85,48 @@ self.addEventListener('install', event => {
   );
 });
 
-// Serve cached content when offline
+// Network first strategy for development - always try network first
 self.addEventListener('fetch', event => {
+  // Skip caching for development to allow live updates
+  if (event.request.url.includes('localhost') || event.request.url.includes('.replit.dev')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Always return fresh network response in development
+          return response;
+        })
+        .catch(() => {
+          // Only use cache as fallback for offline scenarios
+          return caches.match(event.request)
+            .then(cachedResponse => {
+              if (cachedResponse) {
+                return cachedResponse;
+              }
+              // Return offline fallback for navigation requests
+              if (event.request.destination === 'document') {
+                return caches.match('/');
+              }
+            });
+        })
+    );
+    return;
+  }
+  
+  // For production, use normal cache-first strategy
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Return cached version or fetch from network
         if (response) {
           return response;
         }
         
-        // Clone the request because it's a stream
         const fetchRequest = event.request.clone();
         
         return fetch(fetchRequest).then(response => {
-          // Check if valid response
           if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
           }
           
-          // Clone the response because it's a stream
           const responseToCache = response.clone();
           
           caches.open(CACHE_NAME).then(cache => {
@@ -113,7 +135,6 @@ self.addEventListener('fetch', event => {
           
           return response;
         }).catch(() => {
-          // Return offline fallback for navigation requests
           if (event.request.destination === 'document') {
             return caches.match('/');
           }
