@@ -42,7 +42,7 @@ const Home = () => {
   return (
     <div id="home-page" className="pb-20">
       {/* Enhanced Hero Header Section */}
-      <div className="relative bg-gradient-to-br from-primary via-slate-700 to-slate-800 text-white py-12 px-4 overflow-hidden">
+      <div className="relative bg-red-600 text-white py-12 px-4 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -63,7 +63,7 @@ const Home = () => {
           </div>
           
           {/* Welcome Message */}
-          <h1 className="text-3xl font-bold mb-3 leading-tight">Welcome to BearCave</h1>
+          <h1 className="text-3xl font-bold mb-3 leading-tight">🎉 UPDATED BEARCAVE 🎉</h1>
           <p className="text-white/90 text-lg mb-6 leading-relaxed">
             Home of the Deepdene Bears Cricket Club
           </p>
