@@ -68,17 +68,6 @@ const Home = () => {
             Home of the Deepdene Bears Cricket Club
           </p>
           
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-4 mt-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="text-2xl font-bold mb-1">5</div>
-              <div className="text-sm text-white/80">Teams</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="text-2xl font-bold mb-1">2025</div>
-              <div className="text-sm text-white/80">Season</div>
-            </div>
-          </div>
         </div>
       </div>
       

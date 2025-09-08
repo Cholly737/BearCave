@@ -17,7 +17,6 @@ import Sponsors from "@/pages/Sponsors";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/not-found";
 import AuthOverlay from "@/components/AuthOverlay";
-import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 function App() {
   // React hooks must be called in the same order on every render
@@ -59,7 +58,6 @@ function App() {
         <AuthOverlay onAuthSuccess={handleAuthSuccess} />
       )}
       
-      <PWAInstallPrompt />
       <Toaster />
     </TooltipProvider>
   );
