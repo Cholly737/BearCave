@@ -2,20 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
-import { useNotifications } from "@/hooks/useNotifications";
 
 const Home = () => {
-  // Initialize notification hooks
-  const { 
-    permission, 
-    token, 
-    isSupported, 
-    isLoading: notificationLoading, 
-    canRequestPermission, 
-    requestPermission, 
-    unsubscribe 
-  } = useNotifications();
-
   // Fetch upcoming events
   const { 
     data: events,
@@ -61,57 +49,6 @@ const Home = () => {
       </div>
       
       <div className="p-4">
-        {/* Notification Settings Card */}
-        {isSupported && (
-          <div className="bear-card mb-4">
-            <h3 className="font-semibold mb-3 flex items-center">
-              🔔 Push Notifications
-            </h3>
-            <div className="space-y-3">
-              <p className="text-sm text-gray-600">
-                Get notified about match results, events, and club announcements
-              </p>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-sm font-medium">
-                    Status: {permission === 'granted' && token ? '✅ Enabled' : permission === 'denied' ? '❌ Blocked' : '⚠️ Not set'}
-                  </span>
-                  {permission === 'denied' && (
-                    <p className="text-xs text-gray-500">Please enable in browser settings</p>
-                  )}
-                </div>
-                
-                {canRequestPermission && (
-                  <button
-                    onClick={requestPermission}
-                    disabled={notificationLoading}
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50"
-                  >
-                    {notificationLoading ? 'Setting up...' : 'Enable Notifications'}
-                  </button>
-                )}
-                
-                {permission === 'granted' && token && (
-                  <button
-                    onClick={unsubscribe}
-                    disabled={notificationLoading}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
-                  >
-                    {notificationLoading ? 'Updating...' : 'Disable'}
-                  </button>
-                )}
-              </div>
-              
-              {permission === 'granted' && token && (
-                <div className="p-2 bg-green-50 border border-green-200 rounded text-sm text-green-800">
-                  🎉 You're all set! You'll receive notifications about club updates.
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-        
         <div className="bear-card">
           <h3 className="font-semibold mb-3">Socials</h3>
           <div className="flex justify-around">
