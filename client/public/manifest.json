@@ -1,0 +1,28 @@
+{
+  "name": "Deepdene Bears Cricket Club",
+  "short_name": "Bears Cricket",
+  "description": "Official app for Deepdene Bears Cricket Club - fixtures, events, news and more",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2C3E50",
+  "theme_color": "#2C3E50",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/attached_assets/logo_1753257070954.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/attached_assets/logo_1753257070954.jpg", 
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr"
+}
