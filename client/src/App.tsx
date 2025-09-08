@@ -14,6 +14,7 @@ import ClubPolicy from "@/pages/ClubPolicy";
 import Registrations from "@/pages/Registrations";
 import Shop from "@/pages/Shop";
 import Sponsors from "@/pages/Sponsors";
+import Settings from "@/pages/Settings";
 import NotFound from "@/pages/not-found";
 import AuthOverlay from "@/components/AuthOverlay";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
@@ -49,6 +50,7 @@ function App() {
           <Route path="registrations" element={<Registrations />} />
           <Route path="shop" element={<Shop />} />
           <Route path="sponsors" element={<Sponsors />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

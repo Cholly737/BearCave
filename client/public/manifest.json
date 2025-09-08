@@ -10,16 +10,22 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/attached_assets/logo_1753257070954.jpg",
+      "src": "/attached_assets/generated_images/Bears_Cricket_App_Icon_a41a97dd.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/attached_assets/logo_1753257070954.jpg", 
+      "src": "/attached_assets/generated_images/Bears_Cricket_App_Icon_a41a97dd.png", 
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/attached_assets/logo_1753257070954.jpg",
+      "sizes": "180x180",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ],
   "categories": ["sports", "lifestyle"],
