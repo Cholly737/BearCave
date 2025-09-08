@@ -13,11 +13,11 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-comp
 
 // Firebase Configuration for service worker
 const firebaseConfig = {
-  apiKey: "process_will_replace_this",
-  authDomain: "process_will_replace_this", 
-  projectId: "process_will_replace_this",
-  storageBucket: "process_will_replace_this",
-  appId: "process_will_replace_this"
+  apiKey: " AIzaSyBh77pf4PQ23dvBDqZ_vFCBicLG2b9jZeE",
+  authDomain: " AIzaSyBh77pf4PQ23dvBDqZ_vFCBicLG2b9jZeE.firebaseapp.com", 
+  projectId: " AIzaSyBh77pf4PQ23dvBDqZ_vFCBicLG2b9jZeE",
+  storageBucket: " AIzaSyBh77pf4PQ23dvBDqZ_vFCBicLG2b9jZeE.appspot.com",
+  appId: "1:267658947052:web:da865f310bc2ae876478c9"
 };
 
 // Initialize Firebase in service worker

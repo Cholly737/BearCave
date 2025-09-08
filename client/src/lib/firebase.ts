@@ -75,9 +75,12 @@ export async function requestNotificationPermission() {
       console.log('Notification permission granted.');
       
       // Get FCM token
-      const token = await getToken(messaging, {
-        vapidKey: 'YOUR_VAPID_KEY' // You'll need to generate this in Firebase Console
-      });
+      // Note: VAPID key should be added to environment variables
+      // Generate one in Firebase Console > Project Settings > Cloud Messaging > Web Push certificates
+      const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+      
+      const tokenOptions = vapidKey ? { vapidKey } : {};
+      const token = await getToken(messaging, tokenOptions);
       
       if (token) {
         console.log('FCM Token:', token);

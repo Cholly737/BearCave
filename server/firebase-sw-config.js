@@ -1,5 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Build script to inject Firebase config into service worker
 function injectFirebaseConfig() {
@@ -15,12 +19,12 @@ function injectFirebaseConfig() {
     appId: process.env.VITE_FIREBASE_APP_ID || "missing-app-id"
   };
 
-  // Replace placeholder values with actual config
-  swContent = swContent.replace('"process_will_replace_this"', `"${firebaseConfig.apiKey}"`);
-  swContent = swContent.replace('"process_will_replace_this"', `"${firebaseConfig.authDomain}"`);
-  swContent = swContent.replace('"process_will_replace_this"', `"${firebaseConfig.projectId}"`);
-  swContent = swContent.replace('"process_will_replace_this"', `"${firebaseConfig.storageBucket}"`);
-  swContent = swContent.replace('"process_will_replace_this"', `"${firebaseConfig.appId}"`);
+  // Replace placeholder values with actual config (replace all occurrences in order)
+  swContent = swContent.replace(/"process_will_replace_this"/, `"${firebaseConfig.apiKey}"`);
+  swContent = swContent.replace(/"process_will_replace_this"/, `"${firebaseConfig.authDomain}"`);
+  swContent = swContent.replace(/"process_will_replace_this"/, `"${firebaseConfig.projectId}"`);
+  swContent = swContent.replace(/"process_will_replace_this"/, `"${firebaseConfig.storageBucket}"`);
+  swContent = swContent.replace(/"process_will_replace_this"/, `"${firebaseConfig.appId}"`);
 
   // Write back the updated service worker
   fs.writeFileSync(swPath, swContent, 'utf8');
@@ -28,8 +32,8 @@ function injectFirebaseConfig() {
 }
 
 // Run if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   injectFirebaseConfig();
 }
 
-module.exports = { injectFirebaseConfig };
+export { injectFirebaseConfig };

@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { X, FileText, Users, ShoppingBag, Award } from "lucide-react";
+import { X, FileText, Users, ShoppingBag, Award, Bell, BellOff } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { useNotifications } from "@/hooks/useNotifications";
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -8,12 +10,30 @@ interface SideMenuProps {
 }
 
 const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
+  const { 
+    permission, 
+    token, 
+    isSupported, 
+    isLoading, 
+    canRequestPermission, 
+    requestPermission, 
+    unsubscribe 
+  } = useNotifications();
+  
   const menuItems = [
     { to: "/club-policy", icon: FileText, label: "Club Policy" },
     { to: "/registrations", icon: Users, label: "Registrations" },
     { to: "/shop", icon: ShoppingBag, label: "Shop" },
     { to: "/sponsors", icon: Award, label: "Sponsors" },
   ];
+
+  const handleNotificationToggle = async () => {
+    if (permission === 'granted' && token) {
+      await unsubscribe();
+    } else if (canRequestPermission) {
+      await requestPermission();
+    }
+  };
 
   return (
     <>
@@ -53,6 +73,35 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
               </Link>
             ))}
           </nav>
+          
+          {/* Notification Settings */}
+          {isSupported && (
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <div className="px-3 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    {permission === 'granted' && token ? (
+                      <Bell size={20} className="mr-3 text-primary" />
+                    ) : (
+                      <BellOff size={20} className="mr-3 text-gray-400" />
+                    )}
+                    <div>
+                      <span className="font-medium text-gray-700 text-sm">Notifications</span>
+                      {permission === 'denied' && (
+                        <p className="text-xs text-gray-500">Blocked in browser</p>
+                      )}
+                    </div>
+                  </div>
+                  <Switch
+                    checked={permission === 'granted' && !!token}
+                    onCheckedChange={handleNotificationToggle}
+                    disabled={isLoading || permission === 'denied'}
+                    size="sm"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
