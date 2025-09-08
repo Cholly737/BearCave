@@ -65,6 +65,15 @@ export const sponsors = pgTable("sponsors", {
   sponsorshipLevel: text("sponsorship_level"),
 });
 
+// Notification subscriptions table schema
+export const notificationSubscriptions = pgTable("notification_subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id"), // Firebase UID or session identifier
+  fcmToken: text("fcm_token").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+});
+
 // Insert schemas using drizzle-zod
 export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertEventSchema = createInsertSchema(events).omit({ id: true });
@@ -72,6 +81,7 @@ export const insertTeamSchema = createInsertSchema(teams).omit({ id: true });
 export const insertFixtureSchema = createInsertSchema(fixtures).omit({ id: true });
 export const insertFeedItemSchema = createInsertSchema(feedItems).omit({ id: true });
 export const insertSponsorSchema = createInsertSchema(sponsors).omit({ id: true });
+export const insertNotificationSubscriptionSchema = createInsertSchema(notificationSubscriptions).omit({ id: true, createdAt: true });
 
 // Typed exports
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -91,3 +101,6 @@ export type FeedItem = typeof feedItems.$inferSelect;
 
 export type InsertSponsor = z.infer<typeof insertSponsorSchema>;
 export type Sponsor = typeof sponsors.$inferSelect;
+
+export type InsertNotificationSubscription = z.infer<typeof insertNotificationSubscriptionSchema>;
+export type NotificationSubscription = typeof notificationSubscriptions.$inferSelect;

@@ -4,7 +4,8 @@ import {
   teams, type Team, type InsertTeam,
   fixtures, type Fixture, type InsertFixture,
   feedItems, type FeedItem, type InsertFeedItem,
-  sponsors, type Sponsor, type InsertSponsor
+  sponsors, type Sponsor, type InsertSponsor,
+  notificationSubscriptions, type NotificationSubscription, type InsertNotificationSubscription
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -32,6 +33,11 @@ export interface IStorage {
   
   // Sponsor methods
   getAllSponsors(): Promise<Sponsor[]>;
+  
+  // Notification subscription methods
+  subscribeToNotifications(subscription: InsertNotificationSubscription): Promise<NotificationSubscription>;
+  unsubscribeFromNotifications(fcmToken: string): Promise<boolean>;
+  getAllActiveSubscriptions(): Promise<NotificationSubscription[]>;
   
   // Data initialization method
   initializeData(): Promise<void>;
@@ -88,6 +94,44 @@ export class DatabaseStorage implements IStorage {
   // Sponsor methods
   async getAllSponsors(): Promise<Sponsor[]> {
     return await db.select().from(sponsors);
+  }
+  
+  // Notification subscription methods
+  async subscribeToNotifications(subscription: InsertNotificationSubscription): Promise<NotificationSubscription> {
+    // First, check if this token already exists and update it if so
+    const existing = await db.select().from(notificationSubscriptions)
+      .where(eq(notificationSubscriptions.fcmToken, subscription.fcmToken));
+    
+    if (existing.length > 0) {
+      // Update existing subscription to active
+      const [updated] = await db.update(notificationSubscriptions)
+        .set({ 
+          isActive: true, 
+          userId: subscription.userId || existing[0].userId 
+        })
+        .where(eq(notificationSubscriptions.fcmToken, subscription.fcmToken))
+        .returning();
+      return updated;
+    } else {
+      // Create new subscription
+      const [created] = await db.insert(notificationSubscriptions)
+        .values(subscription)
+        .returning();
+      return created;
+    }
+  }
+
+  async unsubscribeFromNotifications(fcmToken: string): Promise<boolean> {
+    const result = await db.update(notificationSubscriptions)
+      .set({ isActive: false })
+      .where(eq(notificationSubscriptions.fcmToken, fcmToken));
+    
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  async getAllActiveSubscriptions(): Promise<NotificationSubscription[]> {
+    return await db.select().from(notificationSubscriptions)
+      .where(eq(notificationSubscriptions.isActive, true));
   }
   
   // Initialize with sample data for development

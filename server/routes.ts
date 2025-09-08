@@ -102,6 +102,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Notification subscription routes
+  app.post("/api/notifications/subscribe", async (req, res) => {
+    try {
+      const { token, userId } = req.body;
+      
+      if (!token) {
+        return res.status(400).json({ message: "FCM token is required" });
+      }
+      
+      const subscription = await storage.subscribeToNotifications({
+        fcmToken: token,
+        userId: userId || null,
+        isActive: true
+      });
+      
+      res.json({ message: "Successfully subscribed to notifications", subscription });
+    } catch (error) {
+      console.error("Error subscribing to notifications:", error);
+      res.status(500).json({ message: "Failed to subscribe to notifications" });
+    }
+  });
+
+  app.post("/api/notifications/unsubscribe", async (req, res) => {
+    try {
+      const { token } = req.body;
+      
+      if (!token) {
+        return res.status(400).json({ message: "FCM token is required" });
+      }
+      
+      const success = await storage.unsubscribeFromNotifications(token);
+      
+      if (success) {
+        res.json({ message: "Successfully unsubscribed from notifications" });
+      } else {
+        res.status(404).json({ message: "Subscription not found" });
+      }
+    } catch (error) {
+      console.error("Error unsubscribing from notifications:", error);
+      res.status(500).json({ message: "Failed to unsubscribe from notifications" });
+    }
+  });
+
+  // Admin endpoint to get all active subscriptions (for sending notifications)
+  app.get("/api/notifications/subscriptions", async (req, res) => {
+    try {
+      const subscriptions = await storage.getAllActiveSubscriptions();
+      res.json(subscriptions);
+    } catch (error) {
+      console.error("Error fetching subscriptions:", error);
+      res.status(500).json({ message: "Failed to fetch subscriptions" });
+    }
+  });
+
   // PlayHQ API integration with credential management
   app.get("/api/playhq/fixtures/:gradeId", async (req, res) => {
     const gradeId = req.params.gradeId;
