@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { X, FileText, Users, ShoppingBag, Award, Bell, BellOff } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useNotifications } from "@/hooks/useNotifications";
@@ -10,6 +10,8 @@ interface SideMenuProps {
 }
 
 const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
+  console.log('🔧 SideMenu component rendering, isOpen:', isOpen);
+  
   const { 
     permission, 
     token, 
