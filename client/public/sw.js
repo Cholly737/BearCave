@@ -7,6 +7,65 @@ const urlsToCache = [
   '/manifest.json'
 ];
 
+// Import Firebase Scripts for messaging
+importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
+
+// Firebase Configuration for service worker
+const firebaseConfig = {
+  apiKey: "process_will_replace_this",
+  authDomain: "process_will_replace_this", 
+  projectId: "process_will_replace_this",
+  storageBucket: "process_will_replace_this",
+  appId: "process_will_replace_this"
+};
+
+// Initialize Firebase in service worker
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Messaging
+const messaging = firebase.messaging();
+
+// Handle background messages
+messaging.onBackgroundMessage(function(payload) {
+  console.log('Received background message ', payload);
+  
+  const notificationTitle = payload.notification?.title || 'Deepdene Bears Cricket Club';
+  const notificationOptions = {
+    body: payload.notification?.body || 'You have a new update',
+    icon: '/attached_assets/logo_1753257070954.jpg',
+    badge: '/attached_assets/logo_1753257070954.jpg',
+    tag: 'deepdene-bears-notification',
+    requireInteraction: true,
+    actions: [
+      {
+        action: 'open',
+        title: 'Open App'
+      },
+      {
+        action: 'close',
+        title: 'Close'
+      }
+    ]
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// Handle notification clicks
+self.addEventListener('notificationclick', function(event) {
+  console.log('Notification click received.');
+  
+  event.notification.close();
+  
+  if (event.action === 'open' || !event.action) {
+    // Open the app
+    event.waitUntil(
+      clients.openWindow('/')
+    );
+  }
+});
+
 // Install service worker and cache resources
 self.addEventListener('install', event => {
   event.waitUntil(

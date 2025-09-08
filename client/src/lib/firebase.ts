@@ -1,5 +1,6 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 
 // Firebase configuration from environment variables
 const firebaseConfig = {
@@ -17,23 +18,20 @@ const isFirebaseConfigValid =
   firebaseConfig.appId;
 
 // Initialize Firebase app - handle cases where configuration is missing
-let app;
+let app: FirebaseApp | null = null;
 try {
   if (isFirebaseConfigValid) {
     app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
     console.log("Firebase initialized successfully");
   } else {
     console.warn("Firebase configuration is incomplete - using guest mode only");
-    // Create a mock app object if Firebase is not configured
-    app = {} as any;
   }
 } catch (error) {
   console.error("Error initializing Firebase:", error);
-  app = {} as any;
 }
 
 // Initialize Firebase Authentication and get a reference to the service
-export const auth = isFirebaseConfigValid ? getAuth(app) : {} as any;
+export const auth = (isFirebaseConfigValid && app) ? getAuth(app) : {} as any;
 
 // Initialize Google Auth Provider
 export const googleProvider = new GoogleAuthProvider();
@@ -41,4 +39,76 @@ export const googleProvider = new GoogleAuthProvider();
 googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
 googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
+// Initialize Firebase Messaging
+export let messaging: any;
+let messagingSupported = false;
+
+async function initializeMessaging() {
+  try {
+    if (isFirebaseConfigValid && app && typeof window !== 'undefined') {
+      messagingSupported = await isSupported();
+      if (messagingSupported) {
+        messaging = getMessaging(app);
+        console.log("Firebase Messaging initialized successfully");
+      } else {
+        console.log("Firebase Messaging not supported in this environment");
+      }
+    }
+  } catch (error) {
+    console.error("Error initializing Firebase Messaging:", error);
+  }
+}
+
+// Initialize messaging when the module loads
+initializeMessaging();
+
+// Function to request notification permission and get FCM token
+export async function requestNotificationPermission() {
+  if (!messagingSupported || !messaging) {
+    console.log("Firebase Messaging not available");
+    return null;
+  }
+
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
+      
+      // Get FCM token
+      const token = await getToken(messaging, {
+        vapidKey: 'YOUR_VAPID_KEY' // You'll need to generate this in Firebase Console
+      });
+      
+      if (token) {
+        console.log('FCM Token:', token);
+        return token;
+      } else {
+        console.log('No registration token available.');
+        return null;
+      }
+    } else {
+      console.log('Unable to get permission to notify.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting notification permission:', error);
+    return null;
+  }
+}
+
+// Function to handle foreground messages
+export function onMessageListener() {
+  if (!messagingSupported || !messaging) {
+    return Promise.reject('Firebase Messaging not available');
+  }
+  
+  return new Promise((resolve) => {
+    onMessage(messaging, (payload) => {
+      console.log("Message received in foreground: ", payload);
+      resolve(payload);
+    });
+  });
+}
+
+export { messagingSupported };
 export default app;
