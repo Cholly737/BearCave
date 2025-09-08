@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "wouter";
 import { X, FileText, Users, ShoppingBag, Award, Bell, BellOff } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useNotifications } from "@/hooks/useNotifications";
@@ -78,15 +78,15 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
           </nav>
           
           {/* Notification Settings */}
-          <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="mt-6 pt-4 border-t border-gray-200 bg-blue-50">
             <div className="px-3 py-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Bell size={20} className="mr-3 text-primary" />
+                  <Bell size={20} className="mr-3 text-blue-600" />
                   <div>
-                    <span className="font-medium text-gray-700 text-sm">Notifications</span>
+                    <span className="font-medium text-gray-700 text-sm">🔔 Push Notifications</span>
                     <p className="text-xs text-gray-500">
-                      {isSupported ? `Status: ${permission}` : 'Not supported'}
+                      {isSupported ? `Status: ${permission}` : 'Not supported'} | Debug: {String(isSupported)}
                     </p>
                   </div>
                 </div>
