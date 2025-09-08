@@ -63,7 +63,7 @@ const Home = () => {
           </div>
           
           {/* Welcome Message */}
-          <h1 className="text-3xl font-bold mb-3 leading-tight">Welcome to BearCave ✨</h1>
+          <h1 className="text-3xl font-bold mb-3 leading-tight">🚨 CACHE BYPASS TEST 🚨</h1>
           <p className="text-white/90 text-lg mb-6 leading-relaxed">
             Home of the Deepdene Bears Cricket Club
           </p>

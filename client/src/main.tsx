@@ -5,8 +5,8 @@ import { queryClient } from "./lib/queryClient";
 import App from "./App";
 import "./index.css";
 
-// Register service worker for PWA functionality
-if ('serviceWorker' in navigator) {
+// Register service worker for PWA functionality - DISABLED IN DEVELOPMENT
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
@@ -15,6 +15,14 @@ if ('serviceWorker' in navigator) {
       .catch((registrationError) => {
         console.log('SW registration failed: ', registrationError);
       });
+  });
+} else if ('serviceWorker' in navigator) {
+  // Unregister existing service worker in development
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      registration.unregister();
+      console.log('SW unregistered for development');
+    }
   });
 }
 
