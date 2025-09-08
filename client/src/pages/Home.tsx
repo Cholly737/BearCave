@@ -214,12 +214,6 @@ const Home = () => {
             </div>
           )}
         </div>
-                  <i className="ri-arrow-right-line text-gray-400 ml-2"></i>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );

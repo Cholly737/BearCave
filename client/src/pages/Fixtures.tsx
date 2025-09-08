@@ -71,12 +71,17 @@ const Fixtures = () => {
             {/* Team Cards */}
             {teamsArray.map((team: Team) => (
               <Link key={team.id} to={`/fixtures/${team.id}`}>
-                <div className="bear-card">
+                <div className="bear-card-enhanced hover-card">
                   <div className="text-center">
-                    <h3 className="font-medium text-lg mb-1">{team.name}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{team.division}</p>
-                    <button className="bear-button text-sm">
-                      See Fixtures
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-bold text-lg">
+                        {getTeamInitials(team.name)}
+                      </span>
+                    </div>
+                    <h3 className="font-semibold text-lg mb-2 text-gray-800">{team.name}</h3>
+                    <p className="text-sm text-gray-600 mb-4">{team.division}</p>
+                    <button className="btn-primary text-sm w-full">
+                      View Fixtures →
                     </button>
                   </div>
                 </div>
