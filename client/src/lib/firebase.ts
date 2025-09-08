@@ -47,12 +47,19 @@ async function initializeMessaging() {
   try {
     if (isFirebaseConfigValid && app && typeof window !== 'undefined') {
       messagingSupported = await isSupported();
+      console.log("FCM isSupported check result:", messagingSupported);
       if (messagingSupported) {
         messaging = getMessaging(app);
         console.log("Firebase Messaging initialized successfully");
       } else {
         console.log("Firebase Messaging not supported in this environment");
       }
+    } else {
+      console.log("FCM initialization skipped - conditions not met:", {
+        isFirebaseConfigValid,
+        hasApp: !!app,
+        hasWindow: typeof window !== 'undefined'
+      });
     }
   } catch (error) {
     console.error("Error initializing Firebase Messaging:", error);
@@ -110,6 +117,35 @@ export function onMessageListener() {
       console.log("Message received in foreground: ", payload);
       resolve(payload);
     });
+  });
+}
+
+// Function to get messaging support status
+export function getMessagingSupported(): boolean {
+  return messagingSupported;
+}
+
+// Function to wait for messaging initialization
+export async function waitForMessagingInitialization(): Promise<boolean> {
+  // If already initialized, return immediately
+  if (messagingSupported || !isFirebaseConfigValid || !app) {
+    return messagingSupported;
+  }
+  
+  // Wait a bit for initialization to complete
+  return new Promise((resolve) => {
+    const checkInterval = setInterval(() => {
+      if (messagingSupported) {
+        clearInterval(checkInterval);
+        resolve(true);
+      }
+    }, 100);
+    
+    // Timeout after 5 seconds
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      resolve(false);
+    }, 5000);
   });
 }
 

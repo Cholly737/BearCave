@@ -20,6 +20,9 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
     unsubscribe 
   } = useNotifications();
   
+  // Debug logging
+  console.log('SideMenu - isSupported:', isSupported, 'permission:', permission, 'token:', !!token);
+  
   const menuItems = [
     { to: "/club-policy", icon: FileText, label: "Club Policy" },
     { to: "/registrations", icon: Users, label: "Registrations" },

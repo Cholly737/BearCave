@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { requestNotificationPermission, onMessageListener, messagingSupported } from '@/lib/firebase';
+import { requestNotificationPermission, onMessageListener, getMessagingSupported, waitForMessagingInitialization } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 
 interface NotificationState {
@@ -19,31 +19,44 @@ export function useNotifications() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check initial permission state
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      setState(prev => ({
-        ...prev,
-        permission: Notification.permission,
-        isSupported: messagingSupported
-      }));
+    async function initializeNotifications() {
+      // Check initial permission state
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        console.log('Notifications hook initializing...');
+        console.log('Current permission:', Notification.permission);
+        
+        // Wait for Firebase messaging to initialize
+        const isSupported = await waitForMessagingInitialization();
+        console.log('Firebase messaging supported:', isSupported);
+        
+        setState(prev => ({
+          ...prev,
+          permission: Notification.permission,
+          isSupported: isSupported
+        }));
+
+        // Listen for foreground messages if supported
+        if (isSupported) {
+          onMessageListener()
+            .then((payload: any) => {
+              console.log('Foreground message received:', payload);
+              
+              // Show toast notification for foreground messages
+              toast({
+                title: payload.notification?.title || 'New Notification',
+                description: payload.notification?.body || 'You have a new update',
+              });
+            })
+            .catch((error) => {
+              console.error('Error setting up message listener:', error);
+            });
+        }
+      } else {
+        console.log('Window or Notification API not available');
+      }
     }
 
-    // Listen for foreground messages
-    if (messagingSupported) {
-      onMessageListener()
-        .then((payload: any) => {
-          console.log('Foreground message received:', payload);
-          
-          // Show toast notification for foreground messages
-          toast({
-            title: payload.notification?.title || 'New Notification',
-            description: payload.notification?.body || 'You have a new update',
-          });
-        })
-        .catch((error) => {
-          console.error('Error setting up message listener:', error);
-        });
-    }
+    initializeNotifications();
   }, [toast]);
 
   const requestPermission = async () => {
