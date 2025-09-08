@@ -77,25 +77,10 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
             ))}
           </nav>
           
-          {/* Notification Settings */}
-          <div className="mt-6 pt-4 border-t border-gray-200 bg-blue-50">
+          {/* TEST SECTION */}
+          <div className="mt-6 pt-4 border-t border-red-500 bg-red-100">
             <div className="px-3 py-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Bell size={20} className="mr-3 text-blue-600" />
-                  <div>
-                    <span className="font-medium text-gray-700 text-sm">🔔 Push Notifications</span>
-                    <p className="text-xs text-gray-500">
-                      {isSupported ? `Status: ${permission}` : 'Not supported'} | Debug: {String(isSupported)}
-                    </p>
-                  </div>
-                </div>
-                <Switch
-                  checked={permission === 'granted' && !!token}
-                  onCheckedChange={handleNotificationToggle}
-                  disabled={isLoading || permission === 'denied'}
-                />
-              </div>
+              <p className="text-red-800 font-bold">🚨 TEST: Can you see this red section?</p>
             </div>
           </div>
         </div>
