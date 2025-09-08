@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { X, FileText, Users, ShoppingBag, Award, Bell, BellOff } from "lucide-react";
+import { X, FileText, Users, ShoppingBag, Award, Settings } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -30,6 +30,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
     { to: "/registrations", icon: Users, label: "Registrations" },
     { to: "/shop", icon: ShoppingBag, label: "Shop" },
     { to: "/sponsors", icon: Award, label: "Sponsors" },
+    { to: "/settings", icon: Settings, label: "Settings" },
   ];
 
   const handleNotificationToggle = async () => {
@@ -77,19 +78,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
                 <span className="font-medium">{item.label}</span>
               </Link>
             ))}
-            
-            {/* SUPER OBVIOUS TEST */}
-            <div className="p-4 bg-yellow-400 border-4 border-red-600">
-              <p className="text-black font-bold text-lg">🔥 COMPONENT UPDATE TEST 🔥</p>
-            </div>
           </nav>
-          
-          {/* TEST SECTION */}
-          <div className="mt-6 pt-4 border-t border-red-500 bg-red-100">
-            <div className="px-3 py-3">
-              <p className="text-red-800 font-bold">🚨 TEST: Can you see this red section?</p>
-            </div>
-          </div>
         </div>
       </div>
     </>

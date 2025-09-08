@@ -1,8 +1,13 @@
 const CACHE_NAME = 'deepdene-bears-v1';
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
+  '/home',
+  '/fixtures',
+  '/events', 
+  '/feed',
+  '/links',
+  '/settings',
+  '/attached_assets/generated_images/Bears_Cricket_App_Icon_a41a97dd.png',
   '/attached_assets/logo_1753257070954.jpg',
   '/manifest.json'
 ];
