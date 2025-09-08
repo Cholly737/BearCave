@@ -42,7 +42,7 @@ const Home = () => {
   return (
     <div id="home-page" className="pb-20">
       {/* Enhanced Hero Header Section */}
-      <div className="relative bg-gradient-to-br from-primary via-primary-dark to-slate-800 text-white py-12 px-4 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-primary via-slate-700 to-slate-800 text-white py-12 px-4 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -124,7 +124,7 @@ const Home = () => {
               href="https://www.deepdenebears.com.au/" 
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link group bg-gradient-to-r from-primary to-primary-dark text-white"
+              className="social-link group bg-gradient-to-r from-primary to-slate-800 text-white"
             >
               <img 
                 src="/attached_assets/logo_1753257070954.jpg" 
@@ -144,7 +144,7 @@ const Home = () => {
               <i className="ri-calendar-event-line text-primary mr-2"></i>
               Upcoming Events
             </h3>
-            <Link to="/events" className="text-primary text-sm hover:text-primary-dark transition-colors font-medium">
+            <Link to="/events" className="text-primary text-sm hover:text-slate-700 transition-colors font-medium">
               View All →
             </Link>
           </div>
@@ -174,7 +174,7 @@ const Home = () => {
               <i className="ri-newspaper-line text-primary mr-2"></i>
               Latest Updates
             </h3>
-            <Link to="/feed" className="text-primary hover:text-primary-dark transition-colors">
+            <Link to="/feed" className="text-primary hover:text-slate-700 transition-colors">
               <i className="ri-arrow-right-line text-lg"></i>
             </Link>
           </div>
