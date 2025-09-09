@@ -168,35 +168,35 @@ export class DatabaseStorage implements IStorage {
           date: new Date("2025-11-01"),
           time: "TBC",
           location: "Deepdene Park",
-        }
+        },
         {
           name: "Holiday Potluck",
           description: "Pull up at Deepy with a plate for a holiday meal - Bears Style",
           date: new Date("2025-12-13"),
           time: "TBC",
           location: "Deepdene Park",
-        }
+        },
       {
         name: "Exhibition Game",
         description: "Part 1 of Super Sunday at Straddy, followed by Auction Night",
         date: new Date("2025-1-25"),
         time: "2:00PM",
         location: "Stradbroke Park",
-      }
+      },
       {
         name: "Auction Night",
         description: "Part 2 of Super Sunday at Straddy, after the Exhibition Game",
         date: new Date("2025-1-25"),
         time: "5:00PM",
         location: "Stradbroke Park",
-      }
+      },
       {
         name: "School Sports Night",
         description: "Dust off your primary school polos to earn some house points",
         date: new Date("2025-2-21"),
         time: "TBC",
         location: "Stradbroke Park",
-      }
+      },
       ];
 
       await db.insert(events).values(sampleEvents);

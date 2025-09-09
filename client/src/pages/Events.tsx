@@ -52,7 +52,7 @@ const Events = () => {
               </div>
             </div>
           ))
-        ) : events && events.length > 0 ? (
+        ) : events && Array.isArray(events) && events.length > 0 ? (
           // Events found - display them
           events.map((event: Event) => {
             const { month, day } = formatEventDate(event.date);
