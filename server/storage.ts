@@ -149,29 +149,54 @@ export class DatabaseStorage implements IStorage {
       // Add sample events
       const sampleEvents: InsertEvent[] = [
         {
-          name: "Annual Club Dinner",
-          description: "Join us for our annual club dinner and awards night. All players and family members welcome!",
-          date: new Date("2025-06-15T18:30:00"),
-          time: "6:30 PM",
-          location: "Deepdene Community Hall",
-          audience: "All club members and families"
+          name: "Players Day",
+          description: "Grab a partner and join us for a pickleball tournament - Low stakes? Maybe not",
+          date: new Date("2025-09-21"),
+          time: "TBC",
+          location: "Swing and Serve",
         },
         {
-          name: "Junior Registration Day",
-          description: "Registration day for all junior teams U10-U16. Please bring ID and registration forms.",
-          date: new Date("2025-05-20T10:00:00"),
-          time: "10:00 AM - 2:00 PM",
-          location: "Deepdene Cricket Ground",
-          audience: "Junior players and parents"
+          name: "Bears Rodeo",
+          description: "Don your finest denim and cowboy hats for a mechanical bull ride",
+          date: new Date("2025-10-11"),
+          time: "TBC",
+          location: "Stradbroke Park",
         },
         {
-          name: "Cricket Clinic",
-          description: "Professional coaching clinic for all club members. Improve your batting, bowling and fielding skills.",
-          date: new Date("2025-05-25T09:00:00"),
-          time: "9:00 AM - 12:00 PM",
-          location: "Deepdene Cricket Nets",
-          audience: "All players"
+          name: "DBCC Presents: Community movie night",
+          description: "Movie to be confirmed",
+          date: new Date("2025-11-01"),
+          time: "TBC",
+          location: "Deepdene Park",
         }
+        {
+          name: "Holiday Potluck",
+          description: "Pull up at Deepy with a plate for a holiday meal - Bears Style",
+          date: new Date("2025-12-13"),
+          time: "TBC",
+          location: "Deepdene Park",
+        }
+      {
+        name: "Exhibition Game",
+        description: "Part 1 of Super Sunday at Straddy, followed by Auction Night",
+        date: new Date("2025-1-25"),
+        time: "2:00PM",
+        location: "Stradbroke Park",
+      }
+      {
+        name: "Auction Night",
+        description: "Part 2 of Super Sunday at Straddy, after the Exhibition Game",
+        date: new Date("2025-1-25"),
+        time: "5:00PM",
+        location: "Stradbroke Park",
+      }
+      {
+        name: "School Sports Night",
+        description: "Dust off your primary school polos to earn some house points",
+        date: new Date("2025-2-21"),
+        time: "TBC",
+        location: "Stradbroke Park",
+      }
       ];
 
       await db.insert(events).values(sampleEvents);
