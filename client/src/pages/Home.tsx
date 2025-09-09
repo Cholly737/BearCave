@@ -39,6 +39,20 @@ const Home = () => {
     return `${diffDays} days ago`;
   };
 
+  // Helper to format date for event cards
+  const formatEventDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+      month: date.toLocaleString('default', { month: 'short' }).toUpperCase(),
+      day: date.getDate()
+    };
+  };
+
+  // Get the next upcoming event
+  const upcomingEvent = events && Array.isArray(events) && events.length > 0 
+    ? events.find((event: Event) => new Date(event.date) >= new Date()) 
+    : null;
+
   return (
     <div id="home-page" className="pb-20">
       {/* Enhanced Hero Header Section */}
@@ -138,6 +152,34 @@ const Home = () => {
             <div className="space-y-3">
               <div className="loading-skeleton h-16 rounded-lg"></div>
               <div className="loading-skeleton h-16 rounded-lg"></div>
+            </div>
+          ) : upcomingEvent ? (
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+              <div className="flex items-start">
+                {/* Date Badge */}
+                <div className="w-12 h-16 bg-primary text-white rounded mr-3 flex-shrink-0 flex flex-col items-center justify-center text-center">
+                  <div className="text-xs font-medium">{formatEventDate(upcomingEvent.date).month}</div>
+                  <div className="text-lg font-bold">{formatEventDate(upcomingEvent.date).day}</div>
+                </div>
+                
+                {/* Event Details */}
+                <div className="flex-1">
+                  <h4 className="font-semibold text-primary mb-1">{upcomingEvent.name}</h4>
+                  <p className="text-gray-600 text-sm mb-2">{upcomingEvent.description}</p>
+                  
+                  {/* Event Info */}
+                  <div className="space-y-1">
+                    <div className="flex items-center text-xs text-gray-500">
+                      <i className="ri-time-line w-3 mr-2"></i>
+                      <span>{upcomingEvent.time}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <i className="ri-map-pin-line w-3 mr-2"></i>
+                      <span>{upcomingEvent.location}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="text-center py-8">
