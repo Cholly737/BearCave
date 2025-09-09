@@ -72,56 +72,52 @@ const Home = () => {
       </div>
       
       <div className="p-4">
-        {/* Enhanced Social Media Section */}
-        <div className="bear-card-enhanced">
-          <h3 className="font-semibold mb-4 text-lg text-gray-800">Connect With Us</h3>
+        {/* Social Media Section */}
+        <div className="bear-card">
+          <h3 className="font-semibold mb-4 text-gray-800">Connect With Us</h3>
           <div className="grid grid-cols-2 gap-3">
             <a 
               href="https://www.instagram.com/deepdenebearscc/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="social-link group bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+              className="social-link bg-purple-100 text-purple-700 hover:bg-purple-200"
             >
-              <i className="ri-instagram-fill text-2xl mb-2 group-hover:scale-110 transition-transform duration-200"></i>
+              <i className="ri-instagram-fill text-2xl mb-2"></i>
               <div className="text-sm font-medium">Instagram</div>
-              <div className="text-xs opacity-80">@deepdenebearscc</div>
             </a>
             
             <a 
               href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="social-link group bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+              className="social-link bg-blue-100 text-blue-700 hover:bg-blue-200"
             >
-              <i className="ri-facebook-fill text-2xl mb-2 group-hover:scale-110 transition-transform duration-200"></i>
+              <i className="ri-facebook-fill text-2xl mb-2"></i>
               <div className="text-sm font-medium">Facebook</div>
-              <div className="text-xs opacity-80">Club Page</div>
             </a>
             
             <a 
               href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="social-link group bg-gradient-to-r from-red-600 to-red-700 text-white"
+              className="social-link bg-red-100 text-red-700 hover:bg-red-200"
             >
-              <i className="ri-youtube-fill text-2xl mb-2 group-hover:scale-110 transition-transform duration-200"></i>
+              <i className="ri-youtube-fill text-2xl mb-2"></i>
               <div className="text-sm font-medium">YouTube</div>
-              <div className="text-xs opacity-80">Match Highlights</div>
             </a>
             
             <a 
               href="https://www.deepdenebears.com.au/" 
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link group bg-gradient-to-r from-primary to-slate-800 text-white"
+              className="social-link bg-gray-100 text-gray-700 hover:bg-gray-200"
             >
               <img 
                 src="/attached_assets/logo_1753257070954.jpg" 
                 alt="Deepdene Bears Logo" 
-                className="w-8 h-8 object-contain rounded-full mb-2 group-hover:scale-110 transition-transform duration-200"
+                className="w-6 h-6 object-contain rounded-full mb-2"
               />
               <div className="text-sm font-medium">Official Site</div>
-              <div className="text-xs opacity-80">Bears Home</div>
             </a>
           </div>
         </div>

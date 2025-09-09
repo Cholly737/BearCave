@@ -195,8 +195,8 @@ export class DatabaseStorage implements IStorage {
         description: "Dust off your primary school polos to earn some house points",
         date: new Date("2025-2-21"),
         time: "TBC",
-        location: "Stradbroke Park",
-      },
+        location: "Stradbroke Park"
+      }
       ];
 
       await db.insert(events).values(sampleEvents);
