@@ -247,7 +247,7 @@ export class DatabaseStorage implements IStorage {
         },
         {
           name: "Men's T20",
-          abbreviation: "MT20",
+          abbreviation: "T20",
           division: "Kookaburra Senior Mixed T20",
           logoUrl: "https://via.placeholder.com/150"
         },
