@@ -1,26 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchTeamFixtures, fetchTeamDetails, fetchPlayHQFixtures } from "@/lib/api";
+import { fetchTeamDetails } from "@/lib/api";
 import { Fixture } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { DataSourceToggle } from "@/components/ui/data-source-toggle";
 
 const FixtureDetail = () => {
   const { teamId } = useParams<{ teamId: string }>();
   const navigate = useNavigate();
-  const [dataSource, setDataSource] = useState<'local' | 'playhq'>('local');
   
   // Define the PlayHQ grade ID for winter team
   const WINTER_TEAM_ID = "5"; // Database ID for the Deepdene Bears Winter XI
   
   // Enhance display for winter team
   const isWinterTeam = teamId === WINTER_TEAM_ID;
-  
-  // For PlayHQ API calls, simply use the team ID
-  // The server will determine the correct PlayHQ grade ID based on credentials
-  const playHQGradeId = teamId;
 
   // Fetch team details
   const { 
@@ -32,66 +25,19 @@ const FixtureDetail = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Fetch team fixtures (local)
-  const { 
-    data: localFixtures,
-    isLoading: localFixturesLoading,
-    error: localFixturesError
-  } = useQuery<any[]>({
-    queryKey: [`/api/teams/${teamId}/fixtures`],
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-  
   // Fetch PlayHQ fixtures for this team
   const { 
-    data: playhqFixtures,
-    isLoading: playhqFixturesLoading,
-    error: playhqFixturesError,
-    refetch: refetchPlayHQFixtures
+    data: fixtures,
+    isLoading: fixturesLoading,
+    error: fixturesError,
+    refetch: refetchFixtures
   } = useQuery<any[]>({
     queryKey: [`/api/playhq/fixtures/${teamId}`],
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: dataSource === 'playhq', // Only fetch when this data source is selected
   });
   
-  // Auto-switch to PlayHQ data for winter team, but only when credentials are available
-  useEffect(() => {
-    const tryPlayHQData = async () => {
-      if (teamId === WINTER_TEAM_ID.toString() && dataSource === 'local') {
-        try {
-          // Attempt to get fixture data from PlayHQ
-          await refetchPlayHQFixtures();
-          // If we get here, it was successful
-          setDataSource('playhq');
-        } catch (error) {
-          console.log('PlayHQ data not available, staying with local data');
-          // Stay with local data if PlayHQ fails
-        }
-      }
-    };
-    
-    tryPlayHQData();
-  }, [teamId, refetchPlayHQFixtures]);
-  
-  // Determine which fixtures to display based on the selected data source
-  const fixtures = dataSource === 'playhq' ? (playhqFixtures || []) : (localFixtures || []);
-  const fixturesLoading = dataSource === 'playhq' ? playhqFixturesLoading : localFixturesLoading;
-  const fixturesError = dataSource === 'playhq' ? playhqFixturesError : localFixturesError;
-
   const isLoading = teamLoading || fixturesLoading;
   const hasError = teamError || fixturesError;
-  
-  // Check if we're showing fallback data despite PlayHQ being selected
-  const usingFallbackData = dataSource === 'playhq' && playhqFixturesError;
-  
-  // Toggle between data sources
-  const toggleDataSource = (newSource: 'local' | 'playhq') => {
-    console.log(`Switching data source from ${dataSource} to ${newSource}`);
-    setDataSource(newSource);
-    if (newSource === 'playhq') {
-      refetchPlayHQFixtures();
-    }
-  };
 
   // Helper to format date
   const formatFixtureDate = (dateString: string) => {
@@ -131,33 +77,19 @@ const FixtureDetail = () => {
             </p>
           )}
         </div>
-        <div className="ml-auto">
-          <div className="flex flex-col items-end">
-            <DataSourceToggle 
-              dataSource={dataSource} 
-              onChange={toggleDataSource} 
-            />
-            {usingFallbackData && (
-              <div className="text-amber-600 text-xs mt-1 flex items-center">
-                <i className="ri-error-warning-line mr-1"></i>
-                PlayHQ API unavailable - using local data
-              </div>
-            )}
-          </div>
-        </div>
       </div>
       
       {/* API Status Banner */}
-      {dataSource === 'playhq' && playhqFixturesError && (
+      {fixturesError && (
         <div className="mx-4 mb-4 bg-red-50 border border-red-200 rounded-lg p-3">
           <div className="flex items-center">
             <i className="ri-error-warning-line text-red-600 mr-2"></i>
             <div className="flex-1">
               <p className="text-red-800 font-medium text-sm">PlayHQ API Error</p>
-              <p className="text-red-700 text-xs">Showing fallback data instead</p>
+              <p className="text-red-700 text-xs">Unable to load fixture data</p>
             </div>
             <Button 
-              onClick={() => refetchPlayHQFixtures()} 
+              onClick={() => refetchFixtures()} 
               variant="outline" 
               size="sm"
               className="text-red-600 border-red-300 hover:bg-red-100"
@@ -196,43 +128,27 @@ const FixtureDetail = () => {
             <CardContent className="pt-6">
               <div className="text-center">
                 <i className="ri-error-warning-line text-error text-4xl mb-3"></i>
-                {dataSource === 'playhq' ? (
-                  <div>
-                    <p className="text-error font-semibold mb-2">PlayHQ API Connection Failed</p>
-                    <p className="text-sm text-neutral-600 mb-4">
-                      {playhqFixturesError?.message || "Unable to connect to PlayHQ servers."}
-                    </p>
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
-                      <p className="text-sm text-amber-800 font-medium mb-2">Common causes:</p>
-                      <ul className="text-sm text-amber-700 space-y-1">
-                        <li>• API credentials expired or invalid</li>
-                        <li>• PlayHQ server maintenance</li>
-                        <li>• Network connectivity issues</li>
-                        <li>• API rate limits exceeded</li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button 
-                        onClick={() => toggleDataSource('local')} 
-                        variant="outline"
-                        size="sm"
-                      >
-                        Switch to Local Data
-                      </Button>
-                      <Button 
-                        onClick={() => refetchPlayHQFixtures()} 
-                        size="sm"
-                      >
-                        Retry PlayHQ Connection
-                      </Button>
-                    </div>
+                <div>
+                  <p className="text-error font-semibold mb-2">PlayHQ API Connection Failed</p>
+                  <p className="text-sm text-neutral-600 mb-4">
+                    {fixturesError?.message || "Unable to connect to PlayHQ servers."}
+                  </p>
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+                    <p className="text-sm text-amber-800 font-medium mb-2">Common causes:</p>
+                    <ul className="text-sm text-amber-700 space-y-1">
+                      <li>• API credentials expired or invalid</li>
+                      <li>• PlayHQ server maintenance</li>
+                      <li>• Network connectivity issues</li>
+                      <li>• API rate limits exceeded</li>
+                    </ul>
                   </div>
-                ) : (
-                  <div>
-                    <p className="text-error font-semibold">Failed to load fixtures</p>
-                    <p className="text-sm text-neutral-600 mt-1">Please try again later or contact support.</p>
-                  </div>
-                )}
+                  <Button 
+                    onClick={() => refetchFixtures()} 
+                    size="sm"
+                  >
+                    Retry PlayHQ Connection
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -286,22 +202,8 @@ const FixtureDetail = () => {
                 </p>
                 <div className="flex flex-col items-center gap-2">
                   <div className="text-xs text-neutral-500 text-center">
-                    {dataSource === 'playhq' ? (
-                      <>Check PlayHQ or switch to local data for updates</>
-                    ) : (
-                      <>New fixtures will appear here when they're added</>
-                    )}
+                    Check PlayHQ for fixture updates
                   </div>
-                  {dataSource === 'local' && (
-                    <Button 
-                      onClick={() => toggleDataSource('playhq')} 
-                      variant="outline"
-                      size="sm"
-                      className="mt-2"
-                    >
-                      Try PlayHQ Data
-                    </Button>
-                  )}
                 </div>
               </div>
             </CardContent>
