@@ -61,7 +61,7 @@ const Fixtures = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex mb-4 gap-2">
-                <i className="ri-error-warning-line text-error text-xl"></i>
+                <i className="ri-alert-line text-error text-xl"></i>
                 <p className="text-error">Failed to load teams. Please try again later.</p>
               </div>
             </CardContent>
@@ -74,14 +74,13 @@ const Fixtures = () => {
                 <div className="bear-card-enhanced hover-card">
                   <div className="text-center">
                     <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
-                      <span className="text-primary font-bold text-lg">
-                        {getTeamInitials(team.name)}
-                      </span>
+                      <i className="ri-basketball-line text-primary text-2xl"></i>
                     </div>
                     <h3 className="font-semibold text-lg mb-2 text-gray-800">{team.name}</h3>
                     <p className="text-sm text-gray-600 mb-4">{team.division}</p>
                     <button className="btn-primary text-sm w-full">
-                      View Fixtures →
+                      <i className="ri-calendar-check-line mr-2"></i>
+                      View Fixtures
                     </button>
                   </div>
                 </div>
@@ -93,7 +92,7 @@ const Fixtures = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
-                <i className="ri-calendar-line text-4xl text-neutral-400 mb-4"></i>
+                <i className="ri-calendar-event-line text-4xl text-neutral-400 mb-4"></i>
                 <h3 className="font-semibold text-lg mb-2">No fixtures available</h3>
                 <p className="text-neutral-600 text-sm mb-4">
                   There are currently no teams or fixtures scheduled. Check back soon for updates!

@@ -205,7 +205,7 @@ export class DatabaseStorage implements IStorage {
       const sampleTeams: InsertTeam[] = [
         {
           name: "Men's 1st XI",
-          abbreviation: "M1XI",
+          abbreviation: "1XI",
           division: "Wright Shield",
           logoUrl: "https://via.placeholder.com/150"
         },
@@ -217,7 +217,7 @@ export class DatabaseStorage implements IStorage {
         },
         {
           name: "Men's 2nd XI - A Turf",
-          abbreviation: "M2XI",
+          abbreviation: "2XI",
           division: "Sturgess Shield",
           logoUrl: "https://via.placeholder.com/150"
         },
@@ -229,7 +229,7 @@ export class DatabaseStorage implements IStorage {
         },
         {
           name: "Men's 3rd XI - E Turf",
-          abbreviation: "M3XI",
+          abbreviation: "3XI",
           division: "Charles Cohen Shield",
           logoUrl: "https://via.placeholder.com/150"
         },
@@ -241,7 +241,7 @@ export class DatabaseStorage implements IStorage {
         },
         {
           name: "Men's 4th XI - F Turf",
-          abbreviation: "M4XI",
+          abbreviation: "4XI",
           division: "Rodney Patterson Shield",
           logoUrl: "https://via.placeholder.com/150"
         },

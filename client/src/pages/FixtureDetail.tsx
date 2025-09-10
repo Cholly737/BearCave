@@ -65,7 +65,7 @@ const FixtureDetail = () => {
     <div>
       <div className="flex items-center px-4 py-3">
         <button className="text-lg mr-2" onClick={handleGoBack}>
-          <i className="ri-arrow-left-line"></i>
+          <i className="ri-arrow-left-s-line"></i>
         </button>
         <div>
           <h2 className="text-xl font-heading font-bold">
@@ -83,7 +83,7 @@ const FixtureDetail = () => {
       {fixturesError && (
         <div className="mx-4 mb-4 bg-red-50 border border-red-200 rounded-lg p-3">
           <div className="flex items-center">
-            <i className="ri-error-warning-line text-red-600 mr-2"></i>
+            <i className="ri-alert-line text-red-600 mr-2"></i>
             <div className="flex-1">
               <p className="text-red-800 font-medium text-sm">PlayHQ API Error</p>
               <p className="text-red-700 text-xs">Unable to load fixture data</p>
@@ -127,7 +127,7 @@ const FixtureDetail = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
-                <i className="ri-error-warning-line text-error text-4xl mb-3"></i>
+            <i className="ri-wifi-off-line text-error text-4xl mb-3"></i>
                 <div>
                   <p className="text-error font-semibold mb-2">PlayHQ API Connection Failed</p>
                   <p className="text-sm text-neutral-600 mb-4">
@@ -157,8 +157,8 @@ const FixtureDetail = () => {
             {fixtures.map((fixture: any) => (
               <div key={fixture.id} className="p-4 border-b border-neutral-200 last:border-b-0">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="bg-primary text-white text-center rounded p-2 w-16">
-                    <div className="text-xs">{formatFixtureDate(fixture.date).month}</div>
+                  <div className="bg-primary text-white text-center rounded-lg p-3 w-16 shadow-sm">
+                    <div className="text-xs font-medium">{formatFixtureDate(fixture.date).month}</div>
                     <div className="text-xl font-bold">{formatFixtureDate(fixture.date).day}</div>
                   </div>
                   <div className="text-xs text-neutral-500">
@@ -184,7 +184,7 @@ const FixtureDetail = () => {
                 </div>
                 <div className="mt-3 text-sm text-neutral-700">
                   <div className="flex items-center">
-                    <i className="ri-map-pin-line mr-2"></i>
+                    <i className="ri-map-pin-2-line mr-2 text-accent"></i>
                     <span>{fixture.location}</span>
                   </div>
                 </div>
@@ -195,7 +195,7 @@ const FixtureDetail = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
-                <i className="ri-calendar-2-line text-4xl text-neutral-400 mb-4"></i>
+                <i className="ri-calendar-todo-line text-4xl text-neutral-400 mb-4"></i>
                 <h3 className="font-semibold text-lg mb-2">No fixtures available</h3>
                 <p className="text-neutral-600 text-sm mb-4">
                   There are currently no fixtures scheduled for this team.
