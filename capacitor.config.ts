@@ -5,7 +5,10 @@ const config: CapacitorConfig = {
   appName: 'BearCave',
   webDir: 'dist/public',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    // For live updates, point to your Replit app URL
+    url: 'https://[your-repl-name].[your-username].replit.app',
+    cleartext: true
   },
   ios: {
     scheme: 'BearCave'
