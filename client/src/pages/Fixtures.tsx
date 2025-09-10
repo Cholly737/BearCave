@@ -73,9 +73,6 @@ const Fixtures = () => {
               <Link key={team.id} to={`/fixtures/${team.id}`}>
                 <div className="bear-card-enhanced hover-card">
                   <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                      <i className="ri-football-line text-primary text-4xl"></i>
-                    </div>
                     <h3 className="font-semibold text-lg mb-2 text-gray-800">{team.name}</h3>
                     <p className="text-sm text-gray-600 mb-4">{team.division}</p>
                     <button className="btn-primary text-sm w-full">
