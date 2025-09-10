@@ -74,7 +74,9 @@ const Fixtures = () => {
                 <div className="bear-card-enhanced hover-card">
                   <div className="text-center">
                     <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
-                      <i className="ri-basketball-line text-primary text-2xl"></i>
+                      <span className="text-primary font-bold text-lg">
+                        {getTeamInitials(team.name)}
+                      </span>
                     </div>
                     <h3 className="font-semibold text-lg mb-2 text-gray-800">{team.name}</h3>
                     <p className="text-sm text-gray-600 mb-4">{team.division}</p>
