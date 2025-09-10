@@ -43,7 +43,7 @@ const Home = () => {
   const formatEventDate = (dateString: string) => {
     const date = new Date(dateString);
     return {
-      month: date.toLocaleString('default', { month: 'short' }).toUpperCase(),
+      month: date.toLocaleString('default', { month: 'short', timeZone: 'Australia/Sydney' }).toUpperCase(),
       day: date.getDate()
     };
   };
