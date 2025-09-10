@@ -179,21 +179,21 @@ export class DatabaseStorage implements IStorage {
       {
         name: "Exhibition Game",
         description: "Part 1 of Super Sunday at Straddy, followed by Auction Night",
-        date: new Date("2025-1-25"),
+        date: new Date("2026-1-25"),
         time: "2:00PM",
         location: "Stradbroke Park",
       },
       {
         name: "Auction Night",
         description: "Part 2 of Super Sunday at Straddy, after the Exhibition Game",
-        date: new Date("2025-1-25"),
+        date: new Date("2026-1-25"),
         time: "5:00PM",
         location: "Stradbroke Park",
       },
       {
         name: "School Sports Night",
         description: "Dust off your primary school polos to earn some house points",
-        date: new Date("2025-2-21"),
+        date: new Date("2026-2-21"),
         time: "TBC",
         location: "Stradbroke Park"
       }

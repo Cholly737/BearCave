@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Event } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const Events = () => {
   const { 
@@ -22,10 +21,6 @@ const Events = () => {
     };
   };
 
-  const addToCalendar = (event: Event) => {
-    // Implementation of calendar integration would go here
-    alert(`Added "${event.name}" to your calendar`);
-  };
 
   return (
     <div className="pb-20">
@@ -87,15 +82,6 @@ const Events = () => {
                         </div>
                       </div>
                       
-                      {/* Action Button */}
-                      <Button 
-                        onClick={() => addToCalendar(event)}
-                        size="sm"
-                        className="bg-accent hover:bg-accent/90"
-                      >
-                        <i className="ri-calendar-event-line mr-2"></i>
-                        Add to Calendar
-                      </Button>
                     </div>
                   </div>
                 </CardContent>
