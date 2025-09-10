@@ -8,7 +8,7 @@ import {
   notificationSubscriptions, type NotificationSubscription, type InsertNotificationSubscription
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 // Storage interface
 export interface IStorage {
@@ -63,7 +63,7 @@ export class DatabaseStorage implements IStorage {
   
   // Event methods
   async getAllEvents(): Promise<Event[]> {
-    return await db.select().from(events);
+    return await db.select().from(events).orderBy(asc(events.date));
   }
   
   async getEventById(id: string): Promise<Event | undefined> {
