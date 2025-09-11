@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Event } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 
 const Events = () => {
   const { 
@@ -87,11 +87,9 @@ const Events = () => {
                       {/* Buy Ticket Button - Only for Players Day */}
                       {event.name === "Players Day" && (
                         <div className="mt-3">
-                          <Link href="/shop">
-                            <a className="btn-primary text-sm inline-flex items-center no-underline" data-testid="button-buy-ticket">
-                              <i className="ri-shopping-bag-line mr-2"></i>
-                              Buy ticket here
-                            </a>
+                          <Link to="/shop" className="btn-primary text-sm inline-flex items-center no-underline" data-testid="button-buy-ticket">
+                            <i className="ri-shopping-bag-line mr-2"></i>
+                            Buy ticket here
                           </Link>
                         </div>
                       )}
