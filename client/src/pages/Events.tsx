@@ -88,10 +88,10 @@ const Events = () => {
                       {event.name === "Players Day" && (
                         <div className="mt-3">
                           <Link href="/shop">
-                            <Button className="btn-primary text-sm" data-testid="button-buy-ticket">
+                            <a className="btn-primary text-sm inline-flex items-center no-underline" data-testid="button-buy-ticket">
                               <i className="ri-shopping-bag-line mr-2"></i>
                               Buy ticket here
-                            </Button>
+                            </a>
                           </Link>
                         </div>
                       )}
