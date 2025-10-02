@@ -69,13 +69,53 @@ const Feed = () => {
 
       {/* Instagram Feed Section */}
       <div className="px-4 pb-4">
-        <div className="h-[500px]">
-          <WebView
-            url="https://www.instagram.com/deepdenebearscc/"
-            title="Deepdene Bears Instagram"
-            onClose={() => {}}
-          />
-        </div>
+        <a
+          href="https://www.instagram.com/deepdenebearscc/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block"
+          data-testid="link-instagram-feed"
+        >
+          <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <div className="bg-white rounded-full p-3 mr-3">
+                  <i className="ri-instagram-fill text-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">@deepdenebearscc</h3>
+                  <p className="text-sm opacity-90">Follow us on Instagram</p>
+                </div>
+              </div>
+              <i className="ri-external-link-line text-2xl"></i>
+            </div>
+            
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-4">
+              <p className="text-sm font-medium mb-2">Latest photos, match highlights & behind the scenes</p>
+              <div className="flex items-center gap-4 text-xs opacity-90">
+                <div className="flex items-center">
+                  <i className="ri-image-line mr-1"></i>
+                  <span>Photos</span>
+                </div>
+                <div className="flex items-center">
+                  <i className="ri-video-line mr-1"></i>
+                  <span>Videos</span>
+                </div>
+                <div className="flex items-center">
+                  <i className="ri-trophy-line mr-1"></i>
+                  <span>Highlights</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold">Tap to view our feed</p>
+              <div className="bg-white/20 rounded-full px-4 py-2 text-sm font-medium">
+                View Profile →
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
       
       <div className="px-4 pb-4">
