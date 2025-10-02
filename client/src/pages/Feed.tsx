@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+canimport { useQuery } from "@tanstack/react-query";
 import { fetchFeedItems } from "@/lib/api";
 import { FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
