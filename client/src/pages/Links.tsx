@@ -156,6 +156,21 @@ const Links = () => {
                 </div>
                 <i className="ri-external-link-line text-neutral-400 ml-auto"></i>
               </a>
+              
+              <a 
+                href="https://easterncricket.au/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-3 rounded-lg border hover:bg-neutral-50 transition-colors"
+                data-testid="link-eastern-cricket"
+              >
+                <i className="ri-shield-line text-lg text-primary"></i>
+                <div>
+                  <div className="font-medium">Eastern Cricket</div>
+                  <div className="text-xs text-neutral-600">Association website</div>
+                </div>
+                <i className="ri-external-link-line text-neutral-400 ml-auto"></i>
+              </a>
             </div>
           </CardContent>
         </Card>
