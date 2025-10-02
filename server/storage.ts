@@ -370,50 +370,78 @@ export class DatabaseStorage implements IStorage {
       const sampleSponsors: InsertSponsor[] = [
         {
           name: "Knight FM",
-          logoUrl: "https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          logoUrl: "/attached_assets/KFM-Logo_1756618276456.avif",
           website: "https://knightfm.com.au/",
           description: "Knight FM provide integrated facilities management to organisations across Australia and New Zealand.",
           sponsorshipLevel: "Gold"
         },
         {
           name: "Winequip",
-          logoUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          logoUrl: "/attached_assets/winequip_1756618805193.avif",
           website: "https://winequip.com.au/",
           description: "Winequip is your key wine and beverage industry supplier in Australia and New Zealand, representing the world’s leading brands in beverage equipment and consumables.",
           sponsorshipLevel: "Gold"
         },
         {
           name: "GA Fire",
-          logoUrl: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          logoUrl: "/attached_assets/GA fire_1756618805193.avif",
           website: "https://gafire.com.au/",
           description: "GA Fire is a Melbourne based fire protection company with over 100 years combined experience in design, installation and service maintenance of all types of fire protection systems",
           sponsorshipLevel: "Silver"
         },
         {
           name: "Bendigo Bank",
-          logoUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          logoUrl: "/attached_assets/bendigo bank_1756618805192.avif",
           website: "https://www.bendigobank.com.au/",
           description: "Bendigo Bank is trusted by millions of Australians with their banking needs every day.",
           sponsorshipLevel: "Silver"
         },
         {
-          name: "Sustainable Tree Managment",
-          logoUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          name: "Sustainable Tree Management",
+          logoUrl: "/attached_assets/sustainable tree management_1756618805192.avif",
           website: "http://sustainabletm.com.au/",          description: "Providing professional and high quality arboricultural, ecological and other environmental consulting services.",
           sponsorshipLevel: "Silver"
         },
         {
           name: "Ramsay Surgical Centre Glenferrie",
-          logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          logoUrl: "/attached_assets/ramsay_1756618805192.avif",
           website: "https://www.ramsaysurgicalcentreglenferrie.com.au/",
           description: "Ramsay Surgical Centre is a modern, short-stay surgical facility located in the leafy heart of Hawthorn.",
           sponsorshipLevel: "Bronze"
         },
         {
           name: "XMG Media",
-          logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
+          logoUrl: "/attached_assets/XMG_1756618805191.avif",
           website: "https://xmgmediaww.com.au/",
-          description: "Ramsay Surgical Centre is a modern, short-stay surgical facility located in the leafy heart of Hawthorn.",
+          description: "XMG Media is a digital media and marketing agency specializing in innovative solutions.",
+          sponsorshipLevel: "Bronze"
+        },
+        {
+          name: "Elgin",
+          logoUrl: "/attached_assets/elgin_1756618805191.avif",
+          website: "#",
+          description: "Elgin is a proud supporter of Deepdene Bears Cricket Club.",
+          sponsorshipLevel: "Bronze"
+        },
+        {
+          name: "GB",
+          logoUrl: "/attached_assets/GB_1756618805190.avif",
+          website: "#",
+          description: "GB is a proud supporter of Deepdene Bears Cricket Club.",
+          sponsorshipLevel: "Bronze"
+        },
+        {
+          name: "Angle House",
+          logoUrl: "/attached_assets/Angle house_1756618805191.avif",
+          website: "#",
+          description: "Angle House is a proud supporter of Deepdene Bears Cricket Club.",
+          sponsorshipLevel: "Bronze"
+        },
+        {
+          name: "Bindara Group",
+          logoUrl: "/attached_assets/bindara group_1756618805192.avif",
+          website: "#",
+          description: "Bindara Group is a proud supporter of Deepdene Bears Cricket Club.",
           sponsorshipLevel: "Bronze"
         },
       ];
