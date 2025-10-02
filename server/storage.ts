@@ -100,6 +100,13 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(sponsors);
   }
   
+  // Instagram post methods
+  async getActiveInstagramPosts(): Promise<InstagramPost[]> {
+    return await db.select().from(instagramPosts)
+      .where(eq(instagramPosts.isActive, true))
+      .orderBy(asc(instagramPosts.displayOrder));
+  }
+  
   // Notification subscription methods
   async subscribeToNotifications(subscription: InsertNotificationSubscription): Promise<NotificationSubscription> {
     // First, check if this token already exists and update it if so
@@ -419,6 +426,27 @@ export class DatabaseStorage implements IStorage {
       ];
       
       await db.insert(sponsors).values(sampleSponsors);
+      
+      // Add sample Instagram posts (using placeholder URLs - replace with actual post URLs)
+      const sampleInstagramPosts: InsertInstagramPost[] = [
+        {
+          postUrl: "https://www.instagram.com/p/C_example1/",
+          displayOrder: 1,
+          isActive: true
+        },
+        {
+          postUrl: "https://www.instagram.com/p/C_example2/",
+          displayOrder: 2,
+          isActive: true
+        },
+        {
+          postUrl: "https://www.instagram.com/p/C_example3/",
+          displayOrder: 3,
+          isActive: true
+        }
+      ];
+      
+      await db.insert(instagramPosts).values(sampleInstagramPosts);
       
       console.log("Database initialization complete!");
     } catch (error) {

@@ -4,6 +4,13 @@ import { FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect } from "react";
 
+interface InstagramPost {
+  id: number;
+  postUrl: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
 const Feed = () => {
   const { 
     data: feedItems,
@@ -14,11 +21,19 @@ const Feed = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
+  const {
+    data: instagramPosts,
+    isLoading: instagramLoading
+  } = useQuery<InstagramPost[]>({
+    queryKey: ["/api/instagram-posts"],
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
   useEffect(() => {
     if ((window as any).instgrm) {
       (window as any).instgrm.Embeds.process();
     }
-  }, []);
+  }, [instagramPosts]);
 
   // Helper to format date
   const getTimeAgo = (dateString: string) => {
@@ -93,26 +108,46 @@ const Feed = () => {
           </div>
           
           {/* Instagram Feed Grid */}
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            {[1, 2, 3].map((i) => (
-              <a
-                key={i}
-                href="https://www.instagram.com/deepdenebearscc/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden group cursor-pointer hover:opacity-90 transition-opacity"
-                data-testid={`instagram-post-${i}`}
-              >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center opacity-50 group-hover:opacity-70 transition-opacity">
-                    <i className="ri-instagram-line text-purple-400 text-3xl mb-2 block"></i>
-                    <p className="text-xs text-gray-600">View Post</p>
+          {instagramLoading ? (
+            <div className="space-y-4 mb-4">
+              <div className="loading-skeleton h-48 rounded-lg"></div>
+              <div className="loading-skeleton h-48 rounded-lg"></div>
+              <div className="loading-skeleton h-48 rounded-lg"></div>
+            </div>
+          ) : instagramPosts && instagramPosts.length > 0 ? (
+            <div className="space-y-4 mb-4">
+              {instagramPosts.slice(0, 3).map((post) => (
+                <div 
+                  key={post.id}
+                  className="instagram-embed-container"
+                  dangerouslySetInnerHTML={{
+                    __html: `<blockquote class="instagram-media" data-instgrm-permalink="${post.postUrl}" data-instgrm-version="14"></blockquote>`
+                  }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              {[1, 2, 3].map((i) => (
+                <a
+                  key={i}
+                  href="https://www.instagram.com/deepdenebearscc/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden group cursor-pointer hover:opacity-90 transition-opacity"
+                  data-testid={`instagram-post-${i}`}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center opacity-50 group-hover:opacity-70 transition-opacity">
+                      <i className="ri-instagram-line text-purple-400 text-3xl mb-2 block"></i>
+                      <p className="text-xs text-gray-600">View Post</p>
+                    </div>
                   </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </a>
-            ))}
-          </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </a>
+              ))}
+            </div>
+          )}
 
           {/* Follow Button */}
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-4">

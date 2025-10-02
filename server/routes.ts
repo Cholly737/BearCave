@@ -133,6 +133,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // API routes for Instagram posts
+  app.get("/api/instagram-posts", async (req, res) => {
+    try {
+      const posts = await storage.getActiveInstagramPosts();
+      res.json(posts);
+    } catch (error) {
+      console.error("Error fetching Instagram posts:", error);
+      res.status(500).json({ message: "Failed to fetch Instagram posts" });
+    }
+  });
+
   // Notification subscription routes
   app.post("/api/notifications/subscribe", async (req, res) => {
     try {
