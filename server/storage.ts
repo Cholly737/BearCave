@@ -437,13 +437,6 @@ export class DatabaseStorage implements IStorage {
           description: "Angle House is a proud supporter of Deepdene Bears Cricket Club.",
           sponsorshipLevel: "Bronze"
         },
-        {
-          name: "Bindara Group",
-          logoUrl: "/attached_assets/bindara group_1756618805192.avif",
-          website: "#",
-          description: "Bindara Group is a proud supporter of Deepdene Bears Cricket Club.",
-          sponsorshipLevel: "Bronze"
-        },
       ];
       
       await db.insert(sponsors).values(sampleSponsors);
