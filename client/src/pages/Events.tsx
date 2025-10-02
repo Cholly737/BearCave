@@ -83,17 +83,6 @@ const Events = () => {
                           <span>{event.audience}</span>
                         </div>
                       </div>
-                      
-                      {/* Buy Ticket Button - Only for Players Day */}
-                      {event.name === "Players Day" && (
-                        <div className="mt-3">
-                          <Link to="/shop" className="btn-primary text-sm inline-flex items-center no-underline" data-testid="button-buy-ticket">
-                            <i className="ri-shopping-bag-line mr-2"></i>
-                            Buy ticket here
-                          </Link>
-                        </div>
-                      )}
-                      
                     </div>
                   </div>
                 </CardContent>

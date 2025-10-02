@@ -149,13 +149,6 @@ export class DatabaseStorage implements IStorage {
       // Add sample events
       const sampleEvents: InsertEvent[] = [
         {
-          name: "Players Day",
-          description: "Grab a partner and join us for a pickleball tournament - Low stakes? Maybe not",
-          date: new Date("2025-09-21"),
-          time: "TBC",
-          location: "Swing and Serve",
-        },
-        {
           name: "Bears Rodeo",
           description: "Don your finest denim and cowboy hats for a mechanical bull ride",
           date: new Date("2025-10-11"),
