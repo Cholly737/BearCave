@@ -168,10 +168,10 @@ export class DatabaseStorage implements IStorage {
         },
         {
           name: "President's Dinner",
-          description: "3-Course meal and drinks, Dress Code: Jacket/Cocktail",
-          date: new Date("2026-01-16"),
-          time: "7:00 PM AEST",
-          location: "Melbourne Athenaeum",
+          description: "3-Course meal and drinks, Dress Code:Jacket/Cocktail",
+          date: new Date("2025-16-10"),
+          time: "7:00PM",
+          location: " Melbourne Athenaeum",
         },
         {
           name: "DBCC Presents: Community movie night",
