@@ -174,7 +174,7 @@ const Feed = () => {
               </div>
             </CardContent>
           </Card>
-        ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 && (
+        ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 ? (
           feedItems.map((item: FeedItem) => (
             <div key={item.id} className="bear-card">
               <h3 className="font-medium text-primary mb-1">{item.title}</h3>
@@ -182,7 +182,7 @@ const Feed = () => {
               <p className="text-xs text-gray-500">{getTimeAgo(item.date)}</p>
             </div>
           ))
-        )}
+        ) : null}
       </div>
     </div>
   );
