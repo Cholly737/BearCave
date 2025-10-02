@@ -6,8 +6,6 @@ import { useAuth } from "@/hooks/use-auth";
 import Layout from "@/components/Layout";
 import Home from "@/pages/Home";
 import Events from "@/pages/Events";
-import Fixtures from "@/pages/Fixtures";
-import FixtureDetail from "@/pages/FixtureDetail";
 import Feed from "@/pages/Feed";
 import Links from "@/pages/Links";
 import ClubPolicy from "@/pages/ClubPolicy";
@@ -41,8 +39,6 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="events" element={<Events />} />
-          <Route path="fixtures" element={<Fixtures />} />
-          <Route path="fixtures/:teamId" element={<FixtureDetail />} />
           <Route path="feed" element={<Feed />} />
           <Route path="links" element={<Links />} />
           <Route path="club-policy" element={<ClubPolicy />} />
