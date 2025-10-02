@@ -403,13 +403,6 @@ export class DatabaseStorage implements IStorage {
           sponsorshipLevel: "Silver"
         },
         {
-          name: "Bindara Group",
-          logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
-          website: "https://au.linkedin.com/company/bindaragroup",
-          description: "Bindara Group is a trade services company specializing in plumbing, electrical, carpentry, handyman services, painting, and minor capital works",
-          sponsorshipLevel: "Silver"
-        },
-        {
           name: "Ramsay Surgical Centre Glenferrie",
           logoUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80",
           website: "https://www.ramsaysurgicalcentreglenferrie.com.au/",
