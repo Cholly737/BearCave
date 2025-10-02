@@ -5,7 +5,8 @@ import {
   fixtures, type Fixture, type InsertFixture,
   feedItems, type FeedItem, type InsertFeedItem,
   sponsors, type Sponsor, type InsertSponsor,
-  notificationSubscriptions, type NotificationSubscription, type InsertNotificationSubscription
+  notificationSubscriptions, type NotificationSubscription, type InsertNotificationSubscription,
+  instagramPosts, type InstagramPost, type InsertInstagramPost
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc } from "drizzle-orm";
@@ -38,6 +39,9 @@ export interface IStorage {
   subscribeToNotifications(subscription: InsertNotificationSubscription): Promise<NotificationSubscription>;
   unsubscribeFromNotifications(fcmToken: string): Promise<boolean>;
   getAllActiveSubscriptions(): Promise<NotificationSubscription[]>;
+  
+  // Instagram post methods
+  getActiveInstagramPosts(): Promise<InstagramPost[]>;
   
   // Data initialization method
   initializeData(): Promise<void>;

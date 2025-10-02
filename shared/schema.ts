@@ -74,6 +74,15 @@ export const notificationSubscriptions = pgTable("notification_subscriptions", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
+// Instagram posts table schema
+export const instagramPosts = pgTable("instagram_posts", {
+  id: serial("id").primaryKey(),
+  postUrl: text("post_url").notNull(),
+  displayOrder: integer("display_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Insert schemas using drizzle-zod
 export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertEventSchema = createInsertSchema(events).omit({ id: true });
@@ -82,6 +91,7 @@ export const insertFixtureSchema = createInsertSchema(fixtures).omit({ id: true 
 export const insertFeedItemSchema = createInsertSchema(feedItems).omit({ id: true });
 export const insertSponsorSchema = createInsertSchema(sponsors).omit({ id: true });
 export const insertNotificationSubscriptionSchema = createInsertSchema(notificationSubscriptions).omit({ id: true, createdAt: true });
+export const insertInstagramPostSchema = createInsertSchema(instagramPosts).omit({ id: true, createdAt: true });
 
 // Typed exports
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -104,3 +114,6 @@ export type Sponsor = typeof sponsors.$inferSelect;
 
 export type InsertNotificationSubscription = z.infer<typeof insertNotificationSubscriptionSchema>;
 export type NotificationSubscription = typeof notificationSubscriptions.$inferSelect;
+
+export type InsertInstagramPost = z.infer<typeof insertInstagramPostSchema>;
+export type InstagramPost = typeof instagramPosts.$inferSelect;
