@@ -167,6 +167,13 @@ export class DatabaseStorage implements IStorage {
           location: "Stradbroke Park",
         },
         {
+          name: "President's Dinner",
+          description: "3-Course meal and drinks, Dress Code:Jacket/Cocktail",
+          date: new Date("2025-16-01"),
+          time: "7:00PM",
+          location: " Melbourne Athenaeum",
+        },
+        {
           name: "DBCC Presents: Community movie night",
           description: "Movie to be confirmed",
           date: new Date("2025-11-01"),
