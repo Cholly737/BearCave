@@ -58,8 +58,9 @@ const Events = () => {
                 <CardContent className="p-4">
                   <div className="flex items-start">
                     {/* Date Badge */}
-                    <div className="w-12 h-12 bg-primary text-white rounded mr-3 flex-shrink-0 flex items-center justify-center text-center">
+                    <div className="w-12 h-16 bg-primary text-white rounded mr-3 flex-shrink-0 flex flex-col items-center justify-center text-center">
                       <div className="text-xs font-medium">{month}</div>
+                      <div className="text-lg font-bold">{day}</div>
                     </div>
                     
                     {/* Event Details */}
