@@ -1,4 +1,4 @@
-canimport { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchFeedItems } from "@/lib/api";
 import { FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
@@ -107,46 +107,28 @@ const Feed = () => {
             </a>
           </div>
           
-          {/* Instagram Feed Grid */}
+          {/* Instagram Feed - First Post */}
           {instagramLoading ? (
-            <div className="space-y-4 mb-4">
-              <div className="loading-skeleton h-48 rounded-lg"></div>
-              <div className="loading-skeleton h-48 rounded-lg"></div>
-              <div className="loading-skeleton h-48 rounded-lg"></div>
-            </div>
-          ) : instagramPosts && instagramPosts.length > 0 ? (
-            <div className="space-y-4 mb-4">
-              {instagramPosts.slice(0, 3).map((post) => (
-                <div 
-                  key={post.id}
-                  className="instagram-embed-container"
-                  dangerouslySetInnerHTML={{
-                    __html: `<blockquote class="instagram-media" data-instgrm-permalink="${post.postUrl}" data-instgrm-version="14"></blockquote>`
-                  }}
-                />
-              ))}
-            </div>
+            <div className="loading-skeleton h-96 rounded-lg mb-4"></div>
+          ) : instagramPosts && instagramPosts.length > 0 && instagramPosts[0] ? (
+            <div 
+              className="instagram-embed-container mb-4"
+              dangerouslySetInnerHTML={{
+                __html: `<blockquote class="instagram-media" data-instgrm-permalink="${instagramPosts[0].postUrl}" data-instgrm-version="14"></blockquote>`
+              }}
+            />
           ) : (
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              {[1, 2, 3].map((i) => (
-                <a
-                  key={i}
-                  href="https://www.instagram.com/deepdenebearscc/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden group cursor-pointer hover:opacity-90 transition-opacity"
-                  data-testid={`instagram-post-${i}`}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center opacity-50 group-hover:opacity-70 transition-opacity">
-                      <i className="ri-instagram-line text-purple-400 text-3xl mb-2 block"></i>
-                      <p className="text-xs text-gray-600">View Post</p>
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                </a>
-              ))}
-            </div>
+            <a
+              href="https://www.instagram.com/deepdenebearscc/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg p-12 text-center hover:opacity-90 transition-opacity mb-4"
+              data-testid="instagram-placeholder"
+            >
+              <i className="ri-instagram-line text-purple-400 text-6xl mb-4 block"></i>
+              <p className="text-lg font-semibold text-gray-800 mb-2">Latest from Instagram</p>
+              <p className="text-sm text-gray-600">Click to view our Instagram feed</p>
+            </a>
           )}
 
           {/* Follow Button */}
