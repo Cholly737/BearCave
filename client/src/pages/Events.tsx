@@ -78,11 +78,17 @@ const Events = () => {
                           <i className="ri-map-pin-line w-4 mr-2"></i>
                           <span>{event.location}</span>
                         </div>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <i className="ri-group-line w-4 mr-2"></i>
-                          <span>{event.audience}</span>
-                        </div>
                       </div>
+                      
+                      {/* Buy Tickets Button for President's Dinner */}
+                      {event.name.toLowerCase().includes("president") && event.name.toLowerCase().includes("dinner") && (
+                        <Link to="/shop" data-testid="link-buy-tickets">
+                          <Button className="w-full sm:w-auto" size="sm">
+                            <i className="ri-ticket-line mr-2"></i>
+                            Buy Tickets
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </CardContent>
