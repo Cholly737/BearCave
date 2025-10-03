@@ -78,6 +78,8 @@ export const notificationSubscriptions = pgTable("notification_subscriptions", {
 export const instagramPosts = pgTable("instagram_posts", {
   id: serial("id").primaryKey(),
   postUrl: text("post_url").notNull(),
+  imageUrl: text("image_url"),
+  caption: text("caption"),
   displayOrder: integer("display_order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
