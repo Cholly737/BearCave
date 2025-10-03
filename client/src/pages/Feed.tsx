@@ -2,7 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchFeedItems } from "@/lib/api";
 import { FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
-import WebView from "@/components/WebView";
+import { useEffect } from "react";
+
+interface InstagramPost {
+  id: number;
+  postUrl: string;
+  displayOrder: number;
+  isActive: boolean;
+}
 
 const Feed = () => {
   const { 
@@ -13,6 +20,33 @@ const Feed = () => {
     queryKey: ["/api/feed"],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
+
+  const {
+    data: instagramPosts,
+    isLoading: instagramLoading
+  } = useQuery<InstagramPost[]>({
+    queryKey: ["/api/instagram-posts"],
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    // Load Instagram embed script
+    const script = document.createElement('script');
+    script.src = 'https://www.instagram.com/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Process Instagram embeds when posts load
+    if (instagramPosts && (window as any).instgrm) {
+      (window as any).instgrm.Embeds.process();
+    }
+  }, [instagramPosts]);
 
   // Helper to format date
   const getTimeAgo = (dateString: string) => {
@@ -68,14 +102,56 @@ const Feed = () => {
       </div>
 
       {/* Instagram Feed Section */}
-      <div className="px-4 pb-20">
-        <div className="h-[calc(100vh-120px)]">
-          <WebView
-            url="https://www.instagram.com/deepdenebearscc/"
-            title="Deepdene Bears Instagram page"
-            onClose={() => {}}
-          />
+      <div className="px-4 pb-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-primary flex items-center">
+            <i className="ri-instagram-line text-purple-600 mr-2"></i>
+            Latest from Instagram
+          </h2>
+          <a
+            href="https://www.instagram.com/deepdenebearscc/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center"
+            data-testid="link-view-all-instagram"
+          >
+            View All <i className="ri-arrow-right-line ml-1"></i>
+          </a>
         </div>
+
+        {instagramLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="loading-skeleton h-96 rounded-lg"></div>
+            ))}
+          </div>
+        ) : instagramPosts && instagramPosts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {instagramPosts.slice(0, 3).map((post) => (
+              <div
+                key={post.id}
+                className="instagram-embed"
+                dangerouslySetInnerHTML={{
+                  __html: `<blockquote class="instagram-media" data-instgrm-permalink="${post.postUrl}" data-instgrm-version="14" style="margin: 0;"></blockquote>`
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <a
+            href="https://www.instagram.com/deepdenebearscc/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all"
+            data-testid="link-instagram-placeholder"
+          >
+            <div className="text-center">
+              <i className="ri-instagram-fill text-6xl mb-4 block"></i>
+              <h3 className="text-xl font-bold mb-2">@deepdenebearscc</h3>
+              <p className="text-sm opacity-90">Tap to view our Instagram feed</p>
+            </div>
+          </a>
+        )}
       </div>
       
       <div className="px-4 pb-4">
