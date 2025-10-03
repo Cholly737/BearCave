@@ -2,12 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
+import { useState, useEffect } from "react";
 
 interface InstagramPost {
   id: number;
   postUrl: string;
   displayOrder: number;
   isActive: boolean;
+}
+
+interface InstagramOEmbedData {
+  thumbnail_url: string;
+  author_name: string;
+  title?: string;
 }
 
 const Home = () => {
@@ -41,6 +48,32 @@ const Home = () => {
   });
 
   const latestInstagramPost = instagramPosts && instagramPosts.length > 0 ? instagramPosts[0] : null;
+  
+  const [postData, setPostData] = useState<InstagramOEmbedData | null>(null);
+  const [loadingPostData, setLoadingPostData] = useState(true);
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      if (!latestInstagramPost) {
+        setLoadingPostData(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/instagram-posts/oembed?url=${encodeURIComponent(latestInstagramPost.postUrl)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPostData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching oEmbed data:', error);
+      } finally {
+        setLoadingPostData(false);
+      }
+    };
+
+    fetchPostData();
+  }, [latestInstagramPost]);
 
   // Helper to calculate time ago
   const getTimeAgo = (dateString: string) => {
@@ -225,8 +258,56 @@ const Home = () => {
           </div>
           
           {/* Latest Instagram Post */}
-          {instagramLoading ? (
-            <div className="loading-skeleton h-32 rounded-lg mb-4"></div>
+          {instagramLoading || loadingPostData ? (
+            <div className="loading-skeleton h-96 rounded-lg mb-4"></div>
+          ) : latestInstagramPost && postData ? (
+            <a
+              href={latestInstagramPost.postUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block mb-4 group"
+              data-testid="link-latest-instagram-post"
+            >
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200">
+                {/* Instagram Header */}
+                <div className="p-3 border-b border-gray-100 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <i className="ri-instagram-line text-purple-600 text-xl mr-2"></i>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-900">{postData.author_name || '@deepdenebearscc'}</div>
+                      <div className="text-xs text-gray-500">Latest Post</div>
+                    </div>
+                  </div>
+                  <i className="ri-external-link-line text-gray-400 text-lg"></i>
+                </div>
+                
+                {/* Post Image */}
+                {postData.thumbnail_url ? (
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={postData.thumbnail_url}
+                      alt={postData.title || 'Latest Instagram post'}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {/* Instagram overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                      <i className="ri-instagram-fill text-white text-5xl opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="aspect-square bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center">
+                    <i className="ri-instagram-fill text-white text-6xl"></i>
+                  </div>
+                )}
+                
+                {/* View More Link */}
+                <div className="p-3 bg-gray-50 text-center">
+                  <span className="text-sm text-gray-600 group-hover:text-purple-600 transition-colors">
+                    Tap to view on Instagram
+                  </span>
+                </div>
+              </div>
+            </a>
           ) : latestInstagramPost ? (
             <a
               href={latestInstagramPost.postUrl}

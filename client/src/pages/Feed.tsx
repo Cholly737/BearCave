@@ -2,12 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchFeedItems } from "@/lib/api";
 import { FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
 
 interface InstagramPost {
   id: number;
   postUrl: string;
   displayOrder: number;
   isActive: boolean;
+}
+
+interface InstagramOEmbedData {
+  thumbnail_url: string;
+  author_name: string;
+  title?: string;
 }
 
 const Feed = () => {
@@ -27,6 +34,38 @@ const Feed = () => {
     queryKey: ["/api/instagram-posts"],
     staleTime: 5 * 60 * 1000,
   });
+
+  const [postData, setPostData] = useState<{[key: number]: InstagramOEmbedData}>({});
+  const [loadingPostData, setLoadingPostData] = useState(true);
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      if (!instagramPosts || instagramPosts.length === 0) {
+        setLoadingPostData(false);
+        return;
+      }
+
+      const data: {[key: number]: InstagramOEmbedData} = {};
+      
+      await Promise.all(
+        instagramPosts.slice(0, 3).map(async (post) => {
+          try {
+            const response = await fetch(`/api/instagram-posts/oembed?url=${encodeURIComponent(post.postUrl)}`);
+            if (response.ok) {
+              data[post.id] = await response.json();
+            }
+          } catch (error) {
+            console.error(`Error fetching oEmbed data for post ${post.id}:`, error);
+          }
+        })
+      );
+
+      setPostData(data);
+      setLoadingPostData(false);
+    };
+
+    fetchPostData();
+  }, [instagramPosts]);
 
   // Helper to format date
   const getTimeAgo = (dateString: string) => {
@@ -99,40 +138,57 @@ const Feed = () => {
           </a>
         </div>
 
-        {instagramLoading ? (
+        {instagramLoading || loadingPostData ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="loading-skeleton h-40 rounded-lg"></div>
+              <div key={i} className="loading-skeleton h-80 rounded-lg"></div>
             ))}
           </div>
         ) : instagramPosts && instagramPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {instagramPosts.slice(0, 3).map((post, index) => (
-              <a
-                key={post.id}
-                href={post.postUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-                data-testid={`link-instagram-post-${index + 1}`}
-              >
-                <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl p-4 text-white hover:shadow-lg transition-all transform hover:scale-[1.02] h-full">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-white rounded-full p-2 mr-2">
-                      <i className="ri-instagram-fill text-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-bold text-sm">Post {index + 1}</div>
-                      <div className="text-xs opacity-90">@deepdenebearscc</div>
+            {instagramPosts.slice(0, 3).map((post, index) => {
+              const oembedData = postData[post.id];
+              
+              return (
+                <a
+                  key={post.id}
+                  href={post.postUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                  data-testid={`link-instagram-post-${index + 1}`}
+                >
+                  <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200">
+                    {/* Post Image */}
+                    {oembedData?.thumbnail_url ? (
+                      <div className="relative aspect-square overflow-hidden">
+                        <img
+                          src={oembedData.thumbnail_url}
+                          alt={oembedData.title || `Instagram post ${index + 1}`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {/* Instagram overlay on hover */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                          <i className="ri-instagram-fill text-white text-4xl opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="aspect-square bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center">
+                        <i className="ri-instagram-fill text-white text-6xl"></i>
+                      </div>
+                    )}
+                    
+                    {/* Post Info */}
+                    <div className="p-3">
+                      <div className="flex items-center text-sm text-gray-700">
+                        <i className="ri-instagram-line text-purple-600 mr-2"></i>
+                        <span className="font-medium">{oembedData?.author_name || '@deepdenebearscc'}</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-4 text-center">
-                    <i className="ri-external-link-line text-2xl mb-2 block"></i>
-                    <div className="text-xs font-medium">Tap to view on Instagram</div>
-                  </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
         ) : (
           <a

@@ -144,6 +144,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Fetch Instagram oEmbed data for a post
+  app.get("/api/instagram-posts/oembed", async (req, res) => {
+    try {
+      const { url } = req.query;
+      
+      if (!url || typeof url !== 'string') {
+        return res.status(400).json({ message: "Instagram post URL is required" });
+      }
+
+      // Call Instagram's oEmbed API
+      const oembedUrl = `https://graph.facebook.com/v18.0/instagram_oembed?url=${encodeURIComponent(url)}&access_token=&fields=thumbnail_url,author_name,provider_url`;
+      
+      try {
+        const response = await axios.get(oembedUrl);
+        res.json(response.data);
+      } catch (instagramError: any) {
+        // If the API call fails, try the public oEmbed endpoint
+        const publicOembedUrl = `https://www.instagram.com/p/oembed/?url=${encodeURIComponent(url)}`;
+        try {
+          const publicResponse = await axios.get(publicOembedUrl);
+          res.json(publicResponse.data);
+        } catch (publicError: any) {
+          console.error("Error fetching from both Instagram oEmbed endpoints:", publicError.response?.data || publicError.message);
+          res.status(500).json({ 
+            message: "Failed to fetch Instagram post data",
+            error: publicError.response?.data || publicError.message 
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error in oEmbed endpoint:", error);
+      res.status(500).json({ message: "Failed to fetch Instagram post data" });
+    }
+  });
+
   // Notification subscription routes
   app.post("/api/notifications/subscribe", async (req, res) => {
     try {
