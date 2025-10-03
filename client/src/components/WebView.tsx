@@ -45,7 +45,7 @@ const WebView = ({ url, title, onClose }: WebViewProps) => {
         <div className="text-sm text-neutral-600 truncate">{url}</div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="relative w-full h-96">
+        <div className="relative w-full h-[600px]">
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-neutral-50">
               <div className="text-center">
