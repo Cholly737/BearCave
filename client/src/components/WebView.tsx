@@ -22,7 +22,7 @@ const WebView = ({ url, title, onClose }: WebViewProps) => {
   };
 
   return (
-    <Card className="w-full h-full">
+    <Card className="w-full h-full border-2 border-gray-300">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg truncate">{title}</CardTitle>
