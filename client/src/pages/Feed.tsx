@@ -104,7 +104,7 @@ const Feed = () => {
         {instagramLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="loading-skeleton h-80 rounded-lg"></div>
+              <div key={i} className="loading-skeleton h-40 rounded-lg"></div>
             ))}
           </div>
         ) : instagramPosts && instagramPosts.length > 0 ? (
@@ -115,40 +115,22 @@ const Feed = () => {
                 href={post.postUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block group"
+                className="block"
                 data-testid={`link-instagram-post-${index + 1}`}
               >
-                <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200">
-                  {/* Post Image */}
-                  {post.imageUrl ? (
-                    <div className="relative aspect-square overflow-hidden">
-                      <img
-                        src={post.imageUrl}
-                        alt={post.caption || `Instagram post ${index + 1}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      {/* Instagram overlay on hover */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                        <i className="ri-instagram-fill text-white text-4xl opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                      </div>
+                <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl p-4 text-white hover:shadow-lg transition-all transform hover:scale-[1.02] h-full">
+                  <div className="flex items-center mb-3">
+                    <div className="bg-white rounded-full p-2 mr-2">
+                      <i className="ri-instagram-fill text-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
                     </div>
-                  ) : (
-                    <div className="aspect-square bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center">
-                      <i className="ri-instagram-fill text-white text-6xl"></i>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm">Post {index + 1}</div>
+                      <div className="text-xs opacity-90">@deepdenebearscc</div>
                     </div>
-                  )}
-                  
-                  {/* Post Info */}
-                  <div className="p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-700">
-                        <i className="ri-instagram-line text-purple-600 mr-2"></i>
-                        <span className="font-medium">@deepdenebearscc</span>
-                      </div>
-                    </div>
-                    {post.caption && (
-                      <p className="text-xs text-gray-600 mt-2 line-clamp-2">{post.caption}</p>
-                    )}
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-4 text-center">
+                    <i className="ri-external-link-line text-2xl mb-2 block"></i>
+                    <div className="text-xs font-medium">Tap to view on Instagram</div>
                   </div>
                 </div>
               </a>

@@ -228,56 +228,7 @@ const Home = () => {
           
           {/* Latest Instagram Post */}
           {instagramLoading ? (
-            <div className="loading-skeleton h-96 rounded-lg mb-4"></div>
-          ) : latestInstagramPost && latestInstagramPost.imageUrl ? (
-            <a
-              href={latestInstagramPost.postUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block mb-4 group"
-              data-testid="link-latest-instagram-post"
-            >
-              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200">
-                {/* Instagram Header */}
-                <div className="p-3 border-b border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center">
-                    <i className="ri-instagram-line text-purple-600 text-xl mr-2"></i>
-                    <div>
-                      <div className="font-semibold text-sm text-gray-900">@deepdenebearscc</div>
-                      <div className="text-xs text-gray-500">Latest Post</div>
-                    </div>
-                  </div>
-                  <i className="ri-external-link-line text-gray-400 text-lg"></i>
-                </div>
-                
-                {/* Post Image */}
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={latestInstagramPost.imageUrl}
-                    alt={latestInstagramPost.caption || 'Latest Instagram post'}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  {/* Instagram overlay on hover */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                    <i className="ri-instagram-fill text-white text-5xl opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                  </div>
-                </div>
-                
-                {/* Caption */}
-                {latestInstagramPost.caption && (
-                  <div className="p-3 border-t border-gray-100">
-                    <p className="text-sm text-gray-700 line-clamp-2">{latestInstagramPost.caption}</p>
-                  </div>
-                )}
-                
-                {/* View More Link */}
-                <div className="p-3 bg-gray-50 text-center border-t border-gray-100">
-                  <span className="text-sm text-gray-600 group-hover:text-purple-600 transition-colors">
-                    Tap to view on Instagram
-                  </span>
-                </div>
-              </div>
-            </a>
+            <div className="loading-skeleton h-32 rounded-lg mb-4"></div>
           ) : latestInstagramPost ? (
             <a
               href={latestInstagramPost.postUrl}
