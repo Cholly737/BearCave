@@ -410,7 +410,7 @@ export class DatabaseStorage implements IStorage {
           sponsorshipLevel: "Silver"
     
         {
-        name: "Roger Bourghani",
+        name: "Roger Bourghani Tax & Business Services",
           logoUrl: "/attached_assets/sustainable tree management_1756618805192.avif",
           website: "https://www.rogerboghani.com.au/",          description: "Providing above-and-beyond support and exceptional accounting services to small to medium businesses, SMSFs, and individual investors to achieve their goals.",
           sponsorshipLevel: "Silver"
