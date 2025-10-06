@@ -406,21 +406,24 @@ export class DatabaseStorage implements IStorage {
         {
           name: "Sustainable Tree Management",
           logoUrl: "/attached_assets/sustainable tree management_1756618805192.avif",
-          website: "http://sustainabletm.com.au/",          description: "Providing professional and high quality arboricultural, ecological and other environmental consulting services.",
+          website: "http://sustainabletm.com.au/",
+          description: "Providing professional and high quality arboricultural, ecological and other environmental consulting services.",
           sponsorshipLevel: "Silver"
-    
+        },
         {
-        name: "Roger Bourghani Tax & Business Services",
-          logoUrl: "/attached_assets/sustainable tree management_1756618805192.avif",
-          website: "https://www.rogerboghani.com.au/",          description: "Providing above-and-beyond support and exceptional accounting services to small to medium businesses, SMSFs, and individual investors to achieve their goals.",
+          name: "Roger Boghani Tax & Business Services",
+          logoUrl: "/attached_assets/download (1)_1759743943011.png",
+          website: "https://www.rogerboghani.com.au/",
+          description: "Providing above-and-beyond support and exceptional accounting services to small to medium businesses, SMSFs, and individual investors to achieve their goals.",
           sponsorshipLevel: "Silver"
         },
         {
           name: "Chooks & Chips",
-            logoUrl: "/attached_assets/sustainable tree management_1756618805192.avif",
-            website: "https://chooksandchips.com.au/",          description: "At Chooks and Chips, our customers are promised quality foods, hygiene, friendly ambience and customer service at its best, and that too at a fair price!",
-            sponsorshipLevel: "Bronze"
-          },    },
+          logoUrl: "/attached_assets/download_1759743943012.jpeg",
+          website: "https://chooksandchips.com.au/",
+          description: "At Chooks and Chips, our customers are promised quality foods, hygiene, friendly ambience and customer service at its best, and that too at a fair price!",
+          sponsorshipLevel: "Bronze"
+        },
         {
           name: "Ramsay Surgical Centre Glenferrie",
           logoUrl: "/attached_assets/ramsay_1756618805192.avif",
