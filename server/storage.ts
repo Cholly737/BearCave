@@ -448,8 +448,8 @@ export class DatabaseStorage implements IStorage {
         {
           name: "GBL Property Consultants",
           logoUrl: "/attached_assets/GB_1756618805190.avif",
-          website: "#",
-          description: "GB is a proud supporter of Deepdene Bears Cricket Club.",
+          website: "https://www.gblproperty.com.au/",
+          description: "A boutique real estate agency specialising in the sale of residential vacant land, development sites, new homes and land subdivisions. The firm has been successfully involved in the sale of more than 4800 properties.",
           sponsorshipLevel: "Bronze"
         },
         {
