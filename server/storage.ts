@@ -441,12 +441,12 @@ export class DatabaseStorage implements IStorage {
         {
           name: "Elgin",
           logoUrl: "/attached_assets/elgin_1756618805191.avif",
-          website: "#",
-          description: "Elgin is a proud supporter of Deepdene Bears Cricket Club.",
+          website: "https://www.elgininn.com.au/",
+          description: "The Elgin Inn has always been a popular watering hole to meet with friends and work colleagues and to celebrate special occasions. Renowned throughout the years for quality food, beverage and most importantly friendly service.",
           sponsorshipLevel: "Bronze"
         },
         {
-          name: "GB",
+          name: "GBL Property Consultants",
           logoUrl: "/attached_assets/GB_1756618805190.avif",
           website: "#",
           description: "GB is a proud supporter of Deepdene Bears Cricket Club.",
