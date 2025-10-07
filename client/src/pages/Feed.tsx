@@ -102,52 +102,29 @@ const Feed = () => {
         </div>
 
         {instagramLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="loading-skeleton h-40 rounded-lg"></div>
-            ))}
-          </div>
-        ) : instagramPosts && instagramPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {instagramPosts.slice(0, 3).map((post, index) => (
-              <a
-                key={post.id}
-                href={post.postUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-                data-testid={`link-instagram-post-${index + 1}`}
-              >
-                <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl p-4 text-white hover:shadow-lg transition-all transform hover:scale-[1.02] h-full">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-white rounded-full p-2 mr-2">
-                      <i className="ri-instagram-fill text-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-bold text-sm">Post {index + 1}</div>
-                      <div className="text-xs opacity-90">@deepdenebearscc</div>
-                    </div>
-                  </div>
-                  <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-4 text-center">
-                    <i className="ri-external-link-line text-2xl mb-2 block"></i>
-                    <div className="text-xs font-medium">Tap to view on Instagram</div>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
+          <div className="loading-skeleton h-32 rounded-lg"></div>
         ) : (
           <a
             href="https://www.instagram.com/deepdenebearscc/"
             target="_blank"
             rel="noopener noreferrer"
-            className="block bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all"
-            data-testid="link-instagram-placeholder"
+            className="block bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl p-4 text-white hover:shadow-lg transition-all transform hover:scale-[1.02]"
+            data-testid="link-instagram-feed"
           >
-            <div className="text-center">
-              <i className="ri-instagram-fill text-6xl mb-4 block"></i>
-              <h3 className="text-xl font-bold mb-2">@deepdenebearscc</h3>
-              <p className="text-sm opacity-90">Tap to view our Instagram feed</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="bg-white rounded-full p-2 mr-3">
+                  <i className="ri-instagram-fill text-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
+                </div>
+                <div>
+                  <div className="font-bold text-sm">Follow Us on Instagram</div>
+                  <div className="text-xs opacity-90">@deepdenebearscc</div>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <span className="text-xs mr-2">View Posts</span>
+                <i className="ri-external-link-line text-xl"></i>
+              </div>
             </div>
           </a>
         )}
