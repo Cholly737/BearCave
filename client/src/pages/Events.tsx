@@ -80,8 +80,9 @@ const Events = () => {
                         </div>
                       </div>
                       
-                      {/* Buy Tickets Button for President's Dinner */}
-                      {event.name.toLowerCase().includes("president") && event.name.toLowerCase().includes("dinner") && (
+                      {/* Buy Tickets Button for President's Dinner and Bears Rodeo */}
+                      {((event.name.toLowerCase().includes("president") && event.name.toLowerCase().includes("dinner")) || 
+                        event.name.toLowerCase().includes("rodeo")) && (
                         <Link to="/shop" data-testid="link-buy-tickets">
                           <Button className="w-full sm:w-auto" size="sm">
                             <i className="ri-ticket-line mr-2"></i>
