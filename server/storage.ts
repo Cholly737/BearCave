@@ -455,8 +455,15 @@ export class DatabaseStorage implements IStorage {
         {
           name: "Angle House",
           logoUrl: "/attached_assets/Angle house_1756618805191.avif",
-          website: "#",
-          description: "Angle House is a proud supporter of Deepdene Bears Cricket Club.",
+          website: "https://www.anglehouseorthodontics.com.au/",
+          description: "Your trusted Melbourne orthodontist, where your smile is our priority.",
+          sponsorshipLevel: "Bronze"
+        },
+        {
+          name: "Core Plus Balwyn",
+          logoUrl: "/attached_assets/Angle house_1756618805191.avif",
+          website: "https://www.core-plus.com/au/studios/balwyn",
+          description: "CorePlus Balwyn is a family venture, led by Greg and his two daughters, Brie and Paige. Together, they’ve built a space where you’ll feel right at home. ",
           sponsorshipLevel: "Bronze"
         },
       ];
