@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BearCave</string>
+    <string name="title_activity_main">BearCave</string>
+    <string name="package_name">com.deepdenebears.bearcave</string>
+    <string name="custom_url_scheme">com.deepdenebears.bearcave</string>
+</resources>

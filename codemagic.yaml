@@ -1,0 +1,119 @@
+workflows:
+  ios-build:
+    name: BearCave iOS Build
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    
+    integrations:
+      app_store_connect: codemagic_api_key  # You'll set this up in Codemagic UI
+    
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.deepdenebears.bearcave
+      
+      vars:
+        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
+        # You'll add APP_STORE_APP_ID in Codemagic UI after creating app in App Store Connect
+      
+      node: 18
+      xcode: latest
+      cocoapods: default
+    
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm ci
+      
+      - name: Build web assets
+        script: |
+          npm run build
+      
+      - name: Update Capacitor config with production URL
+        script: |
+          # Replace with your actual Replit production URL
+          sed -i '' 's|url: .*|url: "https://your-app.replit.app",|g' capacitor.config.ts
+      
+      - name: Sync Capacitor to iOS
+        script: |
+          npx cap sync ios
+      
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios/App && pod install
+      
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
+      
+      - name: Increment build number
+        script: |
+          cd ios/App
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APP_ID")
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+      
+      - name: Build iOS IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
+    
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    
+    publishing:
+      app_store_connect:
+        api_key: codemagic_api_key
+        submit_to_testflight: true  # For beta testing
+        # Uncomment for production release:
+        # submit_to_app_store: true
+
+  android-build:
+    name: BearCave Android Build
+    max_build_duration: 120
+    instance_type: linux_x2
+    
+    environment:
+      android_signing:
+        - bearcave_keystore  # You'll upload this in Codemagic UI
+      
+      vars:
+        PACKAGE_NAME: "com.deepdenebears.bearcave"
+      
+      node: 18
+    
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm ci
+      
+      - name: Build web assets
+        script: |
+          npm run build
+      
+      - name: Update Capacitor config
+        script: |
+          sed -i 's|url: .*|url: "https://your-app.replit.app",|g' capacitor.config.ts
+      
+      - name: Sync Capacitor to Android
+        script: |
+          npx cap sync android
+      
+      - name: Set up keystore
+        script: |
+          echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+      
+      - name: Build Android release
+        script: |
+          cd android
+          ./gradlew bundleRelease
+    
+    artifacts:
+      - android/app/build/outputs/**/*.aab
+    
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal  # or: alpha, beta, production
