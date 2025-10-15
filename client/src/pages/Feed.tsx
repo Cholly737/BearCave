@@ -3,15 +3,6 @@ import { fetchFeedItems } from "@/lib/api";
 import { FeedItem } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 
-interface InstagramPost {
-  id: number;
-  postUrl: string;
-  imageUrl?: string | null;
-  caption?: string | null;
-  displayOrder: number;
-  isActive: boolean;
-}
-
 const Feed = () => {
   const { 
     data: feedItems,
@@ -20,14 +11,6 @@ const Feed = () => {
   } = useQuery({
     queryKey: ["/api/feed"],
     staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-
-  const {
-    data: instagramPosts,
-    isLoading: instagramLoading
-  } = useQuery<InstagramPost[]>({
-    queryKey: ["/api/instagram-posts"],
-    staleTime: 5 * 60 * 1000,
   });
 
   // Helper to format date
@@ -83,53 +66,6 @@ const Feed = () => {
         <h1 className="text-2xl font-bold text-primary mb-4">Feed</h1>
       </div>
 
-      {/* Instagram Feed Section */}
-      <div className="px-4 pb-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-primary flex items-center">
-            <i className="ri-instagram-line text-purple-600 mr-2"></i>
-            Latest from Instagram
-          </h2>
-          <a
-            href="https://www.instagram.com/deepdenebearscc/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center"
-            data-testid="link-view-all-instagram"
-          >
-            View All <i className="ri-arrow-right-line ml-1"></i>
-          </a>
-        </div>
-
-        {instagramLoading ? (
-          <div className="loading-skeleton h-32 rounded-lg"></div>
-        ) : (
-          <a
-            href="https://www.instagram.com/deepdenebearscc/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl p-4 text-white hover:shadow-lg transition-all transform hover:scale-[1.02]"
-            data-testid="link-instagram-feed"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="bg-white rounded-full p-2 mr-3">
-                  <i className="ri-instagram-fill text-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
-                </div>
-                <div>
-                  <div className="font-bold text-sm">Follow Us on Instagram</div>
-                  <div className="text-xs opacity-90">@deepdenebearscc</div>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <span className="text-xs mr-2">View Posts</span>
-                <i className="ri-external-link-line text-xl"></i>
-              </div>
-            </div>
-          </a>
-        )}
-      </div>
-      
       <div className="px-4 pb-4">
         {isLoading ? (
           // Loading skeletons

@@ -3,15 +3,6 @@ import { Link } from "react-router-dom";
 import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
 
-interface InstagramPost {
-  id: number;
-  postUrl: string;
-  imageUrl?: string | null;
-  caption?: string | null;
-  displayOrder: number;
-  isActive: boolean;
-}
-
 const Home = () => {
   // Fetch upcoming events
   const { 
@@ -32,17 +23,6 @@ const Home = () => {
     queryKey: ["/api/feed/latest"],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-
-  // Fetch latest Instagram post
-  const {
-    data: instagramPosts,
-    isLoading: instagramLoading
-  } = useQuery<InstagramPost[]>({
-    queryKey: ["/api/instagram-posts"],
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const latestInstagramPost = instagramPosts && instagramPosts.length > 0 ? instagramPosts[0] : null;
 
   // Helper to calculate time ago
   const getTimeAgo = (dateString: string) => {
@@ -226,40 +206,6 @@ const Home = () => {
             </Link>
           </div>
           
-          {/* Latest Instagram Post */}
-          {instagramLoading ? (
-            <div className="loading-skeleton h-32 rounded-lg mb-4"></div>
-          ) : latestInstagramPost ? (
-            <a
-              href={latestInstagramPost.postUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block mb-4"
-              data-testid="link-latest-instagram-post"
-            >
-              <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl p-4 text-white hover:shadow-lg transition-all transform hover:scale-[1.02]">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="bg-white rounded-full p-2 mr-3">
-                      <i className="ri-instagram-fill text-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent"></i>
-                    </div>
-                    <div>
-                      <div className="font-bold text-sm">Latest from Instagram</div>
-                      <div className="text-xs opacity-90">@deepdenebearscc</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-xs mr-2">View Post</span>
-                    <i className="ri-external-link-line text-xl"></i>
-                  </div>
-                </div>
-                <div className="mt-3 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 text-xs">
-                  Tap to see our latest photos and updates
-                </div>
-              </div>
-            </a>
-          ) : null}
-
           {/* Latest Feed Item */}
           {feedLoading ? (
             <div className="loading-skeleton h-20 rounded-lg"></div>
@@ -284,7 +230,7 @@ const Home = () => {
                 <i className="ri-arrow-right-line text-primary ml-3 text-lg"></i>
               </div>
             </div>
-          ) : !latestInstagramPost ? (
+          ) : (
             <div className="text-center py-8">
               <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
                 <i className="ri-document-line text-3xl text-primary"></i>
@@ -294,7 +240,7 @@ const Home = () => {
                 Check back later for club news, match reports, and announcements
               </p>
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </div>
