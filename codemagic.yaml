@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_mini_m1
     
     integrations:
-      app_store_connect: codemagic_api_key  # You'll set this up in Codemagic UI
+      app_store_connect: Codemagic CI/CD
     
     environment:
       ios_signing:
