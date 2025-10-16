@@ -63,12 +63,11 @@ workflows:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     
-    # Uncomment publishing section after you set up Apple Developer account and API key
-    # publishing:
-    #   app_store_connect:
-    #     api_key: codemagic_api_key
-    #     submit_to_testflight: true  # For beta testing
-    #     # submit_to_app_store: true  # For production release
+    publishing:
+      app_store_connect:
+        api_key: codemagic_api_key
+        submit_to_testflight: true  # For beta testing
+        # submit_to_app_store: true  # Uncomment when ready for production release
 
   android-build:
     name: BearCave Android Build
