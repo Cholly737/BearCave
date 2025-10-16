@@ -67,7 +67,7 @@ workflows:
     
     publishing:
       app_store_connect:
-        api_key: codemagic_api_key
+        auth: integration
         submit_to_testflight: true  # For beta testing
         # submit_to_app_store: true  # Uncomment when ready for production release
 
