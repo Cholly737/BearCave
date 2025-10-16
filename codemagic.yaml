@@ -21,7 +21,7 @@ workflows:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
       
-      node: 18
+      node: 20
       xcode: latest
       cocoapods: default
     
@@ -85,7 +85,7 @@ workflows:
       vars:
         PACKAGE_NAME: "com.deepdenebears.bearcave"
       
-      node: 18
+      node: 20
     
     scripts:
       - name: Install npm dependencies
