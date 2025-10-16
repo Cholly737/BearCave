@@ -9,10 +9,10 @@ workflows:
     
     environment:
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.deepdenebears.bearcave
-        certificate: Distribution Certificate
-        provisioning_profile: App Store Profile
+        provisioning_profiles:
+          - App Store Profile
+        certificates:
+          - Distribution Certificate
       
       groups:
         - ios_config  # Contains APP_STORE_APP_ID
