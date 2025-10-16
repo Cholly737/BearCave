@@ -12,10 +12,12 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.deepdenebears.bearcave
       
+      groups:
+        - ios_config  # Contains APP_STORE_APP_ID
+      
       vars:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
-        # You'll add APP_STORE_APP_ID in Codemagic UI after creating app in App Store Connect
       
       node: 18
       xcode: latest
