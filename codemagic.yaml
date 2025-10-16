@@ -45,12 +45,16 @@ workflows:
         script: |
           cd ios/App && pod install
       
-      - name: Set up code signing
+      - name: Fetch signing files
         script: |
           app-store-connect fetch-signing-files \
             com.deepdenebears.bearcave \
             --type IOS_APP_STORE \
             --create
+      
+      - name: Apply signing profiles to Xcode project
+        script: |
+          xcode-project use-profiles
       
       - name: Increment build number
         script: |
