@@ -63,12 +63,12 @@ workflows:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     
-    publishing:
-      app_store_connect:
-        api_key: codemagic_api_key
-        submit_to_testflight: true  # For beta testing
-        # Uncomment for production release:
-        # submit_to_app_store: true
+    # Uncomment publishing section after you set up Apple Developer account and API key
+    # publishing:
+    #   app_store_connect:
+    #     api_key: codemagic_api_key
+    #     submit_to_testflight: true  # For beta testing
+    #     # submit_to_app_store: true  # For production release
 
   android-build:
     name: BearCave Android Build
@@ -113,7 +113,8 @@ workflows:
     artifacts:
       - android/app/build/outputs/**/*.aab
     
-    publishing:
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal  # or: alpha, beta, production
+    # Uncomment publishing section after you set up Google Play Console
+    # publishing:
+    #   google_play:
+    #     credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+    #     track: internal  # or: alpha, beta, production
