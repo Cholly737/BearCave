@@ -103,7 +103,7 @@ const Feed = () => {
           feedItems.map((item: FeedItem) => (
             <div key={item.id} className="bear-card">
               <h3 className="font-medium text-primary mb-1">{item.title}</h3>
-              <p className="text-sm text-gray-600 mb-2">{item.content}</p>
+              <p className="text-sm text-gray-600 mb-2 whitespace-pre-line">{item.content}</p>
               <p className="text-xs text-gray-500">{getTimeAgo(item.date)}</p>
             </div>
           ))
