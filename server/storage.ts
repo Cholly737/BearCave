@@ -360,18 +360,18 @@ export class DatabaseStorage implements IStorage {
       
       await db.insert(fixtures).values(sampleFixtures);
       
-      // Add sample feed items - commented out to show empty state
-      // const sampleFeedItems: InsertFeedItem[] = [
-      //   {
-      //     title: "Training Cancelled Tonight",
-      //     content: "Due to severe weather conditions, all training sessions for today have been cancelled. Stay safe everyone!",
-      //     date: new Date("2025-05-12T09:00:00"),
-      //     type: "notification",
-      //     tags: ["training", "weather"]
-      //   }
-      // ];
+      // Add welcome message feed item
+      const sampleFeedItems: InsertFeedItem[] = [
+        {
+          title: "Hello Bears! Welcome to BearCave!",
+          content: "Hope that you enjoy the new app. We have a range of functions on here:\n\n- The Events page will lead you to all our upcoming events, complete with links to the Shop (which can also be accessed by the three lines in the top right corner).\n\n- The Feed page provides club-wide messages, like this one!\n\n- On the Links page, you can access a variety of organisations and documents associated with the Bears\n\n- And the Home page gives you a brief preview of what's new, as well as links to our social media\n\nEnjoy!",
+          date: new Date(),
+          type: "announcement",
+          tags: ["welcome", "announcement"]
+        }
+      ];
       
-      // await db.insert(feedItems).values(sampleFeedItems);
+      await db.insert(feedItems).values(sampleFeedItems);
       
       // Add sample sponsors
       const sampleSponsors: InsertSponsor[] = [
