@@ -68,7 +68,7 @@ export const sponsors = pgTable("sponsors", {
 // Notification subscriptions table schema
 export const notificationSubscriptions = pgTable("notification_subscriptions", {
   id: serial("id").primaryKey(),
-  userId: text("user_id"), // Firebase UID or session identifier
+  userId: text("user_id"), // Optional user identifier (not currently used)
   fcmToken: text("fcm_token").notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   isActive: boolean("is_active").default(true).notNull(),

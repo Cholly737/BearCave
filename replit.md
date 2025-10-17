@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application for the Deepdene Bears Cricket Club, built with a React frontend, Express.js backend, and PostgreSQL database. The application provides club members with access to fixtures, events, news feed, team information, and club resources.
+This is a full-stack web application for the Deepdene Bears Cricket Club, built with a React frontend, Express.js backend, and PostgreSQL database. The application provides **open access** (no authentication required) to fixtures, events, news feed, team information, and club resources.
 
 ## User Preferences
 
@@ -13,9 +13,9 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Architecture
 - **Framework**: React with TypeScript
 - **Styling**: Tailwind CSS with shadcn/ui component library
-- **Routing**: React Router for client-side navigation
+- **Routing**: Wouter for client-side navigation
 - **State Management**: TanStack Query for server state management
-- **Authentication**: Firebase Auth with Google Sign-in and guest mode fallback
+- **Authentication**: None - Open access for all users
 - **Build Tool**: Vite for development and production builds
 
 ### Backend Architecture
@@ -34,18 +34,12 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Database Schema
-- **Users**: Authentication and profile data
 - **Events**: Club events and activities
 - **Teams**: Cricket teams and divisions
 - **Fixtures**: Match schedules and results
 - **Feed Items**: News and announcements
 - **Sponsors**: Club sponsor information
-
-### Authentication System
-- Firebase Authentication with Google OAuth
-- Guest mode for users without Google accounts
-- Automatic user creation on first login
-- Session persistence across browser sessions
+- **Notification Subscriptions**: FCM token storage (currently disabled)
 
 ### Data Management
 - Drizzle ORM for type-safe database operations
@@ -54,36 +48,28 @@ Preferred communication style: Simple, everyday language.
 - Sample data initialization on server startup
 
 ### External Integrations
-- **PlayHQ API**: Cricket fixture data integration (planned)
-- **Firebase**: Authentication services
+- **PlayHQ API**: Cricket fixture data integration
 - **Google Fonts**: Typography (Montserrat, Open Sans)
-- **RemixIcon**: Icon library
+- **Lucide React**: Icon library
 
 ## Data Flow
 
-1. **Authentication Flow**:
-   - User attempts to access app
-   - Firebase Auth checks authentication status
-   - If unauthenticated, shows auth overlay with Google sign-in or guest mode options
-   - Successful authentication creates/updates user record in database
-
-2. **Data Fetching**:
+1. **Data Fetching**:
    - TanStack Query manages API calls with caching
    - React components use query hooks to fetch data
    - Loading states and error handling built into query system
    - 5-minute stale time for most cached data
 
-3. **Navigation**:
-   - React Router handles client-side routing
+2. **Navigation**:
+   - Wouter handles client-side routing
    - Bottom navigation for main sections (Home, Fixtures, Feed, Events, Links)
-   - Side menu for secondary features and user profile
+   - Side menu for secondary features (Shop, Registrations, Policy)
 
 ## External Dependencies
 
 ### Core Dependencies
 - **@neondatabase/serverless**: PostgreSQL database connection
 - **drizzle-orm**: Type-safe ORM
-- **firebase**: Authentication services
 - **@tanstack/react-query**: Server state management
 - **express**: Backend web framework
 - **axios**: HTTP client
@@ -115,8 +101,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Environment Configuration
 - `DATABASE_URL`: PostgreSQL connection string
-- Firebase configuration via environment variables
-- PlayHQ API credentials (when implemented)
+- PlayHQ API credentials for fixture data
 - NODE_ENV for environment detection
 
 ### Key Features
@@ -125,9 +110,9 @@ Preferred communication style: Simple, everyday language.
 - Event management and registration
 - Club news and announcements
 - Sponsor showcase
-- Member authentication
-- Offline-capable guest mode
+- Open access - No authentication required
 - BearCave design implementation with club logo integration
+- Mobile app deployment via Capacitor (iOS and Android)
 
 ## Recent Changes (January 2025)
 
@@ -183,3 +168,23 @@ Preferred communication style: Simple, everyday language.
 - ✅ Applied proper visual hierarchy with section headers and appropriate spacing
 - ✅ Updated "Become a Sponsor" section with enhanced sponsorship level descriptions
 - ✅ All 12 sponsors now display authentic branding organized by partnership level
+
+### iOS Mobile App Deployment (October 2025)
+- ✅ Configured Capacitor for iOS deployment with bundle ID com.deepdenebears.bearcave
+- ✅ Successfully created iOS distribution certificate using OpenSSL (without Mac)
+- ✅ Generated distribution certificate (.p12) with password "bearcave123"
+- ✅ Created provisioning profile in Apple Developer Portal
+- ✅ Configured Codemagic for automated iOS builds using manual certificate references
+- ✅ Fixed Node.js version to 20 for Capacitor compatibility
+- ✅ First successful iOS build uploaded to App Store Connect (App Store ID: 6754083548)
+- ✅ App ready for TestFlight beta testing
+- ✅ Configured encryption compliance settings (exempt encryption only)
+
+### Authentication Removal (October 2025)
+- ✅ Removed all Firebase authentication to make app completely open access
+- ✅ Deleted Firebase packages (firebase, firebase-admin) from both client and server
+- ✅ Removed AuthOverlay and use-auth components
+- ✅ Deleted Firebase configuration files (lib/firebase.ts, firebase-admin.ts)
+- ✅ Disabled push notification features (now show as unsupported without Firebase)
+- ✅ Updated all documentation to reflect open access model
+- ✅ App now provides unrestricted access to all features without requiring login

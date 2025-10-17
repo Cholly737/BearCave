@@ -2,39 +2,10 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import axios from "axios";
-import { sendTestNotification } from "./firebase-admin";
 import fs from "fs";
 import path from "path";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Serve dynamically configured service worker
-  app.get("/sw.js", (req, res) => {
-    try {
-      const swPath = path.join(import.meta.dirname, "..", "client", "public", "sw.js");
-      let swContent = fs.readFileSync(swPath, "utf-8");
-      
-      // Replace Firebase config placeholders with actual environment variables
-      const firebaseConfig = {
-        apiKey: process.env.VITE_FIREBASE_API_KEY || "",
-        authDomain: `${process.env.VITE_FIREBASE_PROJECT_ID || ""}.firebaseapp.com`,
-        projectId: process.env.VITE_FIREBASE_PROJECT_ID || "",
-        storageBucket: `${process.env.VITE_FIREBASE_PROJECT_ID || ""}.appspot.com`,
-        appId: process.env.VITE_FIREBASE_APP_ID || ""
-      };
-      
-      // Replace the hardcoded config in service worker
-      const configPattern = /const firebaseConfig = \{[\s\S]*?\};/;
-      const newConfig = `const firebaseConfig = ${JSON.stringify(firebaseConfig, null, 2)};`;
-      swContent = swContent.replace(configPattern, newConfig);
-      
-      res.setHeader("Content-Type", "application/javascript");
-      res.setHeader("Service-Worker-Allowed", "/");
-      res.send(swContent);
-    } catch (error) {
-      console.error("Error serving service worker:", error);
-      res.status(500).send("// Service worker error");
-    }
-  });
   // API routes for events
   app.get("/api/events", async (req, res) => {
     try {
@@ -233,42 +204,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Test endpoint to send notification to all subscribers
+  // Test endpoint to send notification to all subscribers (disabled - no Firebase)
   app.post("/api/notifications/test", async (req, res) => {
-    try {
-      // Get all active subscriptions
-      const subscriptions = await storage.getAllActiveSubscriptions();
-      
-      if (subscriptions.length === 0) {
-        return res.json({ 
-          message: "No active subscriptions found. Enable notifications in your browser first!",
-          success: false 
-        });
-      }
-
-      const tokens = subscriptions.map(sub => sub.fcmToken);
-      
-      // Send test notification
-      const result = await sendTestNotification(
-        tokens,
-        "🎉 Deepdene Bears Test",
-        "Push notifications are working! You'll receive club updates here."
-      );
-
-      res.json({
-        message: "Test notification sent successfully!",
-        success: true,
-        subscriberCount: subscriptions.length,
-        successCount: result.successCount,
-        failureCount: result.failureCount
-      });
-    } catch (error) {
-      console.error("Error sending test notification:", error);
-      res.status(500).json({ 
-        message: "Failed to send test notification",
-        error: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
+    res.json({ 
+      message: "Push notifications are not configured for this app.",
+      success: false 
+    });
   });
 
   // PlayHQ API integration with credential management

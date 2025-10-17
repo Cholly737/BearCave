@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { requestNotificationPermission, onMessageListener, getMessagingSupported, waitForMessagingInitialization } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 
 interface NotificationState {
@@ -20,37 +19,15 @@ export function useNotifications() {
 
   useEffect(() => {
     async function initializeNotifications() {
-      // Check initial permission state
       if (typeof window !== 'undefined' && 'Notification' in window) {
         console.log('Notifications hook initializing...');
         console.log('Current permission:', Notification.permission);
         
-        // Wait for Firebase messaging to initialize
-        const isSupported = await waitForMessagingInitialization();
-        console.log('Firebase messaging supported:', isSupported);
-        
         setState(prev => ({
           ...prev,
           permission: Notification.permission,
-          isSupported: isSupported
+          isSupported: false
         }));
-
-        // Listen for foreground messages if supported
-        if (isSupported) {
-          onMessageListener()
-            .then((payload: any) => {
-              console.log('Foreground message received:', payload);
-              
-              // Show toast notification for foreground messages
-              toast({
-                title: payload.notification?.title || 'New Notification',
-                description: payload.notification?.body || 'You have a new update',
-              });
-            })
-            .catch((error) => {
-              console.error('Error setting up message listener:', error);
-            });
-        }
       } else {
         console.log('Window or Notification API not available');
       }
@@ -62,63 +39,13 @@ export function useNotifications() {
   const requestPermission = async () => {
     setState(prev => ({ ...prev, isLoading: true }));
     
-    try {
-      const token = await requestNotificationPermission();
-      
-      if (token) {
-        setState(prev => ({
-          ...prev,
-          token,
-          permission: 'granted',
-          isLoading: false
-        }));
-
-        // Store token on server (you'll need to implement this endpoint)
-        try {
-          const response = await fetch('/api/notifications/subscribe', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token }),
-          });
-          
-          if (response.ok) {
-            toast({
-              title: 'Notifications Enabled',
-              description: 'You will now receive push notifications from the Bears Cricket Club.',
-            });
-          } else {
-            console.error('Failed to store FCM token on server');
-          }
-        } catch (error) {
-          console.error('Error storing FCM token:', error);
-        }
-      } else {
-        setState(prev => ({
-          ...prev,
-          permission: Notification.permission,
-          isLoading: false
-        }));
-        
-        if (Notification.permission === 'denied') {
-          toast({
-            title: 'Notifications Blocked',
-            description: 'Please enable notifications in your browser settings to receive updates.',
-            variant: 'destructive',
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error requesting notification permission:', error);
-      setState(prev => ({ ...prev, isLoading: false }));
-      
-      toast({
-        title: 'Error',
-        description: 'Failed to enable notifications. Please try again.',
-        variant: 'destructive',
-      });
-    }
+    toast({
+      title: 'Not Available',
+      description: 'Push notifications are not configured for this app.',
+      variant: 'destructive',
+    });
+    
+    setState(prev => ({ ...prev, isLoading: false }));
   };
 
   const unsubscribe = async () => {

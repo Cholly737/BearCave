@@ -4,98 +4,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Bell, BellOff, Shield, Smartphone } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  requestNotificationPermission, 
-  getMessagingSupported,
-  onMessageListener 
-} from '@/lib/firebase';
 
 export function NotificationManager() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>('default');
-  const [isSupported, setIsSupported] = useState(false);
+  const [isSupported] = useState(false);
   const [fcmToken, setFcmToken] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check support and current permission
-    const checkStatus = () => {
-      setIsSupported(getMessagingSupported() && 'Notification' in window);
-      if ('Notification' in window) {
-        setPermission(Notification.permission);
-        setNotificationsEnabled(Notification.permission === 'granted');
-      }
-    };
-
-    checkStatus();
-
-    // Listen for foreground messages
-    if (isSupported) {
-      onMessageListener()
-        .then((payload: any) => {
-          console.log('Received foreground message:', payload);
-          toast({
-            title: payload.notification?.title || 'BearCave Update',
-            description: payload.notification?.body || 'You have a new update',
-          });
-        })
-        .catch(err => {
-          console.log('Failed to listen for messages:', err);
-        });
+    if ('Notification' in window) {
+      setPermission(Notification.permission);
+      setNotificationsEnabled(Notification.permission === 'granted');
     }
-  }, [isSupported, toast]);
+  }, [toast]);
 
   const handleEnableNotifications = async () => {
-    if (!isSupported) {
-      toast({
-        title: "Not Supported",
-        description: "Push notifications are not supported in this browser.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const token = await requestNotificationPermission();
-      
-      if (token) {
-        setFcmToken(token);
-        setNotificationsEnabled(true);
-        setPermission('granted');
-        
-        // Store token for backend use (you might want to send this to your backend)
-        localStorage.setItem('fcm-token', token);
-        
-        toast({
-          title: "Notifications Enabled! 🎉",
-          description: "You'll now receive updates about fixtures, events, and club news.",
-        });
-        
-        // Send token to backend for future use
-        try {
-          await fetch('/api/notifications/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token })
-          });
-        } catch (error) {
-          console.log('Failed to register token with backend:', error);
-        }
-      } else {
-        toast({
-          title: "Permission Denied",
-          description: "Please allow notifications to receive club updates.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error('Error enabling notifications:', error);
-      toast({
-        title: "Setup Failed",
-        description: "Failed to enable notifications. Please try again.",
-        variant: "destructive",
-      });
-    }
+    toast({
+      title: "Not Available",
+      description: "Push notifications are not configured for this app.",
+      variant: "destructive",
+    });
   };
 
   const handleDisableNotifications = () => {
