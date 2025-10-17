@@ -364,7 +364,7 @@ export class DatabaseStorage implements IStorage {
       const sampleFeedItems: InsertFeedItem[] = [
         {
           title: "Hello Bears! Welcome to BearCave!",
-          content: "Hope that you enjoy the new app. We have a range of functions on here:\n\n- The Events page will lead you to all our upcoming events, complete with links to the Shop (which can also be accessed by the three lines in the top right corner).\n\n- The Feed page provides club-wide messages, like this one!\n\n- On the Links page, you can access a variety of organisations and documents associated with the Bears\n\n- And the Home page gives you a brief preview of what's new, as well as links to our social media\n\nEnjoy!",
+          content: "Hope that you enjoy the new app. We have a range of functions on here:\n\n• The Events page will lead you to all our upcoming events, complete with links to the Shop (which can also be accessed by the three lines in the top right corner).\n\n• The Feed page provides club-wide messages, like this one!\n\n• On the Links page, you can access a variety of organisations and documents associated with the Bears\n\n• And the Home page gives you a brief preview of what's new, as well as links to our social media\n\nEnjoy!",
           date: new Date(),
           type: "announcement",
           tags: ["welcome", "announcement"]
