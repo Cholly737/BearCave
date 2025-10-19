@@ -76,9 +76,21 @@ workflows:
     max_build_duration: 120
     instance_type: linux_x2
     
+    # TRIGGER: Build automatically on push to main (same as iOS)
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    
     environment:
       android_signing:
-        - bearcave_keystore  # You'll upload this in Codemagic UI
+        - bearcave_keystore  # Reference name from Codemagic UI
+      
+      groups:
+        - android_config  # Contains GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
       
       vars:
         PACKAGE_NAME: "com.deepdenebears.bearcave"
@@ -94,28 +106,48 @@ workflows:
         script: |
           npm run build
       
-      - name: Update Capacitor config
-        script: |
-          sed -i 's|url: .*|url: "https://your-app.replit.app",|g' capacitor.config.ts
-      
       - name: Sync Capacitor to Android
         script: |
           npx cap sync android
       
-      - name: Set up keystore
+      - name: Set up local.properties
         script: |
-          echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       
-      - name: Build Android release
+      - name: Build Android App Bundle with auto-versioning
         script: |
           cd android
-          ./gradlew bundleRelease
+          
+          # Get latest build number from Google Play (or default to 1)
+          LATEST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME" 2>/dev/null || echo "0")
+          
+          if [ "$LATEST_BUILD_NUMBER" = "0" ]; then
+            UPDATED_BUILD_NUMBER=1
+          else
+            UPDATED_BUILD_NUMBER=$(($LATEST_BUILD_NUMBER + 1))
+          fi
+          
+          echo "Building Android App Bundle with versionCode: $UPDATED_BUILD_NUMBER"
+          
+          # Build App Bundle with automatic versioning
+          ./gradlew bundleRelease \
+            -PversionCode=$UPDATED_BUILD_NUMBER \
+            -PversionName=1.0.$UPDATED_BUILD_NUMBER
     
     artifacts:
       - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/mapping.txt
     
-    # Uncomment publishing section after you set up Google Play Console
-    # publishing:
-    #   google_play:
-    #     credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-    #     track: internal  # or: alpha, beta, production
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com  # Replace with your email
+        notify:
+          success: true
+          failure: true
+      
+      # Publishing to Google Play - uncomment when ready
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal  # Start with internal testing, then: alpha, beta, production
+        submit_as_draft: false
