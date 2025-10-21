@@ -141,7 +141,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - your-email@example.com  # Replace with your email
+          - cmolloy737@gmail.com
         notify:
           success: true
           failure: true
