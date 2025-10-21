@@ -1,0 +1,47 @@
+
+== Gathering artifacts ==
+
+== Publishing artifacts ==
+
+Publishing artifact App.ipa
+Publishing artifact BearCave_3_artifacts.zip
+Publishing App.ipa to App Store Connect
+> app-store-connect publish --path /Users/builder/clone/build/ios/ipa/App.ipa
+
+Publish "/Users/builder/clone/build/ios/ipa/App.ipa" to App Store Connect
+App name: BearCave
+Bundle identifier: com.deepdenebears.bearcave
+Certificate expires: 2026-10-16T22:24:47.000+0000
+Distribution type: App Store
+Min OS version: 14.0
+Provisioned devices: N/A
+Provisions all devices: No
+Supported platforms: iPhoneOS
+Version code: 4
+Version: 1.0
+
+Upload "/Users/builder/clone/build/ios/ipa/App.ipa" to App Store Connect
+Running altool at path '/Applications/Xcode-16.4.app/Contents/SharedFrameworks/ContentDeliveryServices.framework/Frameworks/AppStoreService.framework/Support/altool'...
+Running altool at path '/Applications/Xcode-16.4.app/Contents/SharedFrameworks/ContentDeliveryServices.framework/Frameworks/AppStoreService.framework/Support/altool'...
+2025-10-21 11:53:23.574 ERROR: [altool.600002268180] [ContentDelivery.Uploader.600002268180] Validation failed (409) Invalid Pre-Release Train. The train version '1.0' is closed for new build submissions (ID: 705d8244-60ff-48d3-bd65-e203912ee823)
+2025-10-21 11:53:23.574 ERROR: [altool.600002268180] [ContentDelivery.Uploader.600002268180] Validation failed (409) This bundle is invalid. The value for key CFBundleShortVersionString [1.0] in the Info.plist file must contain a higher version than that of the previously approved version [1.0]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring (ID: 08b2b764-0b17-4ab0-8584-e6394feb54a7)
+2025-10-21 11:53:47.734  INFO: [altool.600002268180] [ContentDelivery.Uploader.600002268180] 
+=======================================
+UPLOAD FAILED with 2 errors, 0 warnings, 0 messages
+=======================================
+{"tool-version":"8.303.16303","tool-path":"\/Applications\/Xcode-16.4.app\/Contents\/SharedFrameworks\/ContentDeliveryServices.framework\/Versions\/A\/Frameworks\/AppStoreService.framework","os-version":"15.5.0","product-errors":[{"message":"Validation failed","userInfo":{"NSUnderlyingError":"Error Domain=IrisAPI Code=-19241 \"Validation failed\" UserInfo={status=409, detail=Invalid Pre-Release Train. The train version '1.0' is closed for new build submissions, id=705d8244-60ff-48d3-bd65-e203912ee823, code=STATE_ERROR.VALIDATION_ERROR, title=Validation failed, NSLocalizedFailureReason=Invalid Pre-Release Train. The train version '1.0' is closed for new build submissions, NSLocalizedDescription=Validation failed}","NSLocalizedDescription":"Validation failed","iris-code":"STATE_ERROR.VALIDATION_ERROR","NSLocalizedFailureReason":"Invalid Pre-Release Train. The train version '1.0' is closed for new build submissions (ID: 705d8244-60ff-48d3-bd65-e203912ee823)"},"code":409},{"message":"Validation failed","userInfo":{"NSUnderlyingError":"Error Domain=IrisAPI Code=-19241 \"Validation failed\" UserInfo={status=409, detail=This bundle is invalid. The value for key CFBundleShortVersionString [1.0] in the Info.plist file must contain a higher version than that of the previously approved version [1.0]. Please find more information about CFBundleShortVersionString at https:\/\/developer.apple.com\/documentation\/bundleresources\/information_property_list\/cfbundleshortversionstring, id=08b2b764-0b17-4ab0-8584-e6394feb54a7, code=STATE_ERROR.VALIDATION_ERROR, title=Validation failed, NSLocalizedFailureReason=This bundle is invalid. The value for key CFBundleShortVersionString [1.0] in the Info.plist file must contain a higher version than that of the previously approved version [1.0]. Please find more information about CFBundleShortVersionString at https:\/\/developer.apple.com\/documentation\/bundleresources\/information_property_list\/cfbundleshortversionstring, NSLocalizedDescription=Validation failed}","NSLocalizedDescription":"Validation failed","iris-code":"STATE_ERROR.VALIDATION_ERROR","NSLocalizedFailureReason":"This bundle is invalid. The value for key CFBundleShortVersionString [1.0] in the Info.plist file must contain a higher version than that of the previously approved version [1.0]. Please find more information about CFBundleShortVersionString at https:\/\/developer.apple.com\/documentation\/bundleresources\/information_property_list\/cfbundleshortversionstring (ID: 08b2b764-0b17-4ab0-8584-e6394feb54a7)"},"code":409}]}
+
+
+Failed to upload archive at "/Users/builder/clone/build/ios/ipa/App.ipa":
+Validation failed
+Validation failed
+Failed to publish /Users/builder/clone/build/ios/ipa/App.ipa
+
+Failed to publish App.ipa to App Store Connect.
+
+Build failed :|
+
+
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
+
