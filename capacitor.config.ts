@@ -6,9 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'dist/public',
   server: {
     androidScheme: 'https',
-    // For local development, comment out the url
-    // For production builds, use your published Replit URL
-    // url: 'https://674d7369-9ad2-4cb5-a960-b5a0828e489e-00-1er9eiaoyyxej.picard.replit.dev',
+    // Production URL - points to published Replit backend
+    url: 'https://deepdene-bear-cave-cmolloy737.replit.app',
   },
   ios: {
     scheme: 'BearCave'
