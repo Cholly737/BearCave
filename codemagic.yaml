@@ -94,26 +94,31 @@ workflows:
       
       node: 20
     
-    scripts:
+      scripts:
       - name: Install npm dependencies
         script: |
           npm ci
-      
+
       - name: Build web assets
         script: |
           npm run build
-      
+
       - name: Sync Capacitor to Android
         script: |
           npx cap sync android
-      
+
       - name: Set up local.properties
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
-      
-          - name: Build Android App Bundle
+
+      - name: Build Android App Bundle
         script: |
           cd android
+          BUILD_NUMBER=${BUILD_NUMBER:-1}
+          echo "Building Android App Bundle with versionCode: $BUILD_NUMBER"
+          ./gradlew bundleRelease \
+            -PversionCode=$BUILD_NUMBER \
+            -PversionName=1.0.$BUILD_NUMBER
           
           # Use build number from Codemagic (auto-increments each build)
           BUILD_NUMBER=${BUILD_NUMBER:-1}
