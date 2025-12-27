@@ -150,7 +150,7 @@ workflows:
           failure: true
       
       # Publishing to Google Play - uncomment when ready
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal  # Start with internal testing, then: alpha, beta, production
-        submit_as_draft: false
+     # google_play:
+      #  credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+       # track: internal  # Start with internal testing, then: alpha, beta, production
+        #submit_as_draft: false
