@@ -89,9 +89,6 @@ workflows:
       android_signing:
         - bearcave_keystore  # Reference name from Codemagic UI
       
-      groups:
-        - android_config  # Contains GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-      
       vars:
         PACKAGE_NAME: "com.deepdenebears.bearcave"
       
