@@ -111,13 +111,19 @@ workflows:
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
       
-      - name: Build Android App Bundle with auto-versioning
+          - name: Build Android App Bundle
         script: |
           cd android
           
-          # Get latest build number from Google Play (or default to 1)
-          LATEST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME" 2>/dev/null || echo "0")
+          # Use build number from Codemagic (auto-increments each build)
+          BUILD_NUMBER=${BUILD_NUMBER:-1}
           
+          echo "Building Android App Bundle with versionCode: $BUILD_NUMBER"
+          
+          # Build App Bundle
+          ./gradlew bundleRelease \
+            -PversionCode=$BUILD_NUMBER \
+            -PversionName=1.0.$BUILD_NUMBER          
           if [ "$LATEST_BUILD_NUMBER" = "0" ]; then
             UPDATED_BUILD_NUMBER=1
           else
