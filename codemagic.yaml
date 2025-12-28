@@ -92,6 +92,7 @@ workflows:
       vars:
         PACKAGE_NAME: "com.deepdenebears.bearcave"
       
+      java: 21
       node: 20
     
     scripts:
