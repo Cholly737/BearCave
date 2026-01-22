@@ -157,57 +157,29 @@ export class DatabaseStorage implements IStorage {
 
       console.log("Initializing database with sample data...");
       
-      // Add sample events
+      // Add sample events - only current/future events
       const sampleEvents: InsertEvent[] = [
         {
-          name: "Bears Rodeo",
-          description: "Don your finest denim and cowboy hats for a mechanical bull ride",
-          date: new Date("2025-10-11"),
-          time: "TBC",
+          name: "Exhibition Game",
+          description: "Part 1 of Super Sunday at Straddy, followed by Auction Night",
+          date: new Date("2026-01-25"),
+          time: "2:00 PM AEST",
           location: "Stradbroke Park",
         },
         {
-          name: "President's Dinner",
-          description: "3-Course meal and drinks, Dress Code: Jacket/Cocktail",
-          date: new Date("2025-10-16"),
-          time: "7:00 PM AEST",
-          location: "Melbourne Athenaeum",
+          name: "Auction Night",
+          description: "Part 2 of Super Sunday at Straddy, after the Exhibition Game",
+          date: new Date("2026-01-25"),
+          time: "5:00 PM AEST",
+          location: "Stradbroke Park",
         },
         {
-          name: "DBCC Presents: Community movie night",
-          description: "Movie to be confirmed",
-          date: new Date("2025-11-01"),
-          time: "TBC",
-          location: "Deepdene Park",
-        },
-        {
-          name: "Holiday Potluck",
-          description: "Pull up at Deepy with a plate for a holiday meal - Bears Style",
-          date: new Date("2025-12-13"),
-          time: "TBC",
-          location: "Deepdene Park",
-        },
-      {
-        name: "Exhibition Game",
-        description: "Part 1 of Super Sunday at Straddy, followed by Auction Night",
-        date: new Date("2026-1-25"),
-        time: "2:00PM",
-        location: "Stradbroke Park",
-      },
-      {
-        name: "Auction Night",
-        description: "Part 2 of Super Sunday at Straddy, after the Exhibition Game",
-        date: new Date("2026-1-25"),
-        time: "5:00PM",
-        location: "Stradbroke Park",
-      },
-      {
-        name: "School Sports Night",
-        description: "Dust off your primary school polos to earn some house points",
-        date: new Date("2026-2-21"),
-        time: "TBC",
-        location: "Stradbroke Park"
-      }
+          name: "School Sports Night",
+          description: "Dust off your primary school polos to earn some house points",
+          date: new Date("2026-02-21"),
+          time: "6:00 PM AEST",
+          location: "Stradbroke Park",
+        }
       ];
 
       await db.insert(events).values(sampleEvents);
