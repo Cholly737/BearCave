@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { requestNotificationPermission, onForegroundMessage, initializeMessaging } from '@/lib/firebase';
+import { isSupported } from 'firebase/messaging';
 
 interface NotificationState {
   permission: NotificationPermission;
@@ -19,68 +21,136 @@ export function useNotifications() {
 
   useEffect(() => {
     async function initializeNotifications() {
-      if (typeof window !== 'undefined' && 'Notification' in window) {
-        console.log('Notifications hook initializing...');
-        console.log('Current permission:', Notification.permission);
+      if (typeof window === 'undefined' || !('Notification' in window)) {
+        console.log('Notifications not available in this environment');
+        return;
+      }
+
+      try {
+        const supported = await isSupported();
+        const savedToken = localStorage.getItem('fcmToken');
         
         setState(prev => ({
           ...prev,
           permission: Notification.permission,
-          isSupported: false
+          isSupported: supported,
+          token: savedToken
         }));
-      } else {
-        console.log('Window or Notification API not available');
+
+        if (supported) {
+          await initializeMessaging();
+          
+          onForegroundMessage((payload) => {
+            toast({
+              title: payload.notification?.title || 'BearCave',
+              description: payload.notification?.body || 'You have a new notification',
+            });
+          });
+        }
+      } catch (error) {
+        console.error('Error initializing notifications:', error);
       }
     }
 
     initializeNotifications();
   }, [toast]);
 
-  const requestPermission = async () => {
+  const requestPermission = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true }));
-    
-    toast({
-      title: 'Not Available',
-      description: 'Push notifications are not configured for this app.',
-      variant: 'destructive',
-    });
-    
-    setState(prev => ({ ...prev, isLoading: false }));
-  };
 
-  const unsubscribe = async () => {
+    try {
+      const supported = await isSupported();
+      
+      if (!supported) {
+        toast({
+          title: 'Not Supported',
+          description: 'Push notifications are not supported in this browser.',
+          variant: 'destructive',
+        });
+        setState(prev => ({ ...prev, isLoading: false }));
+        return;
+      }
+
+      const token = await requestNotificationPermission();
+
+      if (token) {
+        localStorage.setItem('fcmToken', token);
+        
+        const response = await fetch('/api/notifications/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+
+        if (response.ok) {
+          setState(prev => ({
+            ...prev,
+            permission: 'granted',
+            token,
+            isLoading: false
+          }));
+
+          toast({
+            title: 'Notifications Enabled',
+            description: 'You will receive updates about fixtures and events.',
+          });
+        } else {
+          throw new Error('Failed to register token');
+        }
+      } else {
+        setState(prev => ({
+          ...prev,
+          permission: Notification.permission,
+          isLoading: false
+        }));
+
+        if (Notification.permission === 'denied') {
+          toast({
+            title: 'Permission Denied',
+            description: 'Please enable notifications in your browser settings.',
+            variant: 'destructive',
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error requesting notification permission:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to enable notifications. Please try again.',
+        variant: 'destructive',
+      });
+      setState(prev => ({ ...prev, isLoading: false }));
+    }
+  }, [toast]);
+
+  const unsubscribe = useCallback(async () => {
     if (!state.token) return;
 
     try {
-      // Remove token from server
       const response = await fetch('/api/notifications/unsubscribe', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: state.token }),
       });
 
       if (response.ok) {
-        setState(prev => ({
-          ...prev,
-          token: null
-        }));
-        
+        localStorage.removeItem('fcmToken');
+        setState(prev => ({ ...prev, token: null }));
+
         toast({
           title: 'Notifications Disabled',
           description: 'You will no longer receive push notifications.',
         });
       }
     } catch (error) {
-      console.error('Error unsubscribing from notifications:', error);
+      console.error('Error unsubscribing:', error);
       toast({
         title: 'Error',
         description: 'Failed to disable notifications. Please try again.',
         variant: 'destructive',
       });
     }
-  };
+  }, [state.token, toast]);
 
   return {
     ...state,

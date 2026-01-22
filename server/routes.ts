@@ -204,12 +204,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Test endpoint to send notification to all subscribers (disabled - no Firebase)
+  // Send notification to all subscribers (server-side only - requires admin key)
+  app.post("/api/notifications/send", async (req, res) => {
+    try {
+      const adminKey = req.headers['x-admin-key'];
+      const expectedKey = process.env.NOTIFICATION_ADMIN_KEY;
+      
+      if (!expectedKey || adminKey !== expectedKey) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+      
+      const { title, body, data } = req.body;
+      
+      if (!title || !body) {
+        return res.status(400).json({ message: "Title and body are required" });
+      }
+      
+      const subscriptions = await storage.getAllActiveSubscriptions();
+      const tokens = subscriptions.map(sub => sub.fcmToken);
+      
+      if (tokens.length === 0) {
+        return res.json({ message: "No active subscribers", sent: 0 });
+      }
+      
+      const { sendPushNotificationToAll } = await import("./firebase-admin");
+      const result = await sendPushNotificationToAll(tokens, title, body, data);
+      
+      res.json({ 
+        message: `Notifications sent`,
+        success: result.success,
+        failed: result.failure
+      });
+    } catch (error) {
+      console.error("Error sending notifications:", error);
+      res.status(500).json({ message: "Failed to send notifications" });
+    }
+  });
+
+  // Test endpoint to send a test notification
   app.post("/api/notifications/test", async (req, res) => {
-    res.json({ 
-      message: "Push notifications are not configured for this app.",
-      success: false 
-    });
+    try {
+      const { token } = req.body;
+      
+      if (!token) {
+        return res.status(400).json({ message: "Token is required for test" });
+      }
+      
+      const { sendPushNotification } = await import("./firebase-admin");
+      const success = await sendPushNotification(
+        token,
+        "BearCave Test",
+        "Notifications are working! Go Bears!",
+        { type: "test" }
+      );
+      
+      res.json({ success, message: success ? "Test notification sent" : "Failed to send test notification" });
+    } catch (error) {
+      console.error("Error sending test notification:", error);
+      res.status(500).json({ message: "Failed to send test notification" });
+    }
   });
 
   // PlayHQ API integration with credential management

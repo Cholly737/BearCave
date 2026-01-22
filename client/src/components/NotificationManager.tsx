@@ -1,48 +1,26 @@
-import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Bell, BellOff, Shield, Smartphone } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Bell, BellOff, Shield, Smartphone, Loader2 } from 'lucide-react';
+import { useNotifications } from '@/hooks/useNotifications';
 
 export function NotificationManager() {
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [permission, setPermission] = useState<NotificationPermission>('default');
-  const [isSupported] = useState(false);
-  const [fcmToken, setFcmToken] = useState<string | null>(null);
-  const { toast } = useToast();
+  const { 
+    permission, 
+    token, 
+    isSupported, 
+    isLoading, 
+    requestPermission, 
+    unsubscribe 
+  } = useNotifications();
 
-  useEffect(() => {
-    if ('Notification' in window) {
-      setPermission(Notification.permission);
-      setNotificationsEnabled(Notification.permission === 'granted');
-    }
-  }, [toast]);
-
-  const handleEnableNotifications = async () => {
-    toast({
-      title: "Not Available",
-      description: "Push notifications are not configured for this app.",
-      variant: "destructive",
-    });
-  };
-
-  const handleDisableNotifications = () => {
-    setNotificationsEnabled(false);
-    localStorage.removeItem('fcm-token');
-    setFcmToken(null);
-    
-    toast({
-      title: "Notifications Disabled",
-      description: "You won't receive push notifications anymore.",
-    });
-  };
+  const notificationsEnabled = permission === 'granted' && !!token;
 
   const handleToggle = (enabled: boolean) => {
     if (enabled) {
-      handleEnableNotifications();
+      requestPermission();
     } else {
-      handleDisableNotifications();
+      unsubscribe();
     }
   };
 
@@ -59,7 +37,7 @@ export function NotificationManager() {
           <div className="flex items-center gap-3 text-muted-foreground">
             <Shield className="h-4 w-4" />
             <span className="text-sm">
-              Push notifications are not supported in this browser or environment.
+              Push notifications are not supported in this browser. Try using Chrome or the mobile app.
             </span>
           </div>
         </CardContent>
@@ -83,11 +61,15 @@ export function NotificationManager() {
               Get updates about fixtures, events, and club news
             </p>
           </div>
-          <Switch
-            checked={notificationsEnabled}
-            onCheckedChange={handleToggle}
-            disabled={permission === 'denied'}
-          />
+          {isLoading ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <Switch
+              checked={notificationsEnabled}
+              onCheckedChange={handleToggle}
+              disabled={permission === 'denied' || isLoading}
+            />
+          )}
         </div>
 
         {permission === 'denied' && (
@@ -97,7 +79,7 @@ export function NotificationManager() {
               <div className="text-sm">
                 <p className="font-medium text-destructive">Notifications Blocked</p>
                 <p className="text-muted-foreground text-xs mt-1">
-                  To enable notifications, click the 🔒 icon in your browser's address bar 
+                  To enable notifications, click the lock icon in your browser's address bar 
                   and allow notifications for this site.
                 </p>
               </div>
@@ -111,18 +93,18 @@ export function NotificationManager() {
               <Smartphone className="h-4 w-4 text-green-600 mt-0.5" />
               <div className="text-sm">
                 <p className="font-medium text-green-700 dark:text-green-400">
-                  Notifications Active ✅
+                  Notifications Active
                 </p>
                 <p className="text-green-600 dark:text-green-300 text-xs mt-1">
-                  You'll receive updates about club activities and important announcements.
+                  You'll receive updates about fixtures, events, and club announcements.
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {permission === 'default' && (
-          <Button onClick={handleEnableNotifications} className="w-full">
+        {permission === 'default' && !isLoading && (
+          <Button onClick={requestPermission} className="w-full">
             <Bell className="h-4 w-4 mr-2" />
             Enable Push Notifications
           </Button>
