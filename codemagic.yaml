@@ -2,7 +2,7 @@ workflows:
   ios-build:
     name: BearCave iOS Build
     max_build_duration: 120
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     
     # TRIGGER: Build automatically on push to main
     triggering:
