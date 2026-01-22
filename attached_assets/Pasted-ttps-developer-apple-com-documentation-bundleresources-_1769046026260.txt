@@ -1,0 +1,35 @@
+ttps://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring",
+            "id" : "717ece1a-f814-4941-80af-2908e2316b1b",
+            "status" : "409",
+            "title" : "Validation failed"
+          }
+        }
+      ],
+      "user-info" : {
+        "NSLocalizedDescription" : "Validation failed",
+        "NSLocalizedFailureReason" : "This bundle is invalid. The value for key CFBundleShortVersionString [1.1] in the Info.plist file must contain a higher version than that of the previously approved version [1.1]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring (ID: 717ece1a-f814-4941-80af-2908e2316b1b)",
+        "NSUnderlyingError" : "Error Domain=IrisAPI Code=-19241 \"Validation failed\" UserInfo={status=409, detail=This bundle is invalid. The value for key CFBundleShortVersionString [1.1] in the Info.plist file must contain a higher version than that of the previously approved version [1.1]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring, id=717ece1a-f814-4941-80af-2908e2316b1b, code=STATE_ERROR.VALIDATION_ERROR, title=Validation failed, NSLocalizedFailureReason=This bundle is invalid. The value for key CFBundleShortVersionString [1.1] in the Info.plist file must contain a higher version than that of the previously approved version [1.1]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring, NSLocalizedDescription=Validation failed}",
+        "iris-code" : "STATE_ERROR.VALIDATION_ERROR"
+      }
+    }
+  ],
+  "tool-path" : "/Applications/Xcode-26.2.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources",
+  "tool-version" : "26.10.1 (171001)"
+}
+
+Failed to upload archive at "/Users/builder/clone/build/ios/ipa/App.ipa":
+Validation failed
+Validation failed
+Failed to publish /Users/builder/clone/build/ios/ipa/App.ipa
+
+Failed to publish App.ipa to App Store Connect.
+
+Build failed :|
+
+
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
+Cleaning up
+3s
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
