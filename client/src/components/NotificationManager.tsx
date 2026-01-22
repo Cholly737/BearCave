@@ -37,7 +37,7 @@ export function NotificationManager() {
           <div className="flex items-center gap-3 text-muted-foreground">
             <Shield className="h-4 w-4" />
             <span className="text-sm">
-              Push notifications are not supported in this browser. Try using Chrome or the mobile app.
+              Push notifications require opening this app directly in a browser tab (not in an embedded preview). Use Chrome, Firefox, or Edge for best results.
             </span>
           </div>
         </CardContent>
