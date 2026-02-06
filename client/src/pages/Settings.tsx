@@ -1,12 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NotificationManager } from '@/components/NotificationManager';
 import { Button } from '@/components/ui/button';
-import { Settings as SettingsIcon, Smartphone, Shield } from 'lucide-react';
+import { Settings as SettingsIcon, Smartphone, Shield, Moon, Sun } from 'lucide-react';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 export default function Settings() {
+  const { isDark, toggle } = useDarkMode();
+
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6 max-w-2xl">
-      {/* Page Header */}
+    <div className="container mx-auto px-4 py-6 space-y-6 max-w-2xl pb-24">
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2 text-primary">
           <SettingsIcon className="h-6 w-6" />
@@ -17,10 +19,45 @@ export default function Settings() {
         </p>
       </div>
 
-      {/* Notification Settings */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center gap-2">
+            {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            Appearance
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium text-sm">Dark Mode</p>
+              <p className="text-muted-foreground text-xs">
+                {isDark ? "Dark theme is on" : "Switch to dark theme"}
+              </p>
+            </div>
+            <button
+              onClick={toggle}
+              className={`relative w-14 h-8 rounded-full transition-colors duration-300 ${
+                isDark ? "bg-accent" : "bg-gray-300"
+              }`}
+            >
+              <div
+                className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300 flex items-center justify-center ${
+                  isDark ? "translate-x-7" : "translate-x-1"
+                }`}
+              >
+                {isDark ? (
+                  <Moon className="h-3.5 w-3.5 text-accent" />
+                ) : (
+                  <Sun className="h-3.5 w-3.5 text-yellow-500" />
+                )}
+              </div>
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+
       <NotificationManager />
 
-      {/* App Information */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">

@@ -52,7 +52,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
       )}
       
       {/* Side Menu */}
-      <div className={`fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
+      <div className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-[hsl(220,18%,13%)] z-50 transform transition-all duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="p-4">
@@ -60,7 +60,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
             <h2 className="text-lg font-bold text-primary">Menu</h2>
             <button 
               onClick={onClose}
-              className="text-gray-600 hover:text-primary"
+              className="text-gray-600 dark:text-gray-400 hover:text-primary"
             >
               <X size={24} />
             </button>
@@ -72,7 +72,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
                 key={item.to}
                 to={item.to}
                 onClick={onClose}
-                className="flex items-center px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center px-3 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition-colors"
               >
                 <item.icon size={20} className="mr-3 text-primary" />
                 <span className="font-medium">{item.label}</span>

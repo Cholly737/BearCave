@@ -200,6 +200,17 @@ Preferred communication style: Simple, everyday language.
 - ✅ Firebase payload includes platform-specific sound configuration (apns + android)
 - ✅ Android MainActivity creates NotificationChannel with custom sound on app launch
 
+### UI Enhancements - Dark Mode, Transitions & Empty States (February 2026)
+- ✅ Dark mode toggle on Settings page with localStorage persistence
+- ✅ Dark mode CSS variables and Tailwind dark: class support across all components
+- ✅ Dark mode styling for cards, bottom nav, side menu, social links, feed/event cards
+- ✅ Flash-free dark mode initialization in main.tsx before React render
+- ✅ Pull-to-refresh component on Home, Feed, and Events pages (touch gesture)
+- ✅ Smooth page transitions (fade + slide) between routes via Layout component
+- ✅ Sleepy bear illustration for empty states (Feed, Events, Home sections)
+- ✅ Replaced remixicon usage in Feed/Events with lucide-react icons for consistency
+- ✅ Consolidated duplicate loading-skeleton CSS definitions
+
 ### Analytics Tracking Implementation (February 2026)
 - ✅ Added analytics_events database table for tracking user interactions
 - ✅ Frontend auto-tracking captures: app_open, page_view, click, notification_open, notification_received

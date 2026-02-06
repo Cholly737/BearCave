@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { fetchUpcomingEvents } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
+import { PullToRefresh } from "@/components/PullToRefresh";
+import sleepyBear from "@/assets/images/sleepy-bear.png";
 
 const Home = () => {
   // Fetch upcoming events
@@ -54,6 +56,7 @@ const Home = () => {
     : [];
 
   return (
+    <PullToRefresh queryKeys={["/api/feed", "/api/events"]}>
     <div id="home-page" className="pb-20">
       {/* Enhanced Hero Header Section */}
       <div className="relative bg-gradient-to-br from-primary via-slate-700 to-slate-800 text-white py-12 px-4 overflow-hidden">
@@ -105,20 +108,20 @@ const Home = () => {
             </div>
           ) : feedError ? (
             <div className="text-center py-6">
-              <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center">
-                <i className="ri-wifi-off-line text-gray-400 text-xl"></i>
+              <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                <i className="ri-wifi-off-line text-muted-foreground text-xl"></i>
               </div>
-              <p className="text-gray-500 text-sm">Unable to load latest updates</p>
+              <p className="text-muted-foreground text-sm">Unable to load latest updates</p>
             </div>
           ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 ? (
             <div className="space-y-3">
               {(feedItems as FeedItem[]).slice(0, 2).map((item: FeedItem) => (
-                <div key={item.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                <div key={item.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800/40 rounded-xl p-4 hover:shadow-md transition-all duration-300">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h4 className="font-semibold text-primary mb-2">{item.title}</h4>
-                      <p className="text-gray-700 text-sm mb-3 leading-relaxed">{item.content}</p>
-                      <div className="flex items-center text-xs text-gray-500">
+                      <p className="text-gray-700 dark:text-gray-300 text-sm mb-3 leading-relaxed">{item.content}</p>
+                      <div className="flex items-center text-xs text-muted-foreground">
                         <i className="ri-time-line mr-1"></i>
                         {getTimeAgo(item.date)}
                       </div>
@@ -129,12 +132,10 @@ const Home = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
-                <i className="ri-document-line text-3xl text-primary"></i>
-              </div>
-              <p className="text-gray-600 font-medium mb-2">No updates yet</p>
-              <p className="text-gray-500 text-sm max-w-xs mx-auto">
-                Check back later for club news, match reports, and announcements
+              <img src={sleepyBear} alt="Sleepy bear" className="w-24 h-24 mx-auto mb-3 opacity-70" />
+              <p className="text-muted-foreground font-medium mb-1">No updates yet</p>
+              <p className="text-muted-foreground/70 text-sm max-w-xs mx-auto">
+                Check back later for club news and announcements
               </p>
             </div>
           )}
@@ -143,7 +144,7 @@ const Home = () => {
         {/* Upcoming Events */}
         <div className="bear-card-enhanced">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg text-gray-800 flex items-center">
+            <h3 className="font-semibold text-lg flex items-center">
               <i className="ri-calendar-event-line text-primary mr-2"></i>
               Upcoming Events
             </h3>
@@ -160,7 +161,7 @@ const Home = () => {
           ) : upcomingEvents.length > 0 ? (
             <div className="space-y-3">
               {upcomingEvents.map((event: Event) => (
-                <div key={event.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                <div key={event.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800/40 rounded-xl p-4 hover:shadow-md transition-all duration-300">
                   <div className="flex items-start">
                     <div className="w-12 h-16 bg-primary text-white rounded mr-3 flex-shrink-0 flex flex-col items-center justify-center text-center">
                       <div className="text-xs font-medium">{formatEventDate(event.date).month}</div>
@@ -168,13 +169,13 @@ const Home = () => {
                     </div>
                     <div className="flex-1">
                       <h4 className="font-semibold text-primary mb-1">{event.name}</h4>
-                      <p className="text-gray-600 text-sm mb-2">{event.description}</p>
+                      <p className="text-muted-foreground text-sm mb-2">{event.description}</p>
                       <div className="space-y-1">
-                        <div className="flex items-center text-xs text-gray-500">
+                        <div className="flex items-center text-xs text-muted-foreground">
                           <i className="ri-time-line w-3 mr-2"></i>
                           <span>{event.time}</span>
                         </div>
-                        <div className="flex items-center text-xs text-gray-500">
+                        <div className="flex items-center text-xs text-muted-foreground">
                           <i className="ri-map-pin-line w-3 mr-2"></i>
                           <span>{event.location}</span>
                         </div>
@@ -186,12 +187,10 @@ const Home = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
-                <i className="ri-calendar-line text-3xl text-primary"></i>
-              </div>
-              <p className="text-gray-600 font-medium mb-2">No events scheduled</p>
-              <p className="text-gray-500 text-sm max-w-xs mx-auto">
-                Check back later for upcoming club events, training sessions, and social gatherings
+              <img src={sleepyBear} alt="Sleepy bear" className="w-24 h-24 mx-auto mb-3 opacity-70" />
+              <p className="text-muted-foreground font-medium mb-1">No events scheduled</p>
+              <p className="text-muted-foreground/70 text-sm max-w-xs mx-auto">
+                Check back later for upcoming club events and social gatherings
               </p>
             </div>
           )}
@@ -199,13 +198,13 @@ const Home = () => {
 
         {/* Connect With Us */}
         <div className="bear-card">
-          <h3 className="font-semibold mb-4 text-gray-800">Connect With Us</h3>
+          <h3 className="font-semibold mb-4">Connect With Us</h3>
           <div className="grid grid-cols-2 gap-3">
             <a 
               href="https://www.instagram.com/deepdenebearscc/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="social-link bg-purple-100 text-purple-700 hover:bg-purple-200"
+              className="social-link bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50"
             >
               <i className="ri-instagram-fill text-2xl mb-2"></i>
               <div className="text-sm font-medium">Instagram</div>
@@ -215,7 +214,7 @@ const Home = () => {
               href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="social-link bg-blue-100 text-blue-700 hover:bg-blue-200"
+              className="social-link bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50"
             >
               <i className="ri-facebook-fill text-2xl mb-2"></i>
               <div className="text-sm font-medium">Facebook</div>
@@ -225,7 +224,7 @@ const Home = () => {
               href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="social-link bg-red-100 text-red-700 hover:bg-red-200"
+              className="social-link bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50"
             >
               <i className="ri-youtube-fill text-2xl mb-2"></i>
               <div className="text-sm font-medium">YouTube</div>
@@ -235,7 +234,7 @@ const Home = () => {
               href="https://www.deepdenebearscc.com.au/" 
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link bg-gray-100 text-gray-700 hover:bg-gray-200"
+              className="social-link bg-gray-100 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700/50"
             >
               <img 
                 src="/attached_assets/logo_1753257070954.jpg" 
@@ -248,6 +247,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </PullToRefresh>
   );
 };
 

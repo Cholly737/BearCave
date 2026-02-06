@@ -5,6 +5,10 @@ import { queryClient } from "./lib/queryClient";
 import App from "./App";
 import "./index.css";
 
+if (localStorage.getItem("bearcave-dark-mode") === "true") {
+  document.documentElement.classList.add("dark");
+}
+
 // Register service worker for PWA functionality
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
