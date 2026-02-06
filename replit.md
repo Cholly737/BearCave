@@ -189,6 +189,17 @@ Preferred communication style: Simple, everyday language.
 - ✅ Updated all documentation to reflect open access model
 - ✅ App now provides unrestricted access to all features without requiring login
 
+### Custom Notification Sound & Dynamic Feed (February 2026)
+- ✅ Push notifications now auto-create feed items in the database (Latest Updates section)
+- ✅ Only the 2 most recent feed items are kept; older ones are automatically deleted
+- ✅ Homepage shows up to 2 latest updates dynamically (no hardcoded content)
+- ✅ Feed page displays latest 2 items with proper empty state
+- ✅ Custom referee whistle notification sound (bearcave_notification.mp3) for both platforms
+- ✅ iOS: Sound file added to Xcode project bundle (project.pbxproj updated)
+- ✅ Android: Sound file in res/raw/, notification channel "bearcave_alerts" with custom sound
+- ✅ Firebase payload includes platform-specific sound configuration (apns + android)
+- ✅ Android MainActivity creates NotificationChannel with custom sound on app launch
+
 ### Analytics Tracking Implementation (February 2026)
 - ✅ Added analytics_events database table for tracking user interactions
 - ✅ Frontend auto-tracking captures: app_open, page_view, click, notification_open, notification_received

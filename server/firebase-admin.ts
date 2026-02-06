@@ -51,6 +51,19 @@ export async function sendPushNotification(
         body,
       },
       data: data || {},
+      android: {
+        notification: {
+          sound: 'bearcave_notification',
+          channelId: 'bearcave_alerts',
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            sound: 'bearcave_notification.mp3',
+          },
+        },
+      },
       webpush: {
         notification: {
           icon: '/icons/icon-192.png',
@@ -91,6 +104,19 @@ export async function sendPushNotificationToAll(
         body,
       },
       data: data || {},
+      android: {
+        notification: {
+          sound: 'bearcave_notification',
+          channelId: 'bearcave_alerts',
+        },
+      },
+      apns: {
+        payload: {
+          aps: {
+            sound: 'bearcave_notification.mp3',
+          },
+        },
+      },
       webpush: {
         notification: {
           icon: '/icons/icon-192.png',
