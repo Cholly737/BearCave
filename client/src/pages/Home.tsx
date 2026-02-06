@@ -121,7 +121,7 @@ const Home = () => {
             </a>
             
             <a 
-              href="https://www.deepdenebears.com.au/" 
+              href="https://www.deepdenebearscc.com.au/" 
               target="_blank"
               rel="noopener noreferrer"
               className="social-link bg-gray-100 text-gray-700 hover:bg-gray-200"
