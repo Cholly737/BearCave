@@ -240,14 +240,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ message: "No active subscribers, feed item created", sent: 0 });
       }
       
-      const { sendPushNotificationToAll } = await import("./firebase-admin");
-      const result = await sendPushNotificationToAll(tokens, title, body, data);
-      
-      res.json({ 
-        message: `Notifications sent, feed item created`,
-        success: result.success,
-        failed: result.failure
-      });
+      try {
+        const { sendPushNotificationToAll } = await import("./firebase-admin");
+        const result = await sendPushNotificationToAll(tokens, title, body, data);
+        
+        res.json({ 
+          message: `Notifications sent, feed item created`,
+          success: result.success,
+          failed: result.failure
+        });
+      } catch (pushError) {
+        console.error("Push notification sending failed:", pushError);
+        res.json({ 
+          message: "Feed item created, but push notification delivery failed",
+          sent: 0,
+          pushError: String(pushError)
+        });
+      }
     } catch (error) {
       console.error("Error sending notifications:", error);
       res.status(500).json({ message: "Failed to send notifications" });
