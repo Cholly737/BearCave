@@ -6,10 +6,11 @@ import {
   feedItems, type FeedItem, type InsertFeedItem,
   sponsors, type Sponsor, type InsertSponsor,
   notificationSubscriptions, type NotificationSubscription, type InsertNotificationSubscription,
+  analyticsEvents, type AnalyticsEvent, type InsertAnalyticsEvent,
   instagramPosts, type InstagramPost, type InsertInstagramPost
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, desc, sql, gte, and } from "drizzle-orm";
 
 // Storage interface
 export interface IStorage {
@@ -39,6 +40,12 @@ export interface IStorage {
   subscribeToNotifications(subscription: InsertNotificationSubscription): Promise<NotificationSubscription>;
   unsubscribeFromNotifications(fcmToken: string): Promise<boolean>;
   getAllActiveSubscriptions(): Promise<NotificationSubscription[]>;
+  
+  // Analytics methods
+  recordAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent>;
+  recordAnalyticsEvents(events: InsertAnalyticsEvent[]): Promise<void>;
+  getAnalyticsSummary(startDate: Date, endDate: Date): Promise<any>;
+  getAnalyticsEvents(startDate: Date, endDate: Date, eventType?: string): Promise<AnalyticsEvent[]>;
   
   // Instagram post methods
   getActiveInstagramPosts(): Promise<InstagramPost[]>;
@@ -100,6 +107,106 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(sponsors);
   }
   
+  // Analytics methods
+  async recordAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent> {
+    const [created] = await db.insert(analyticsEvents).values(event).returning();
+    return created;
+  }
+
+  async recordAnalyticsEvents(eventsList: InsertAnalyticsEvent[]): Promise<void> {
+    if (eventsList.length === 0) return;
+    await db.insert(analyticsEvents).values(eventsList);
+  }
+
+  async getAnalyticsSummary(startDate: Date, endDate: Date): Promise<any> {
+    const dateFilter = and(
+      gte(analyticsEvents.createdAt, startDate),
+      sql`${analyticsEvents.createdAt} <= ${endDate}`
+    );
+
+    const [totalEvents] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(analyticsEvents)
+      .where(dateFilter);
+
+    const [uniqueUsers] = await db
+      .select({ count: sql<number>`count(distinct ${analyticsEvents.deviceId})::int` })
+      .from(analyticsEvents)
+      .where(dateFilter);
+
+    const eventsByType = await db
+      .select({
+        eventType: analyticsEvents.eventType,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(analyticsEvents)
+      .where(dateFilter)
+      .groupBy(analyticsEvents.eventType)
+      .orderBy(sql`count(*) desc`);
+
+    const pageViews = await db
+      .select({
+        page: analyticsEvents.page,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(analyticsEvents)
+      .where(and(dateFilter, eq(analyticsEvents.eventType, 'page_view')))
+      .groupBy(analyticsEvents.page)
+      .orderBy(sql`count(*) desc`);
+
+    const platformBreakdown = await db
+      .select({
+        platform: analyticsEvents.platform,
+        count: sql<number>`count(distinct ${analyticsEvents.deviceId})::int`,
+      })
+      .from(analyticsEvents)
+      .where(dateFilter)
+      .groupBy(analyticsEvents.platform)
+      .orderBy(sql`count(*) desc`);
+
+    const dailyActivity = await db
+      .select({
+        date: sql<string>`to_char(${analyticsEvents.createdAt}, 'YYYY-MM-DD')`,
+        count: sql<number>`count(*)::int`,
+        uniqueUsers: sql<number>`count(distinct ${analyticsEvents.deviceId})::int`,
+      })
+      .from(analyticsEvents)
+      .where(dateFilter)
+      .groupBy(sql`to_char(${analyticsEvents.createdAt}, 'YYYY-MM-DD')`)
+      .orderBy(sql`to_char(${analyticsEvents.createdAt}, 'YYYY-MM-DD')`);
+
+    const notificationOpens = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(analyticsEvents)
+      .where(and(dateFilter, eq(analyticsEvents.eventType, 'notification_open')));
+
+    return {
+      totalEvents: totalEvents.count,
+      uniqueUsers: uniqueUsers.count,
+      eventsByType,
+      pageViews,
+      platformBreakdown,
+      dailyActivity,
+      notificationOpens: notificationOpens[0].count,
+    };
+  }
+
+  async getAnalyticsEvents(startDate: Date, endDate: Date, eventType?: string): Promise<AnalyticsEvent[]> {
+    const conditions = [
+      gte(analyticsEvents.createdAt, startDate),
+      sql`${analyticsEvents.createdAt} <= ${endDate}`,
+    ];
+    if (eventType) {
+      conditions.push(eq(analyticsEvents.eventType, eventType));
+    }
+    return await db
+      .select()
+      .from(analyticsEvents)
+      .where(and(...conditions))
+      .orderBy(desc(analyticsEvents.createdAt))
+      .limit(1000);
+  }
+
   // Instagram post methods
   async getActiveInstagramPosts(): Promise<InstagramPost[]> {
     return await db.select().from(instagramPosts)

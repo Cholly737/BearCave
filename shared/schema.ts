@@ -74,6 +74,18 @@ export const notificationSubscriptions = pgTable("notification_subscriptions", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
+// Analytics events table schema
+export const analyticsEvents = pgTable("analytics_events", {
+  id: serial("id").primaryKey(),
+  eventType: text("event_type").notNull(),
+  eventData: jsonb("event_data"),
+  deviceId: text("device_id"),
+  page: text("page"),
+  referrer: text("referrer"),
+  platform: text("platform"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Instagram posts table schema
 export const instagramPosts = pgTable("instagram_posts", {
   id: serial("id").primaryKey(),
@@ -93,6 +105,7 @@ export const insertFixtureSchema = createInsertSchema(fixtures).omit({ id: true 
 export const insertFeedItemSchema = createInsertSchema(feedItems).omit({ id: true });
 export const insertSponsorSchema = createInsertSchema(sponsors).omit({ id: true });
 export const insertNotificationSubscriptionSchema = createInsertSchema(notificationSubscriptions).omit({ id: true, createdAt: true });
+export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents).omit({ id: true, createdAt: true });
 export const insertInstagramPostSchema = createInsertSchema(instagramPosts).omit({ id: true, createdAt: true });
 
 // Typed exports
@@ -116,6 +129,9 @@ export type Sponsor = typeof sponsors.$inferSelect;
 
 export type InsertNotificationSubscription = z.infer<typeof insertNotificationSubscriptionSchema>;
 export type NotificationSubscription = typeof notificationSubscriptions.$inferSelect;
+
+export type InsertAnalyticsEvent = z.infer<typeof insertAnalyticsEventSchema>;
+export type AnalyticsEvent = typeof analyticsEvents.$inferSelect;
 
 export type InsertInstagramPost = z.infer<typeof insertInstagramPostSchema>;
 export type InstagramPost = typeof instagramPosts.$inferSelect;

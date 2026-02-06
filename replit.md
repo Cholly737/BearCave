@@ -188,3 +188,15 @@ Preferred communication style: Simple, everyday language.
 - ✅ Disabled push notification features (now show as unsupported without Firebase)
 - ✅ Updated all documentation to reflect open access model
 - ✅ App now provides unrestricted access to all features without requiring login
+
+### Analytics Tracking Implementation (February 2026)
+- ✅ Added analytics_events database table for tracking user interactions
+- ✅ Frontend auto-tracking captures: app_open, page_view, click, notification_open, notification_received
+- ✅ Anonymous device ID tracking (no personal data collected)
+- ✅ Platform detection (iOS, Android, web)
+- ✅ Event queue with localStorage persistence and visibility change flushing
+- ✅ Rate-limited public tracking endpoint with input validation
+- ✅ Admin-protected summary endpoint: GET /api/analytics/summary (x-admin-key header)
+- ✅ Admin-protected events endpoint: GET /api/analytics/events (x-admin-key header)
+- ✅ Metrics include: unique users, page views, event breakdown, daily activity, platform breakdown, notification opens, active subscribers
+- ✅ Admin portal can query analytics using same NOTIFICATION_ADMIN_KEY

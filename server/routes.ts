@@ -450,6 +450,117 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analytics tracking endpoint - public (no auth needed)
+  const analyticsRateLimit = new Map<string, { count: number; resetAt: number }>();
+  const ANALYTICS_RATE_LIMIT = 100;
+  const ANALYTICS_RATE_WINDOW = 60000;
+  const VALID_EVENT_TYPES = ['page_view', 'app_open', 'click', 'notification_open', 'notification_received', 'notification_subscribe', 'notification_unsubscribe'];
+  const MAX_BATCH_SIZE = 20;
+
+  app.post("/api/analytics/track", async (req, res) => {
+    try {
+      const clientIp = req.ip || 'unknown';
+      const now = Date.now();
+      const rateEntry = analyticsRateLimit.get(clientIp);
+      if (rateEntry && rateEntry.resetAt > now) {
+        if (rateEntry.count >= ANALYTICS_RATE_LIMIT) {
+          return res.status(429).json({ message: "Too many requests" });
+        }
+        rateEntry.count++;
+      } else {
+        analyticsRateLimit.set(clientIp, { count: 1, resetAt: now + ANALYTICS_RATE_WINDOW });
+      }
+
+      const sanitizeEvent = (e: any) => {
+        const eventType = typeof e.eventType === 'string' ? e.eventType.substring(0, 50) : null;
+        if (!eventType || !VALID_EVENT_TYPES.includes(eventType)) return null;
+        return {
+          eventType,
+          eventData: e.eventData && typeof e.eventData === 'object' ? JSON.parse(JSON.stringify(e.eventData).substring(0, 500)) : null,
+          deviceId: typeof e.deviceId === 'string' ? e.deviceId.substring(0, 100) : null,
+          page: typeof e.page === 'string' ? e.page.substring(0, 200) : null,
+          referrer: typeof e.referrer === 'string' ? e.referrer.substring(0, 500) : null,
+          platform: typeof e.platform === 'string' ? e.platform.substring(0, 20) : null,
+        };
+      };
+
+      const { events: eventsList } = req.body;
+      
+      if (Array.isArray(eventsList) && eventsList.length > 0) {
+        const validEvents = eventsList.slice(0, MAX_BATCH_SIZE).map(sanitizeEvent).filter(Boolean);
+        if (validEvents.length === 0) {
+          return res.status(400).json({ message: "No valid events" });
+        }
+        await storage.recordAnalyticsEvents(validEvents as any);
+        res.json({ message: "Events recorded", count: validEvents.length });
+      } else {
+        const event = sanitizeEvent(req.body);
+        if (!event) {
+          return res.status(400).json({ message: "Invalid eventType" });
+        }
+        await storage.recordAnalyticsEvent(event);
+        res.json({ message: "Event recorded" });
+      }
+    } catch (error) {
+      console.error("Error recording analytics event:", error);
+      res.status(500).json({ message: "Failed to record event" });
+    }
+  });
+
+  // Analytics summary endpoint - protected by admin key
+  app.get("/api/analytics/summary", async (req, res) => {
+    try {
+      const adminKey = req.headers['x-admin-key'];
+      const expectedKey = process.env.NOTIFICATION_ADMIN_KEY;
+      
+      if (!expectedKey || adminKey !== expectedKey) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      const days = parseInt(req.query.days as string) || 30;
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+
+      const summary = await storage.getAnalyticsSummary(startDate, endDate);
+      
+      const activeSubscriptions = await storage.getAllActiveSubscriptions();
+
+      res.json({
+        period: { startDate, endDate, days },
+        ...summary,
+        activeSubscribers: activeSubscriptions.length,
+      });
+    } catch (error) {
+      console.error("Error fetching analytics summary:", error);
+      res.status(500).json({ message: "Failed to fetch analytics" });
+    }
+  });
+
+  // Analytics events detail endpoint - protected by admin key
+  app.get("/api/analytics/events", async (req, res) => {
+    try {
+      const adminKey = req.headers['x-admin-key'];
+      const expectedKey = process.env.NOTIFICATION_ADMIN_KEY;
+      
+      if (!expectedKey || adminKey !== expectedKey) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      const days = parseInt(req.query.days as string) || 7;
+      const eventType = req.query.type as string | undefined;
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+
+      const events = await storage.getAnalyticsEvents(startDate, endDate, eventType);
+      res.json(events);
+    } catch (error) {
+      console.error("Error fetching analytics events:", error);
+      res.status(500).json({ message: "Failed to fetch analytics events" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

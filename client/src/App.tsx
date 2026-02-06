@@ -12,10 +12,17 @@ import Shop from "@/pages/Shop";
 import Sponsors from "@/pages/Sponsors";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/not-found";
+import { useAnalytics } from "@/hooks/useAnalytics";
+
+function AnalyticsTracker() {
+  useAnalytics();
+  return null;
+}
 
 function App() {
   return (
     <TooltipProvider>
+      <AnalyticsTracker />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

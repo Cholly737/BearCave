@@ -4,6 +4,7 @@ import { requestNotificationPermission, onForegroundMessage, initializeMessaging
 import { isSupported } from 'firebase/messaging';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { trackEvent } from '@/hooks/useAnalytics';
 
 interface NotificationState {
   permission: NotificationPermission;
@@ -39,6 +40,10 @@ export function useNotifications() {
           }));
 
           PushNotifications.addListener('pushNotificationReceived', notification => {
+            trackEvent('notification_received', undefined, {
+              title: notification.title,
+              body: notification.body,
+            });
             toast({
               title: notification.title || 'BearCave',
               description: notification.body || 'You have a new notification',
@@ -46,7 +51,10 @@ export function useNotifications() {
           });
 
           PushNotifications.addListener('pushNotificationActionPerformed', action => {
-            console.log('Push action performed:', action);
+            trackEvent('notification_open', undefined, {
+              title: action.notification?.title,
+              body: action.notification?.body,
+            });
           });
         } catch (error) {
           console.error('Error initializing native notifications:', error);
@@ -73,6 +81,10 @@ export function useNotifications() {
             await initializeMessaging();
             
             onForegroundMessage((payload) => {
+              trackEvent('notification_received', undefined, {
+                title: payload.notification?.title,
+                body: payload.notification?.body,
+              });
               toast({
                 title: payload.notification?.title || 'BearCave',
                 description: payload.notification?.body || 'You have a new notification',
