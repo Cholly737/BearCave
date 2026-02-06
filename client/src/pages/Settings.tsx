@@ -32,7 +32,7 @@ export default function Settings() {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="font-medium">Version</span>
-              <p className="text-muted-foreground">1.0.0</p>
+              <p className="text-muted-foreground">1.0.1</p>
             </div>
             <div>
               <span className="font-medium">Build</span>
