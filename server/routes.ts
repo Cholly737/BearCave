@@ -219,19 +219,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!title || !body) {
         return res.status(400).json({ message: "Title and body are required" });
       }
+
+      await storage.createFeedItem({
+        title,
+        content: body,
+        date: new Date(),
+        type: "notification",
+        tags: ["notification"],
+      });
+      await storage.cleanupOldFeedItems(2);
       
       const subscriptions = await storage.getAllActiveSubscriptions();
       const tokens = subscriptions.map(sub => sub.fcmToken);
       
       if (tokens.length === 0) {
-        return res.json({ message: "No active subscribers", sent: 0 });
+        return res.json({ message: "No active subscribers, feed item created", sent: 0 });
       }
       
       const { sendPushNotificationToAll } = await import("./firebase-admin");
       const result = await sendPushNotificationToAll(tokens, title, body, data);
       
       res.json({ 
-        message: `Notifications sent`,
+        message: `Notifications sent, feed item created`,
         success: result.success,
         failed: result.failure
       });

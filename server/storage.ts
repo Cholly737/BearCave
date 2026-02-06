@@ -32,6 +32,8 @@ export interface IStorage {
   
   // Feed methods
   getAllFeedItems(): Promise<FeedItem[]>;
+  createFeedItem(item: InsertFeedItem): Promise<FeedItem>;
+  cleanupOldFeedItems(keepCount: number): Promise<void>;
   
   // Sponsor methods
   getAllSponsors(): Promise<Sponsor[]>;
@@ -99,7 +101,22 @@ export class DatabaseStorage implements IStorage {
   
   // Feed methods
   async getAllFeedItems(): Promise<FeedItem[]> {
-    return await db.select().from(feedItems);
+    return await db.select().from(feedItems).orderBy(desc(feedItems.date)).limit(2);
+  }
+
+  async createFeedItem(item: InsertFeedItem): Promise<FeedItem> {
+    const [created] = await db.insert(feedItems).values(item).returning();
+    return created;
+  }
+
+  async cleanupOldFeedItems(keepCount: number): Promise<void> {
+    const allItems = await db.select({ id: feedItems.id }).from(feedItems).orderBy(desc(feedItems.date));
+    if (allItems.length > keepCount) {
+      const idsToDelete = allItems.slice(keepCount).map(item => item.id);
+      for (const id of idsToDelete) {
+        await db.delete(feedItems).where(eq(feedItems.id, id));
+      }
+    }
   }
   
   // Sponsor methods
@@ -425,18 +442,7 @@ export class DatabaseStorage implements IStorage {
       
       await db.insert(fixtures).values(sampleFixtures);
       
-      // Add welcome message feed item
-      const sampleFeedItems: InsertFeedItem[] = [
-        {
-          title: "Hello Bears! Welcome to BearCave!",
-          content: "Hope that you enjoy the new app. We have a range of functions on here:\n\n• The Events page will lead you to all our upcoming events, complete with links to the Shop (which can also be accessed by the three lines in the top right corner).\n• The Feed page provides club-wide messages, like this one!\n• On the Links page, you can access a variety of organisations and documents associated with the Bears\n• And the Home page gives you a brief preview of what's new, as well as links to our social media\n\nEnjoy!",
-          date: new Date(),
-          type: "announcement",
-          tags: ["welcome", "announcement"]
-        }
-      ];
-      
-      await db.insert(feedItems).values(sampleFeedItems);
+      // Feed items are created dynamically when notifications are sent from admin portal
       
       // Add sample sponsors
       const sampleSponsors: InsertSponsor[] = [

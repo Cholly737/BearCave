@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { fetchUpcomingEvents, fetchLatestFeedItem } from "@/lib/api";
+import { fetchUpcomingEvents } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
 
 const Home = () => {
@@ -14,13 +14,13 @@ const Home = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Fetch latest feed item
+  // Fetch latest feed items (max 2)
   const { 
-    data: latestFeedItem,
+    data: feedItems,
     isLoading: feedLoading,
     error: feedError 
   } = useQuery({
-    queryKey: ["/api/feed/latest"],
+    queryKey: ["/api/feed"],
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -205,9 +205,11 @@ const Home = () => {
             </Link>
           </div>
           
-          {/* Latest Feed Item */}
           {feedLoading ? (
-            <div className="loading-skeleton h-20 rounded-lg"></div>
+            <div className="space-y-3">
+              <div className="loading-skeleton h-20 rounded-lg"></div>
+              <div className="loading-skeleton h-20 rounded-lg"></div>
+            </div>
           ) : feedError ? (
             <div className="text-center py-6">
               <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center">
@@ -215,19 +217,22 @@ const Home = () => {
               </div>
               <p className="text-gray-500 text-sm">Unable to load latest updates</p>
             </div>
-          ) : latestFeedItem && typeof latestFeedItem === 'object' && 'title' in latestFeedItem ? (
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-primary mb-2">{(latestFeedItem as FeedItem).title}</h4>
-                  <p className="text-gray-700 text-sm mb-3 leading-relaxed">{(latestFeedItem as FeedItem).content}</p>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <i className="ri-time-line mr-1"></i>
-                    {getTimeAgo((latestFeedItem as FeedItem).date)}
+          ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 ? (
+            <div className="space-y-3">
+              {(feedItems as FeedItem[]).slice(0, 2).map((item: FeedItem) => (
+                <div key={item.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-primary mb-2">{item.title}</h4>
+                      <p className="text-gray-700 text-sm mb-3 leading-relaxed">{item.content}</p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <i className="ri-time-line mr-1"></i>
+                        {getTimeAgo(item.date)}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <i className="ri-arrow-right-line text-primary ml-3 text-lg"></i>
-              </div>
+              ))}
             </div>
           ) : (
             <div className="text-center py-8">

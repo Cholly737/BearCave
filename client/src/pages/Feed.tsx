@@ -107,7 +107,17 @@ const Feed = () => {
               <p className="text-xs text-gray-500">{getTimeAgo(item.date)}</p>
             </div>
           ))
-        ) : null}
+        ) : (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
+              <i className="ri-document-line text-3xl text-primary"></i>
+            </div>
+            <p className="text-gray-600 font-medium mb-2">No updates yet</p>
+            <p className="text-gray-500 text-sm max-w-xs mx-auto">
+              Check back later for club news, match reports, and announcements
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
