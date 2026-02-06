@@ -38,3 +38,7 @@ waitForPort = 5000
 
 [agent]
 integrations = ["firebase_barebones_javascript:1.0.0"]
+
+[userenv]
+
+[userenv.shared]
