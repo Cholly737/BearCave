@@ -15,7 +15,7 @@ const Header: FC<HeaderProps> = ({ onMenuClick, isMenuOpen }) => {
           <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border-2 border-white overflow-hidden">
             <img src={logoImg} alt="Deepdene Bears Cricket Club" className="w-8 h-8 object-contain" />
           </div>
-          <h1 className="text-white font-bold text-lg">BearCave</h1>
+          <h1 className="text-white font-bold text-lg">Bear Cave</h1>
         </div>
         
         <button 
