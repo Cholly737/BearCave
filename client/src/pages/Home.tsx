@@ -86,57 +86,61 @@ const Home = () => {
       </div>
       
       <div className="p-4">
-        {/* Social Media Section */}
-        <div className="bear-card">
-          <h3 className="font-semibold mb-4 text-gray-800">Connect With Us</h3>
-          <div className="grid grid-cols-2 gap-3">
-            <a 
-              href="https://www.instagram.com/deepdenebearscc/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="social-link bg-purple-100 text-purple-700 hover:bg-purple-200"
-            >
-              <i className="ri-instagram-fill text-2xl mb-2"></i>
-              <div className="text-sm font-medium">Instagram</div>
-            </a>
-            
-            <a 
-              href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="social-link bg-blue-100 text-blue-700 hover:bg-blue-200"
-            >
-              <i className="ri-facebook-fill text-2xl mb-2"></i>
-              <div className="text-sm font-medium">Facebook</div>
-            </a>
-            
-            <a 
-              href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="social-link bg-red-100 text-red-700 hover:bg-red-200"
-            >
-              <i className="ri-youtube-fill text-2xl mb-2"></i>
-              <div className="text-sm font-medium">YouTube</div>
-            </a>
-            
-            <a 
-              href="https://www.deepdenebearscc.com.au/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-link bg-gray-100 text-gray-700 hover:bg-gray-200"
-            >
-              <img 
-                src="/attached_assets/logo_1753257070954.jpg" 
-                alt="Deepdene Bears Logo" 
-                className="w-6 h-6 object-contain rounded-full mb-2"
-              />
-              <div className="text-sm font-medium">Official Site</div>
-            </a>
+        {/* Latest Updates */}
+        <div className="bear-card-enhanced">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold text-lg text-gray-800 flex items-center">
+              <i className="ri-newspaper-line text-primary mr-2"></i>
+              Latest Updates
+            </h3>
+            <Link to="/feed" className="text-primary hover:text-slate-700 transition-colors">
+              <i className="ri-arrow-right-line text-lg"></i>
+            </Link>
           </div>
+          
+          {feedLoading ? (
+            <div className="space-y-3">
+              <div className="loading-skeleton h-20 rounded-lg"></div>
+              <div className="loading-skeleton h-20 rounded-lg"></div>
+            </div>
+          ) : feedError ? (
+            <div className="text-center py-6">
+              <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center">
+                <i className="ri-wifi-off-line text-gray-400 text-xl"></i>
+              </div>
+              <p className="text-gray-500 text-sm">Unable to load latest updates</p>
+            </div>
+          ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 ? (
+            <div className="space-y-3">
+              {(feedItems as FeedItem[]).slice(0, 2).map((item: FeedItem) => (
+                <div key={item.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-primary mb-2">{item.title}</h4>
+                      <p className="text-gray-700 text-sm mb-3 leading-relaxed">{item.content}</p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <i className="ri-time-line mr-1"></i>
+                        {getTimeAgo(item.date)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
+                <i className="ri-document-line text-3xl text-primary"></i>
+              </div>
+              <p className="text-gray-600 font-medium mb-2">No updates yet</p>
+              <p className="text-gray-500 text-sm max-w-xs mx-auto">
+                Check back later for club news, match reports, and announcements
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Enhanced Upcoming Events */}
+        {/* Upcoming Events */}
         <div className="bear-card-enhanced">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-lg text-gray-800 flex items-center">
@@ -193,58 +197,54 @@ const Home = () => {
           )}
         </div>
 
-        {/* Enhanced Latest Feed */}
-        <div className="bear-card-enhanced">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold text-lg text-gray-800 flex items-center">
-              <i className="ri-newspaper-line text-primary mr-2"></i>
-              Latest Updates
-            </h3>
-            <Link to="/feed" className="text-primary hover:text-slate-700 transition-colors">
-              <i className="ri-arrow-right-line text-lg"></i>
-            </Link>
+        {/* Connect With Us */}
+        <div className="bear-card">
+          <h3 className="font-semibold mb-4 text-gray-800">Connect With Us</h3>
+          <div className="grid grid-cols-2 gap-3">
+            <a 
+              href="https://www.instagram.com/deepdenebearscc/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link bg-purple-100 text-purple-700 hover:bg-purple-200"
+            >
+              <i className="ri-instagram-fill text-2xl mb-2"></i>
+              <div className="text-sm font-medium">Instagram</div>
+            </a>
+            
+            <a 
+              href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fdeepdenebearscricketclub%2F" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link bg-blue-100 text-blue-700 hover:bg-blue-200"
+            >
+              <i className="ri-facebook-fill text-2xl mb-2"></i>
+              <div className="text-sm font-medium">Facebook</div>
+            </a>
+            
+            <a 
+              href="https://www.youtube.com/channel/UCXo2UiPtMpRb0VXVVQyr4fg" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="social-link bg-red-100 text-red-700 hover:bg-red-200"
+            >
+              <i className="ri-youtube-fill text-2xl mb-2"></i>
+              <div className="text-sm font-medium">YouTube</div>
+            </a>
+            
+            <a 
+              href="https://www.deepdenebearscc.com.au/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              <img 
+                src="/attached_assets/logo_1753257070954.jpg" 
+                alt="Deepdene Bears Logo" 
+                className="w-6 h-6 object-contain rounded-full mb-2"
+              />
+              <div className="text-sm font-medium">Official Site</div>
+            </a>
           </div>
-          
-          {feedLoading ? (
-            <div className="space-y-3">
-              <div className="loading-skeleton h-20 rounded-lg"></div>
-              <div className="loading-skeleton h-20 rounded-lg"></div>
-            </div>
-          ) : feedError ? (
-            <div className="text-center py-6">
-              <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center">
-                <i className="ri-wifi-off-line text-gray-400 text-xl"></i>
-              </div>
-              <p className="text-gray-500 text-sm">Unable to load latest updates</p>
-            </div>
-          ) : feedItems && Array.isArray(feedItems) && feedItems.length > 0 ? (
-            <div className="space-y-3">
-              {(feedItems as FeedItem[]).slice(0, 2).map((item: FeedItem) => (
-                <div key={item.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-300">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-primary mb-2">{item.title}</h4>
-                      <p className="text-gray-700 text-sm mb-3 leading-relaxed">{item.content}</p>
-                      <div className="flex items-center text-xs text-gray-500">
-                        <i className="ri-time-line mr-1"></i>
-                        {getTimeAgo(item.date)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center">
-                <i className="ri-document-line text-3xl text-primary"></i>
-              </div>
-              <p className="text-gray-600 font-medium mb-2">No updates yet</p>
-              <p className="text-gray-500 text-sm max-w-xs mx-auto">
-                Check back later for club news, match reports, and announcements
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </div>
