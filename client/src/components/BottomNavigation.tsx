@@ -19,9 +19,9 @@ const BottomNavigation: FC = () => {
           <i className="ri-home-5-fill text-xl"></i>
           <span className="text-xs mt-1">Home</span>
         </Link>
-        <Link to="/feed" className={`flex flex-col items-center py-3 px-3 ${isActive("/feed") ? "text-accent" : "text-gray-600 dark:text-gray-400"}`}>
-          <i className="ri-file-text-line text-xl"></i>
-          <span className="text-xs mt-1">Feed</span>
+        <Link to="/shop" className={`flex flex-col items-center py-3 px-3 ${isActive("/shop") ? "text-accent" : "text-gray-600 dark:text-gray-400"}`}>
+          <i className="ri-shopping-bag-line text-xl"></i>
+          <span className="text-xs mt-1">Shop</span>
         </Link>
         <Link to="/events" className={`flex flex-col items-center py-3 px-3 ${isActive("/events") ? "text-accent" : "text-gray-600 dark:text-gray-400"}`}>
           <i className="ri-notification-3-line text-xl"></i>

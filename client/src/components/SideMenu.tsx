@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { X, FileText, Users, ShoppingBag, Award, Settings } from "lucide-react";
+import { X, FileText, Users, Award, Settings } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useNotifications } from "@/hooks/useNotifications";
 
@@ -28,7 +28,6 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
   const menuItems = [
     { to: "/club-policy", icon: FileText, label: "Club Policy" },
     { to: "/registrations", icon: Users, label: "Registrations" },
-    { to: "/shop", icon: ShoppingBag, label: "Shop" },
     { to: "/sponsors", icon: Award, label: "Sponsors" },
     { to: "/settings", icon: Settings, label: "Settings" },
   ];
