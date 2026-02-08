@@ -4,6 +4,7 @@ import { fetchUpcomingEvents } from "@/lib/api";
 import { Event, FeedItem } from "@/types";
 import { PullToRefresh } from "@/components/PullToRefresh";
 import sleepyBear from "@/assets/images/sleepy-bear.png";
+import { NotificationPrompt } from "@/components/NotificationPrompt";
 
 const Home = () => {
   // Fetch upcoming events
@@ -57,6 +58,7 @@ const Home = () => {
 
   return (
     <PullToRefresh queryKeys={["/api/feed", "/api/events"]}>
+    <NotificationPrompt />
     <div id="home-page" className="pb-20">
       {/* Enhanced Hero Header Section */}
       <div className="relative bg-gradient-to-br from-primary via-slate-700 to-slate-800 text-white py-12 px-4 overflow-hidden">
