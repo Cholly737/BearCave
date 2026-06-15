@@ -10,8 +10,6 @@ interface SideMenuProps {
 }
 
 const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
-  console.log('🔧 SideMenu component rendering, isOpen:', isOpen);
-  
   const { 
     permission, 
     token, 
@@ -21,9 +19,6 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
     requestPermission, 
     unsubscribe 
   } = useNotifications();
-  
-  // Debug logging
-  console.log('SideMenu - isSupported:', isSupported, 'permission:', permission, 'token:', !!token);
   
   const menuItems = [
     { to: "/club-policy", icon: FileText, label: "Club Policy" },
@@ -51,7 +46,7 @@ const SideMenu: FC<SideMenuProps> = ({ isOpen, onClose }) => {
       )}
       
       {/* Side Menu */}
-      <div className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-[hsl(220,18%,13%)] z-50 transform transition-all duration-300 ease-in-out ${
+      <div className={`fixed top-16 right-0 h-[calc(100%-4rem)] w-64 bg-white dark:bg-[hsl(220,18%,13%)] z-50 transform transition-all duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="p-4">
