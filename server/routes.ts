@@ -243,11 +243,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const { sendPushNotificationToAll } = await import("./firebase-admin");
         const result = await sendPushNotificationToAll(tokens, title, body, data);
+
+        // Auto-remove stale tokens FCM told us are no longer valid
+        if (result.staleTokens.length > 0) {
+          await Promise.all(result.staleTokens.map(t => storage.unsubscribeFromNotifications(t)));
+          console.log(`Removed ${result.staleTokens.length} stale token(s)`);
+        }
         
         res.json({ 
           message: `Notifications sent, feed item created`,
           success: result.success,
-          failed: result.failure
+          failed: result.failure,
+          staleRemoved: result.staleTokens.length
         });
       } catch (pushError) {
         console.error("Push notification sending failed:", pushError);

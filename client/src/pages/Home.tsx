@@ -58,7 +58,6 @@ const Home = () => {
 
   return (
     <PullToRefresh queryKeys={["/api/feed", "/api/events"]}>
-    <NotificationPrompt />
     <div id="home-page" className="pb-20">
       {/* Enhanced Hero Header Section */}
       <div className="relative bg-gradient-to-br from-primary via-slate-700 to-slate-800 text-white py-12 px-4 overflow-hidden">
@@ -88,6 +87,11 @@ const Home = () => {
           </p>
           
         </div>
+      </div>
+
+      {/* Notification permission banner — sits right below the hero */}
+      <div className="pt-4">
+        <NotificationPrompt />
       </div>
       
       <div className="p-4">

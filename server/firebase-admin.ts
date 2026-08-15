@@ -85,24 +85,27 @@ export async function sendPushNotification(
   }
 }
 
+const STALE_TOKEN_ERRORS = new Set([
+  'messaging/registration-token-not-registered',
+  'messaging/invalid-registration-token',
+  'messaging/invalid-argument',
+]);
+
 export async function sendPushNotificationToAll(
   tokens: string[],
   title: string,
   body: string,
   data?: Record<string, string>
-): Promise<{ success: number; failure: number }> {
+): Promise<{ success: number; failure: number; staleTokens: string[] }> {
   const firebaseAdmin = initializeFirebaseAdmin();
   
   if (!firebaseAdmin || tokens.length === 0) {
-    return { success: 0, failure: 0 };
+    return { success: 0, failure: 0, staleTokens: [] };
   }
 
   try {
     const message = {
-      notification: {
-        title,
-        body,
-      },
+      notification: { title, body },
       data: data || {},
       android: {
         notification: {
@@ -112,9 +115,7 @@ export async function sendPushNotificationToAll(
       },
       apns: {
         payload: {
-          aps: {
-            sound: 'bearcave_notification.mp3',
-          },
+          aps: { sound: 'bearcave_notification.mp3' },
         },
       },
       webpush: {
@@ -130,11 +131,19 @@ export async function sendPushNotificationToAll(
       ...message,
     });
 
-    console.log(`Notifications sent: ${response.successCount} success, ${response.failureCount} failed`);
-    return { success: response.successCount, failure: response.failureCount };
+    // Collect tokens FCM has told us are no longer valid
+    const staleTokens: string[] = [];
+    response.responses.forEach((resp, idx) => {
+      if (!resp.success && resp.error && STALE_TOKEN_ERRORS.has(resp.error.code)) {
+        staleTokens.push(tokens[idx]);
+      }
+    });
+
+    console.log(`Notifications sent: ${response.successCount} success, ${response.failureCount} failed, ${staleTokens.length} stale removed`);
+    return { success: response.successCount, failure: response.failureCount, staleTokens };
   } catch (error) {
     console.error('Error sending notifications:', error);
-    return { success: 0, failure: tokens.length };
+    return { success: 0, failure: tokens.length, staleTokens: [] };
   }
 }
 
