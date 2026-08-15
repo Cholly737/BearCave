@@ -72,7 +72,7 @@ const Home = () => {
         <div className="relative z-10 text-center max-w-lg mx-auto">
           {/* Club Logo */}
           <div className="mb-6">
-            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center p-2 border-2 border-white/30">
+            <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center p-2 border-2 border-white/30">
               <img 
                 src="/attached_assets/logo_1753257070954.jpg" 
                 alt="Deepdene Bears Logo" 
