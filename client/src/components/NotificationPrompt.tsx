@@ -38,7 +38,7 @@ export function NotificationPrompt() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 animate-in fade-in duration-300">
       <div className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
         <div className="bg-gradient-to-r from-primary to-slate-700 px-6 py-5 text-white text-center relative">
           <button
@@ -48,7 +48,7 @@ export function NotificationPrompt() {
           >
             <X size={20} />
           </button>
-          <div className="w-14 h-14 mx-auto mb-3 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30">
+          <div className="w-14 h-14 mx-auto mb-3 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/30">
             <Bell className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-lg font-bold">Stay in the loop!</h2>
