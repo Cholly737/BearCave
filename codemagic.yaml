@@ -70,11 +70,10 @@ workflows:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     
-   publishing:
-  app_store_connect:
-    auth: integration
-    apple_id: "6754083548"
-    submit_to_testflight: true  # For beta testing
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true  # For beta testing
         # submit_to_app_store: true  # Uncomment when ready for production release
 
   android-build:
