@@ -1,0 +1,105 @@
+BearCave
+BearCave
+github.com/Cholly737/BearCave
+
+
+Start new build
+Build overview
+Artifacts
+Click on the build steps for details.
+Preparing build machine
+30s
+Fetching app sources
+3s
+Set up code signing identities
+2s
+Install npm dependencies
+13s
+Build web assets
+2s
+Sync Capacitor to iOS
+4s
+Install CocoaPods dependencies
+< 1s
+Set up code signing
+1s
+Increment build number
+1s
+Build iOS IPA
+58s
+Publishing
+1m 11s
+
+
+
+Showing the last 50 lines. Click this button to load the full log
+      "message" : "This bundle is invalid. The value for key CFBundleShortVersionString [1.3] in the Info.plist file must contain a higher version than that of the previously approved version [1.3]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring",
+      "underlying-errors" : [
+        {
+          "code" : -19241,
+          "message" : "A server error occurred.",
+          "underlying-errors" : [
+
+          ],
+          "user-info" : {
+            "NSLocalizedDescription" : "A server error occurred.",
+            "code" : "90062",
+            "description" : "This bundle is invalid. The value for key CFBundleShortVersionString [1.3] in the Info.plist file must contain a higher version than that of the previously approved version [1.3]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring"
+          }
+        }
+      ],
+      "user-info" : {
+        "NSLocalizedDescription" : "This bundle is invalid. The value for key CFBundleShortVersionString [1.3] in the Info.plist file must contain a higher version than that of the previously approved version [1.3]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring",
+        "NSLocalizedFailureReason" : "The server’s response was: ‘{\n    code = 90062;\n    description = \"This bundle is invalid. The value for key CFBundleShortVersionString [1.3] in the Info.plist file must contain a higher version than that of the previously approved version [1.3]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring\";\n}’.",
+        "NSUnderlyingError" : "Error Domain=IrisAPI Code=-19241 \"A server error occurred.\" UserInfo={code=90062, NSLocalizedDescription=A server error occurred., description=This bundle is invalid. The value for key CFBundleShortVersionString [1.3] in the Info.plist file must contain a higher version than that of the previously approved version [1.3]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring}",
+        "iris-code" : "90062"
+      }
+    }
+  ],
+  "tool-path" : "/Applications/Xcode-26.4.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources",
+  "tool-version" : "26.30.4 (173004)",
+  "warnings" : [
+    {
+      "code" : 90068,
+      "message" : "MinimumOSVersion too low. This app has a MinimumOSVersion of 14.0. Starting in Spring 2027, all iOS apps must have a MinimumOSVersion of 15.0 or later in order to be uploaded to App Store Connect or submitted for distribution.",
+      "underlying-errors" : [
+
+      ],
+      "user-info" : {
+        "NSLocalizedDescription" : "MinimumOSVersion too low. This app has a MinimumOSVersion of 14.0. Starting in Spring 2027, all iOS apps must have a MinimumOSVersion of 15.0 or later in order to be uploaded to App Store Connect or submitted for distribution.",
+        "server_warning" : "{\n    code = 90068;\n    description = \"MinimumOSVersion too low. This app has a MinimumOSVersion of 14.0. Starting in Spring 2027, all iOS apps must have a MinimumOSVersion of 15.0 or later in order to be uploaded to App Store Connect or submitted for distribution.\";\n}"
+      }
+    }
+  ]
+}
+
+Failed to upload archive at "/Users/builder/clone/build/ios/ipa/App.ipa"
+Failed to publish /Users/builder/clone/build/ios/ipa/App.ipa
+
+Failed to publish App.ipa to App Store Connect.
+
+Build failed :|
+
+
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
+Cleaning up
+3s
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
+
+Personal Account
+Personal Account
+Personal Account
+Personal Account
+Create new team
+Applications
+Builds
+OTA Updates
+App Preview
+Settings
+Billing
+
+
+Log out
+
