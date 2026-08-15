@@ -67,7 +67,16 @@ export function useNotifications() {
         }
 
         try {
-          const supported = await isSupported();
+          // isSupported() can return false on iOS Safari PWA even when push works.
+          // Fall back to manual API checks so the prompt still shows up.
+          let supported = await isSupported();
+          if (!supported) {
+            supported = (
+              'serviceWorker' in navigator &&
+              'PushManager' in window &&
+              'Notification' in window
+            );
+          }
           const savedToken = localStorage.getItem('fcmToken');
           
           setState(prev => ({
@@ -156,8 +165,15 @@ export function useNotifications() {
           }));
         }
       } else {
-        const supported = await isSupported();
-        
+        let supported = await isSupported();
+        if (!supported) {
+          supported = (
+            'serviceWorker' in navigator &&
+            'PushManager' in window &&
+            'Notification' in window
+          );
+        }
+
         if (!supported) {
           toast({
             title: 'Not Supported',

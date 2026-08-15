@@ -3,9 +3,9 @@ import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messagi
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.appspot.com`,
+  authDomain: "bearcave-55ce4.firebaseapp.com",
+  projectId: "bearcave-55ce4",
+  storageBucket: "bearcave-55ce4.appspot.com",
   messagingSenderId: "267658947052",
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
@@ -23,18 +23,8 @@ async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null
 
   try {
     const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-    console.log('Service worker registered:', registration);
     swRegistration = registration;
-    
     await navigator.serviceWorker.ready;
-    
-    if (registration.active) {
-      registration.active.postMessage({
-        type: 'FIREBASE_CONFIG',
-        config: firebaseConfig
-      });
-    }
-    
     return registration;
   } catch (error) {
     console.error('Service worker registration failed:', error);
@@ -74,13 +64,6 @@ export async function requestNotificationPermission(): Promise<string | null> {
       swRegistration = await registerServiceWorker();
     }
     
-    if (swRegistration?.active) {
-      swRegistration.active.postMessage({
-        type: 'FIREBASE_CONFIG',
-        config: firebaseConfig
-      });
-    }
-
     const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
     
     const tokenOptions: { vapidKey: string; serviceWorkerRegistration?: ServiceWorkerRegistration } = {
