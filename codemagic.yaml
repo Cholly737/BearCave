@@ -13,9 +13,6 @@ workflows:
           include: true
           source: true
     
-    integrations:
-      app_store_connect: Codemagic CI/CD
-    
     environment:
       ios_signing:
         provisioning_profiles:
@@ -72,8 +69,10 @@ workflows:
     
     publishing:
       app_store_connect:
-        auth: integration
-        submit_to_testflight: true  # For beta testing
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        private_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        submit_to_testflight: true
         # submit_to_app_store: true  # Uncomment when ready for production release
 
   android-build:
