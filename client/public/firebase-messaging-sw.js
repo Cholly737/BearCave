@@ -17,9 +17,11 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log('Received background message:', payload);
 
-  const notificationTitle = payload.notification?.title || 'BearCave';
+  // Messages are data-only — read title/body from payload.data to avoid
+  // the double-notification caused by FCM auto-display + SW showNotification.
+  const notificationTitle = payload.data?.title || 'BearCave';
   const notificationOptions = {
-    body: payload.notification?.body || 'You have a new notification',
+    body: payload.data?.body || 'You have a new notification',
     icon: '/icons/icon-192.png',
     badge: '/icons/icon-72.png',
     data: payload.data,

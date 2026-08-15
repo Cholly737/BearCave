@@ -44,30 +44,31 @@ export async function sendPushNotification(
   }
 
   try {
+    // Data-only message: service worker handles display exclusively,
+    // preventing the double-notification caused by FCM auto-display + SW showNotification.
     const message = {
       token,
-      notification: {
+      data: {
         title,
         body,
+        ...(data || {}),
       },
-      data: data || {},
       android: {
-        notification: {
-          sound: 'bearcave_notification',
-          channelId: 'bearcave_alerts',
-        },
+        priority: 'high' as const,
       },
       apns: {
         payload: {
           aps: {
-            sound: 'bearcave_notification.mp3',
+            contentAvailable: true,
           },
+        },
+        headers: {
+          'apns-priority': '10',
         },
       },
       webpush: {
-        notification: {
-          icon: '/icons/icon-192.png',
-          badge: '/icons/icon-72.png',
+        headers: {
+          Urgency: 'high',
         },
       },
     };
@@ -104,24 +105,27 @@ export async function sendPushNotificationToAll(
   }
 
   try {
+    // Data-only multicast: prevents double-notification from FCM auto-display + SW showNotification.
     const message = {
-      notification: { title, body },
-      data: data || {},
+      data: {
+        title,
+        body,
+        ...(data || {}),
+      },
       android: {
-        notification: {
-          sound: 'bearcave_notification',
-          channelId: 'bearcave_alerts',
-        },
+        priority: 'high' as const,
       },
       apns: {
         payload: {
-          aps: { sound: 'bearcave_notification.mp3' },
+          aps: { contentAvailable: true },
+        },
+        headers: {
+          'apns-priority': '10',
         },
       },
       webpush: {
-        notification: {
-          icon: '/icons/icon-192.png',
-          badge: '/icons/icon-72.png',
+        headers: {
+          Urgency: 'high',
         },
       },
     };

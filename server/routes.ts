@@ -210,10 +210,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const adminKey = req.headers['x-admin-key'];
       const expectedKey = process.env.NOTIFICATION_ADMIN_KEY;
       
-      console.log('[DEBUG] /api/notifications/send - key received:', adminKey ? `"${String(adminKey).substring(0, 3)}...${String(adminKey).slice(-3)}" (length: ${String(adminKey).length})` : 'NOT SET');
-      console.log('[DEBUG] /api/notifications/send - expected key:', expectedKey ? `"${expectedKey.substring(0, 3)}...${expectedKey.slice(-3)}" (length: ${expectedKey.length})` : 'NOT SET');
-      console.log('[DEBUG] /api/notifications/send - match:', adminKey === expectedKey);
-      
       if (!expectedKey || adminKey !== expectedKey) {
         return res.status(403).json({ message: "Unauthorized" });
       }
