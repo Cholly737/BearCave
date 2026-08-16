@@ -44,8 +44,9 @@ export async function sendPushNotification(
   }
 
   try {
-    // Data-only message: service worker handles display exclusively,
-    // preventing the double-notification caused by FCM auto-display + SW showNotification.
+    // Data-only at top level: prevents FCM auto-display on web (service worker handles it instead).
+    // Platform-specific notification payloads added for iOS/Android native so they display
+    // when the app is backgrounded or closed.
     const message = {
       token,
       data: {
@@ -55,10 +56,17 @@ export async function sendPushNotification(
       },
       android: {
         priority: 'high' as const,
+        notification: {
+          title,
+          body,
+          sound: 'default',
+        },
       },
       apns: {
         payload: {
           aps: {
+            alert: { title, body },
+            sound: 'default',
             contentAvailable: true,
           },
         },
@@ -105,7 +113,9 @@ export async function sendPushNotificationToAll(
   }
 
   try {
-    // Data-only multicast: prevents double-notification from FCM auto-display + SW showNotification.
+    // Data-only at top level: prevents FCM auto-display on web (service worker handles it instead).
+    // Platform-specific notification payloads added for iOS/Android native so they display
+    // when the app is backgrounded or closed.
     const message = {
       data: {
         title,
@@ -114,10 +124,19 @@ export async function sendPushNotificationToAll(
       },
       android: {
         priority: 'high' as const,
+        notification: {
+          title,
+          body,
+          sound: 'default',
+        },
       },
       apns: {
         payload: {
-          aps: { contentAvailable: true },
+          aps: {
+            alert: { title, body },
+            sound: 'default',
+            contentAvailable: true,
+          },
         },
         headers: {
           'apns-priority': '10',
