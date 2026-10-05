@@ -9,7 +9,8 @@
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "check:ios": "node scripts/check-ios-deployment-target.mjs",
-    "test:ios-minimum": "node --test scripts/check-ios-deployment-target.test.mjs",
+    "check:ios-built": "node scripts/check-ios-built-app.mjs",
+    "test:ios-minimum": "node --test scripts/check-ios-deployment-target.test.mjs scripts/check-ios-built-app.test.mjs",
     "db:push": "drizzle-kit push"
   },
   "dependencies": {

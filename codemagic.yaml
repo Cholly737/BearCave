@@ -70,6 +70,11 @@ workflows:
           xcode-project build-ipa \
             --workspace "$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME"
+
+      - name: Verify exported app minimum iOS version
+        script: |
+          set -e
+          npm run check:ios-built
     
     artifacts:
       - build/ios/ipa/*.ipa

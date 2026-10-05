@@ -49,7 +49,7 @@ function parseProject(text) {
   return result;
 }
 
-function version(value, label) {
+export function version(value, label) {
   if (typeof value !== 'string' || !/^\d+(?:\.\d+){0,2}$/.test(value)) {
     throw new Error(`${label}: expected an explicit numeric iOS version, found ${JSON.stringify(value) ?? 'missing'}.`);
   }
@@ -58,7 +58,7 @@ function version(value, label) {
   return parts.join('.');
 }
 
-export function checkDeploymentTargets(projectText, podfileText) {
+export function getPodfileMinimum(podfileText) {
   const platforms = [...podfileText.matchAll(/^\s*platform\s+:ios\s*,\s*(['"])(\d+(?:\.\d+){0,2})\1\s*(?:#.*)?$/gm)];
   // Fail closed on dynamic declarations or extra per-target platform settings.
   const declarations = [...podfileText.matchAll(/^\s*platform\b/gm)];
@@ -66,6 +66,11 @@ export function checkDeploymentTargets(projectText, podfileText) {
     throw new Error(`${podfilePath}: expected exactly one literal platform :ios, 'VERSION' declaration.`);
   }
   const minimum = platforms[0][2];
+  return minimum;
+}
+
+export function checkDeploymentTargets(projectText, podfileText) {
+  const minimum = getPodfileMinimum(podfileText);
   const expected = version(minimum, podfilePath);
   const { objects } = parseProject(projectText);
   if (!objects) throw new Error(`${projectPath}: missing project objects.`);
