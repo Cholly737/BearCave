@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# The web workflow needs no extra setup for native-only task merges. Reinstall,
-# type-check, and rebuild only when a merge changes the npm dependency manifests.
-if git diff --quiet HEAD^1 HEAD -- package.json package-lock.json npm-shrinkwrap.json; then
-  echo "No npm dependency changes in this merge; no post-merge setup is required."
-  exit 0
+# Script-only package.json changes do not need a reinstall, but missing tools or
+# dependency/lockfile changes do. Never skip validation after a failed install.
+setup_state="$(node scripts/post-merge-dependencies.mjs)"
+if [[ "$setup_state" == "install" ]]; then
+  npm ci --no-audit --no-fund
+else
+  echo "npm dependencies are present and unchanged; skipping reinstall."
 fi
 
-npm ci --no-audit --no-fund
-
-# Catch type errors and confirm the application still produces a deployable build.
+node --test scripts/post-merge-dependencies.test.mjs
 npm run check
+npm run check:ios
+npm run test:ios-minimum
 npm run build
