@@ -9,5 +9,7 @@ if git diff --quiet HEAD^1 HEAD -- package.json package-lock.json npm-shrinkwrap
 fi
 
 npm ci --no-audit --no-fund
+
+# Catch type errors and confirm the application still produces a deployable build.
 npm run check
 npm run build
