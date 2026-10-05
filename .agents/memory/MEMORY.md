@@ -1,1 +1,2 @@
 - [Push delivery validation](push-delivery-validation.md) — FCM acceptance and browser delivery do not verify native iOS notifications; confirm separately in TestFlight.
+- [iOS upload diagnosis](ios-upload-diagnosis.md) — distinguish app-lookup/tool failures from credential errors; report native build and Apple upload separately.

@@ -26,6 +26,8 @@ workflows:
       vars:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
+        # Avoid newer altool's bundle-ID-to-app-ID lookup during upload.
+        APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS: "--apple-id 6754083548"
       
       node: 20
       xcode: latest
