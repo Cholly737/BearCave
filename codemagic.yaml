@@ -59,6 +59,12 @@ workflows:
           cd ios/App
           agvtool new-version -all $BUILD_NUMBER
       
+      - name: Verify iOS minimum-version settings
+        script: |
+          set -e
+          npm run test:ios-minimum
+          npm run check:ios
+
       - name: Build iOS IPA
         script: |
           xcode-project build-ipa \
