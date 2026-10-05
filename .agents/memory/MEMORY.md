@@ -1,3 +1,4 @@
 - [Push delivery validation](push-delivery-validation.md) — FCM acceptance and browser delivery do not verify native iOS notifications; confirm separately in TestFlight.
 - [iOS upload diagnosis](ios-upload-diagnosis.md) — distinguish app-lookup/tool failures from credential errors; report native build and Apple upload separately.
 - [iOS minimum compatibility gate](ios-minimum-compatibility-gate.md) — measure active iOS versions before raising the minimum; platform-only analytics cannot estimate iOS 14 impact.
+- [Post-merge npm setup](post-merge-npm-setup.md) — avoid unnecessary full installs; honor package-firewall blocks on vulnerable locked dependencies.
