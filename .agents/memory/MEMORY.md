@@ -2,3 +2,4 @@
 - [iOS upload diagnosis](ios-upload-diagnosis.md) — distinguish app-lookup/tool failures from credential errors; report native build and Apple upload separately.
 - [iOS minimum compatibility gate](ios-minimum-compatibility-gate.md) — measure active iOS versions before raising the minimum; platform-only analytics cannot estimate iOS 14 impact.
 - [Post-merge npm setup](post-merge-npm-setup.md) — avoid unnecessary full installs; honor package-firewall blocks on vulnerable locked dependencies.
+- [Codemagic token identification](codemagic-token-identification.md) — an Apple integration key named “Codemagic CI/CD” is not the Codemagic REST API token.
