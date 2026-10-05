@@ -1,0 +1,51 @@
+ "code" : "90062",
+            "description" : "This bundle is invalid. The value for key CFBundleShortVersionString [1.4] in the Info.plist file must contain a higher version than that of the previously approved version [1.4]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring"
+          }
+        }
+      ],
+      "user-info" : {
+        "NSLocalizedDescription" : "This bundle is invalid. The value for key CFBundleShortVersionString [1.4] in the Info.plist file must contain a higher version than that of the previously approved version [1.4]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring",
+        "NSLocalizedFailureReason" : "The server’s response was: ‘{\n    code = 90062;\n    description = \"This bundle is invalid. The value for key CFBundleShortVersionString [1.4] in the Info.plist file must contain a higher version than that of the previously approved version [1.4]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring\";\n}’.",
+        "NSUnderlyingError" : "Error Domain=IrisAPI Code=-19241 \"A server error occurred.\" UserInfo={code=90062, NSLocalizedDescription=A server error occurred., description=This bundle is invalid. The value for key CFBundleShortVersionString [1.4] in the Info.plist file must contain a higher version than that of the previously approved version [1.4]. Please find more information about CFBundleShortVersionString at https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleshortversionstring}",
+        "iris-code" : "90062"
+      }
+    }
+  ],
+  "tool-path" : "/Applications/Xcode-26.6.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources",
+  "tool-version" : "26.40.1 (174001)",
+  "warnings" : [
+    {
+      "code" : 90068,
+      "message" : "Deployment target too low. Your app targets iOS 14.0. Starting in April 2027, iOS apps must target 15.0 or later to be uploaded to App Store Connect or submitted for distribution.",
+      "underlying-errors" : [
+
+      ],
+      "user-info" : {
+        "NSLocalizedDescription" : "Deployment target too low. Your app targets iOS 14.0. Starting in April 2027, iOS apps must target 15.0 or later to be uploaded to App Store Connect or submitted for distribution.",
+        "server_warning" : "{\n    code = 90068;\n    description = \"Deployment target too low. Your app targets iOS 14.0. Starting in April 2027, iOS apps must target 15.0 or later to be uploaded to App Store Connect or submitted for distribution.\";\n}"
+      }
+    }
+  ]
+}
+
+Failed to upload archive at "/Users/builder/clone/build/ios/ipa/App.ipa"
+Failed to publish /Users/builder/clone/build/ios/ipa/App.ipa
+
+Failed to publish App.ipa to App Store Connect.
+
+Build failed :|
+
+
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
+
+
+
+Build failed :|
+
+
+Publishing failed :|
+Failed to publish App.ipa to App Store Connect.
+
+
+Cleaning up
