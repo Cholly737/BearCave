@@ -1,36 +1,62 @@
 import UIKit
 import Capacitor
-import UserNotifications
+import FirebaseCore
+import FirebaseMessaging
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Set notification delegate
-        UNUserNotificationCenter.current().delegate = self
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         return true
     }
     
     // Handle successful registration for remote notifications
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: deviceToken)
+        // The server sends through FCM, so Capacitor must receive an FCM token,
+        // not the raw APNs token. Explicitly map APNs before fetching FCM.
+        Messaging.messaging().apnsToken = deviceToken
+        Messaging.messaging().token { [weak self] token, error in
+            if let error = error {
+                self?.reportRegistrationError(error)
+            } else if let token = token, !token.isEmpty {
+                self?.publishFCMToken(token)
+            } else {
+                self?.reportRegistrationError(NSError(
+                    domain: "BearCavePush",
+                    code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "Firebase returned no registration token"]
+                ))
+            }
+        }
     }
     
     // Handle failed registration for remote notifications
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+        reportRegistrationError(error)
     }
-    
-    // Handle foreground notification display
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound, .badge])
+
+    // Firebase can rotate the token. Forward refreshes only after APNs is mapped.
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard messaging.apnsToken != nil,
+              UIApplication.shared.isRegisteredForRemoteNotifications,
+              let token = fcmToken, !token.isEmpty else { return }
+        publishFCMToken(token)
     }
-    
-    // Handle notification tap
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        completionHandler()
+
+    private func publishFCMToken(_ token: String) {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: token)
+        }
+    }
+
+    private func reportRegistrationError(_ error: Error) {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

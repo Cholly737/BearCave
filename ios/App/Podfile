@@ -17,6 +17,8 @@ end
 target 'App' do
   capacitor_pods
   # Add your Pods here
+  # Firebase 11 retains support for this app's iOS 14 deployment target.
+  pod 'FirebaseMessaging', '11.15.0'
 end
 
 post_install do |installer|

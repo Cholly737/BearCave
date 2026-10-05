@@ -4,6 +4,14 @@ import { requestNotificationPermission, onForegroundMessage, initializeMessaging
 import { isSupported } from 'firebase/messaging';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
+import type { PluginListenerHandle } from '@capacitor/core';
+import {
+  isFCMToken,
+  NATIVE_PUSH_DISABLED,
+  PUSH_STATE_CHANGED,
+  registerNativePushToken,
+  subscribeNativePushToken,
+} from '@/lib/native-push';
 import { trackEvent } from '@/hooks/useAnalytics';
 
 interface NotificationState {
@@ -25,6 +33,24 @@ export function useNotifications() {
   const isNative = Capacitor.isNativePlatform();
 
   useEffect(() => {
+    let disposed = false;
+    const nativeListeners: PluginListenerHandle[] = [];
+    let stopForegroundMessages: (() => void) | undefined;
+    const syncTokenState = () => {
+      const token = localStorage.getItem('fcmToken');
+      if (!disposed) setState(prev => ({
+        ...prev,
+        token: token && (!isNative || isFCMToken(token)) ? token : null,
+      }));
+    };
+    window.addEventListener(PUSH_STATE_CHANGED, syncTokenState);
+
+    async function keepListener(listener: Promise<PluginListenerHandle>) {
+      const handle = await listener;
+      if (disposed) await handle.remove();
+      else nativeListeners.push(handle);
+    }
+
     async function initializeNotifications() {
       if (isNative) {
         try {
@@ -36,10 +62,10 @@ export function useNotifications() {
             permission: permStatus.receive === 'granted' ? 'granted' : 
                        permStatus.receive === 'denied' ? 'denied' : 'default',
             isSupported: true,
-            token: savedToken
+            token: savedToken && isFCMToken(savedToken) ? savedToken : null
           }));
 
-          PushNotifications.addListener('pushNotificationReceived', notification => {
+          await keepListener(PushNotifications.addListener('pushNotificationReceived', notification => {
             trackEvent('notification_received', undefined, {
               title: notification.title,
               body: notification.body,
@@ -48,14 +74,40 @@ export function useNotifications() {
               title: notification.title || 'BearCave',
               description: notification.body || 'You have a new notification',
             });
-          });
+          }));
 
-          PushNotifications.addListener('pushNotificationActionPerformed', action => {
+          await keepListener(PushNotifications.addListener('pushNotificationActionPerformed', action => {
             trackEvent('notification_open', undefined, {
               title: action.notification?.title,
               body: action.notification?.body,
             });
-          });
+          }));
+
+          // Keep rotated FCM tokens in sync, but never undo an explicit opt-out.
+          await keepListener(PushNotifications.addListener('registration', ({ value }) => {
+            if (disposed || permStatus.receive !== 'granted' ||
+                localStorage.getItem(NATIVE_PUSH_DISABLED) === 'true' || !isFCMToken(value)) return;
+            if (value !== localStorage.getItem('fcmToken')) {
+              void subscribeNativePushToken(value).catch(error => {
+                console.error('Failed to refresh native push subscription:', error);
+              });
+            }
+          }));
+
+          // Existing permission is not proof of a working server subscription.
+          // Re-register on launch to migrate old APNs tokens and refresh FCM.
+          if (!disposed && permStatus.receive === 'granted' &&
+              localStorage.getItem(NATIVE_PUSH_DISABLED) !== 'true') {
+            try {
+              const token = await registerNativePushToken();
+              if (!disposed && localStorage.getItem(NATIVE_PUSH_DISABLED) !== 'true') {
+                await subscribeNativePushToken(token);
+              }
+            } catch (error) {
+              console.error('Native push registration needs attention:', error);
+              if (!disposed) setState(prev => ({ ...prev, token: null }));
+            }
+          }
         } catch (error) {
           console.error('Error initializing native notifications:', error);
           setState(prev => ({ ...prev, isSupported: false }));
@@ -89,14 +141,16 @@ export function useNotifications() {
           if (supported) {
             await initializeMessaging();
             
-            onForegroundMessage((payload) => {
+            stopForegroundMessages = onForegroundMessage((payload) => {
+              const title = payload.notification?.title || payload.data?.title;
+              const body = payload.notification?.body || payload.data?.body;
               trackEvent('notification_received', undefined, {
-                title: payload.notification?.title,
-                body: payload.notification?.body,
+                title,
+                body,
               });
               toast({
-                title: payload.notification?.title || 'BearCave',
-                description: payload.notification?.body || 'You have a new notification',
+                title: title || 'BearCave',
+                description: body || 'You have a new notification',
               });
             });
           }
@@ -107,6 +161,12 @@ export function useNotifications() {
     }
 
     initializeNotifications();
+    return () => {
+      disposed = true;
+      window.removeEventListener(PUSH_STATE_CHANGED, syncTokenState);
+      stopForegroundMessages?.();
+      nativeListeners.forEach(handle => { void handle.remove(); });
+    };
   }, [toast, isNative]);
 
   const requestPermission = useCallback(async () => {
@@ -117,46 +177,20 @@ export function useNotifications() {
         const permStatus = await PushNotifications.requestPermissions();
         
         if (permStatus.receive === 'granted') {
-          await PushNotifications.register();
-          
-          const tokenPromise = new Promise<string>((resolve, reject) => {
-            const timeout = setTimeout(() => reject(new Error('Token timeout')), 10000);
-            
-            PushNotifications.addListener('registration', token => {
-              clearTimeout(timeout);
-              resolve(token.value);
-            });
-            
-            PushNotifications.addListener('registrationError', err => {
-              clearTimeout(timeout);
-              reject(err);
-            });
-          });
-          
-          const token = await tokenPromise;
-          localStorage.setItem('fcmToken', token);
-          
-          const response = await fetch('/api/notifications/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token }),
-          });
+          localStorage.removeItem(NATIVE_PUSH_DISABLED);
+          const token = await registerNativePushToken();
+          await subscribeNativePushToken(token);
+          setState(prev => ({
+            ...prev,
+            permission: 'granted',
+            token,
+            isLoading: false
+          }));
 
-          if (response.ok) {
-            setState(prev => ({
-              ...prev,
-              permission: 'granted',
-              token,
-              isLoading: false
-            }));
-
-            toast({
-              title: 'Notifications Enabled',
-              description: 'You will receive updates about fixtures and events.',
-            });
-          } else {
-            throw new Error('Failed to register token');
-          }
+          toast({
+            title: 'Notifications Enabled',
+            description: 'You will receive updates about fixtures and events.',
+          });
         } else {
           setState(prev => ({
             ...prev,
@@ -230,7 +264,7 @@ export function useNotifications() {
       console.error('Error requesting notification permission:', error);
       toast({
         title: 'Error',
-        description: 'Failed to enable notifications. Please try again.',
+        description: error instanceof Error ? error.message : 'Failed to enable notifications. Please try again.',
         variant: 'destructive',
       });
       setState(prev => ({ ...prev, isLoading: false }));
@@ -240,6 +274,8 @@ export function useNotifications() {
   const unsubscribe = useCallback(async () => {
     if (!state.token) return;
 
+    const wasDisabled = localStorage.getItem(NATIVE_PUSH_DISABLED);
+    if (isNative) localStorage.setItem(NATIVE_PUSH_DISABLED, 'true');
     try {
       const response = await fetch('/api/notifications/unsubscribe', {
         method: 'POST',
@@ -250,13 +286,17 @@ export function useNotifications() {
       if (response.ok) {
         localStorage.removeItem('fcmToken');
         setState(prev => ({ ...prev, token: null }));
+        window.dispatchEvent(new Event(PUSH_STATE_CHANGED));
 
         toast({
           title: 'Notifications Disabled',
           description: 'You will no longer receive push notifications.',
         });
+      } else {
+        throw new Error('Failed to disable the notification subscription');
       }
     } catch (error) {
+      if (isNative && wasDisabled !== 'true') localStorage.removeItem(NATIVE_PUSH_DISABLED);
       console.error('Error unsubscribing:', error);
       toast({
         title: 'Error',
@@ -264,12 +304,13 @@ export function useNotifications() {
         variant: 'destructive',
       });
     }
-  }, [state.token, toast]);
+  }, [state.token, toast, isNative]);
 
   return {
     ...state,
     requestPermission,
     unsubscribe,
-    canRequestPermission: state.isSupported && state.permission !== 'granted'
+    canRequestPermission: state.isSupported && state.permission !== 'denied' &&
+      (state.permission !== 'granted' || !state.token)
   };
 }

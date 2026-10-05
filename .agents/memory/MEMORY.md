@@ -1,0 +1,1 @@
+- [Push delivery validation](push-delivery-validation.md) — FCM acceptance and browser delivery do not verify native iOS notifications; confirm separately in TestFlight.
