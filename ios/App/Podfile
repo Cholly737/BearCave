@@ -1,6 +1,6 @@
 require_relative '../../node_modules/@capacitor/ios/scripts/pods_helpers'
 
-platform :ios, '14.0'
+platform :ios, '15.0'
 use_frameworks!
 
 # workaround to avoid Xcode caching of Pods that requires
@@ -17,7 +17,7 @@ end
 target 'App' do
   capacitor_pods
   # Add your Pods here
-  # Firebase 11 retains support for this app's iOS 14 deployment target.
+  # Firebase Messaging 11.15.0 supports the app's iOS 15 deployment target.
   pod 'FirebaseMessaging', '11.15.0'
 end
 
