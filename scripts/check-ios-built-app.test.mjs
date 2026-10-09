@@ -21,7 +21,7 @@ function withArchive(callback) {
 import json, plistlib, sys, zipfile
 data = json.load(sys.stdin)
 with zipfile.ZipFile(sys.argv[1], 'w') as archive:
-    content = plistlib.dumps(plistlib.loads(data['xml']), fmt=plistlib.FMT_BINARY) if data['binary'] else data['xml'].encode()
+    content = plistlib.dumps(plistlib.loads(data['xml'].encode()), fmt=plistlib.FMT_BINARY) if data['binary'] else data['xml'].encode()
     for index in range(data['mainApps']):
         archive.writestr(f'Payload/App{index}.app/Info.plist', content)
     archive.writestr('Payload/App0.app/Frameworks/Dependency.framework/Info.plist', plistlib.dumps({'MinimumOSVersion': '99.0'}))
