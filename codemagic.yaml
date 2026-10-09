@@ -37,7 +37,15 @@ workflows:
       - &ios_install_dependencies
         name: Install npm dependencies
         script: |
-          npm ci
+          set -e
+          npm ci --include=dev
+          # Some npm failures have returned zero after an incomplete install.
+          for tool in vite esbuild cap; do
+            if [ ! -x "node_modules/.bin/$tool" ]; then
+              echo "Dependency installation incomplete: missing $tool."
+              exit 1
+            fi
+          done
       
       - &ios_build_web
         name: Build web assets
