@@ -45,6 +45,7 @@ for (const binary of [false, true]) {
       makeIpa(fixture('matching'), { binary });
       const result = run();
       assert.equal(result.status, 0, result.stderr);
+      assert.match(result.stdout, new RegExp(`Info.plist format: ${binary ? 'binary' : 'XML'}; MinimumOSVersion: 15.0`));
       assert.match(result.stdout, /MinimumOSVersion agrees with Podfile \(15.0\)/);
     });
   });
@@ -54,6 +55,7 @@ for (const binary of [false, true]) {
       makeIpa(fixture('mismatched'), { binary });
       const result = run();
       assert.equal(result.status, 1);
+      assert.match(result.stdout, new RegExp(`Info.plist format: ${binary ? 'binary' : 'XML'}; MinimumOSVersion: 16.0`));
       assert.match(result.stderr, /App\.ipa: Payload\/App0\.app\/Info\.plist MinimumOSVersion = 16.0; Podfile platform = 15.0/);
       assert.match(result.stderr, /Do not publish this IPA/);
     });
@@ -103,4 +105,16 @@ test('Codemagic checks the exported IPA after building and before TestFlight pub
   assert.ok(check < yaml.indexOf('    publishing:'));
   assert.match(yaml, /Verify exported app minimum iOS version\n\s+script: \|\n\s+set -e\n\s+npm run check:ios-built/);
   assert.match(yaml, /submit_to_testflight: true/);
+});
+
+test('the deliberate build-time override is isolated in a manual, non-publishing workflow', () => {
+  const yaml = readFileSync(resolve(root, 'codemagic.yaml'), 'utf8');
+  const normal = yaml.split('  ios-minimum-mismatch-test:')[0];
+  const negative = yaml.split('  ios-minimum-mismatch-test:')[1].split('  android-build:')[0];
+  assert.doesNotMatch(normal, /IPHONEOS_DEPLOYMENT_TARGET=16\.0/);
+  assert.match(negative, /environment: \*ios_environment/);
+  assert.match(negative, /- \*ios_verify_settings/);
+  assert.match(negative, /--archive-xcargs "COMPILER_INDEX_STORE_ENABLE=NO IPHONEOS_DEPLOYMENT_TARGET=16\.0"/);
+  assert.ok(negative.indexOf('- *ios_verify_export') > negative.indexOf('xcode-project build-ipa'));
+  assert.doesNotMatch(negative, /^\s*(publishing|triggering|ignore_failure):/m);
 });

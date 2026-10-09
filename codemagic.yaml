@@ -13,7 +13,7 @@ workflows:
           include: true
           source: true
     
-    environment:
+    environment: &ios_environment
       ios_signing:
         provisioning_profiles:
           - App Store Profile
@@ -34,32 +34,39 @@ workflows:
       cocoapods: default
     
     scripts:
-      - name: Install npm dependencies
+      - &ios_install_dependencies
+        name: Install npm dependencies
         script: |
           npm ci
       
-      - name: Build web assets
+      - &ios_build_web
+        name: Build web assets
         script: |
           npm run build
       
-      - name: Sync Capacitor to iOS
+      - &ios_sync
+        name: Sync Capacitor to iOS
         script: |
           npx cap sync ios
       
-      - name: Install CocoaPods dependencies
+      - &ios_install_pods
+        name: Install CocoaPods dependencies
         script: |
           cd ios/App && pod install
       
-      - name: Set up code signing
+      - &ios_signing
+        name: Set up code signing
         script: |
           xcode-project use-profiles
       
-      - name: Increment build number
+      - &ios_build_number
+        name: Increment build number
         script: |
           cd ios/App
           agvtool new-version -all $BUILD_NUMBER
       
-      - name: Verify iOS minimum-version settings
+      - &ios_verify_settings
+        name: Verify iOS minimum-version settings
         script: |
           set -e
           npm run test:ios-minimum
@@ -71,7 +78,8 @@ workflows:
             --workspace "$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME"
 
-      - name: Verify exported app minimum iOS version
+      - &ios_verify_export
+        name: Verify exported app minimum iOS version
         script: |
           set -e
           npm run check:ios-built
@@ -87,6 +95,35 @@ workflows:
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         # submit_to_app_store: true  # Uncomment when ready for production release
+
+  # Manual-only negative test. It signs and exports a real IPA but never uploads it.
+  # The override affects this archive only; committed support-floor settings stay unchanged.
+  ios-minimum-mismatch-test:
+    name: BearCave iOS Minimum Mismatch Test (No Publishing)
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment: *ios_environment
+    scripts:
+      - *ios_install_dependencies
+      - *ios_build_web
+      - *ios_sync
+      - *ios_install_pods
+      - *ios_signing
+      - *ios_build_number
+      - *ios_verify_settings
+      - name: Build iOS IPA with deliberate minimum-version override
+        script: |
+          set -e
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-xcargs "COMPILER_INDEX_STORE_ENABLE=NO IPHONEOS_DEPLOYMENT_TARGET=16.0"
+      # Expected to fail here with exported MinimumOSVersion 16.0 vs Podfile 15.0.
+      - *ios_verify_export
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    # Intentionally no triggering, publishing, or ignore_failure.
 
   android-build:
     name: BearCave Android Build

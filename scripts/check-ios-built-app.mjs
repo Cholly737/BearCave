@@ -24,7 +24,8 @@ export function runBuiltCheck(root = process.cwd(), ipaDirectory = 'build/ios/ip
     const podfile = readFileSync(resolve(root, podfilePath), 'utf8');
     // Check every IPA covered by the publishing artifact glob.
     for (const ipa of ipas) {
-      const { plist, minimum } = JSON.parse(execFileSync('python3', [reader, ipa], { encoding: 'utf8' }));
+      const { plist, minimum, format } = JSON.parse(execFileSync('python3', [reader, ipa], { encoding: 'utf8' }));
+      console.log(`Inspecting exported IPA: ${ipa}: ${plist}; Info.plist format: ${format}; MinimumOSVersion: ${minimum}.`);
       const expected = checkBuiltAppMinimum(minimum, podfile, `${ipa}: ${plist}`);
       console.log(`Exported app MinimumOSVersion agrees with Podfile (${expected}): ${ipa}: ${plist}.`);
     }

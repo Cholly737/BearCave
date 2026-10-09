@@ -20,8 +20,13 @@ def read_minimum(path):
             raise ValueError(
                 f"Expected exactly one Payload/*.app/Info.plist, found {len(candidates)}."
             )
-        info = plistlib.loads(archive.read(candidates[0]))
-        return {"plist": candidates[0], "minimum": info.get("MinimumOSVersion")}
+        content = archive.read(candidates[0])
+        info = plistlib.loads(content)
+        return {
+            "plist": candidates[0],
+            "minimum": info.get("MinimumOSVersion"),
+            "format": "binary" if content.startswith(b"bplist00") else "XML",
+        }
 
 
 if __name__ == "__main__":
